@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cenová nabídka — Excel/VBA CAMO systém</title>
+    <style>
+        :root {
+            --navy: #0a1628;
+            --navy-light: #132240;
+            --blue: #1a56db;
+            --blue-light: #3b82f6;
+            --orange: #f97316;
+            --orange-light: #fb923c;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-500: #64748b;
+            --gray-700: #334155;
+            --gray-900: #0f172a;
+            --green: #22c55e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--gray-900);
+            background: var(--gray-50);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(249, 115, 22, 0.08);
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .doc-badge {
+            display: inline-block;
+            background: var(--orange);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-row {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Parties */
+        .parties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .party-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .party-card h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-500);
+            margin-bottom: 0.75rem;
+        }
+
+        .party-card .name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .party-card p {
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            margin-bottom: 0.2rem;
+        }
+
+        /* Section */
+        section {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        section h2 {
+            font-size: 1.4rem;
+            color: var(--navy);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--orange);
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: var(--navy-light);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p { margin-bottom: 0.75rem; color: var(--gray-700); }
+
+        /* Pricing cards */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .pricing-card {
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 1.75rem;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--blue);
+            box-shadow: 0 4px 24px rgba(26, 86, 219, 0.12);
+        }
+
+        .pricing-card.featured::before {
+            content: 'Doporuceno';
+            position: absolute;
+            top: -11px;
+            left: 1.5rem;
+            background: var(--blue);
+            color: white;
+            padding: 0.15rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .pricing-card .phase {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-500);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .price small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--gray-500);
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        .pricing-card ul li {
+            padding: 0.35rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+        }
+
+        .pricing-card ul li::before {
+            content: '\2713';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        /* Breakdown table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        thead th {
+            background: var(--navy);
+            color: white;
+            padding: 0.65rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        thead th:first-child { border-radius: 6px 0 0 0; }
+        thead th:last-child { border-radius: 0 6px 0 0; }
+
+        tbody td {
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        tbody tr:hover { background: var(--gray-50); }
+
+        tfoot td {
+            padding: 0.75rem;
+            font-weight: 700;
+            border-top: 2px solid var(--navy);
+            color: var(--navy);
+        }
+
+        .text-right { text-align: right; }
+
+        /* Highlight box */
+        .highlight-box {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--blue);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .highlight-box p {
+            color: var(--gray-700);
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        .orange-box {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .orange-box h4 {
+            color: #c2410c;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* Payment timeline */
+        .timeline {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            margin: 1.5rem 0;
+        }
+
+        .timeline-step {
+            flex: 1;
+            padding: 1.25rem;
+            background: white;
+            border: 1px solid var(--gray-200);
+            position: relative;
+            text-align: center;
+        }
+
+        .timeline-step:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .timeline-step:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .timeline-step .step-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--blue);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-step .amount {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--navy);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-step .label {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        /* Validity */
+        .validity {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+        }
+
+        .validity strong {
+            color: var(--navy);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-500);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--gray-200);
+            margin-top: 2rem;
+        }
+
+        .sig-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .sig-box {
+            border-top: 2px solid var(--gray-300);
+            padding-top: 1rem;
+        }
+
+        .sig-box .sig-label {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.25rem;
+        }
+
+        .sig-box .sig-name {
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .sig-box .sig-company {
+            font-size: 0.9rem;
+            color: var(--gray-700);
+        }
+
+        @media (max-width: 768px) {
+            .page-header { padding: 2rem 1rem; }
+            .page-header h1 { font-size: 1.5rem; }
+            .container { padding: 1rem; }
+            section { padding: 1.25rem; }
+            .parties { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .sig-grid { grid-template-columns: 1fr; }
+            .timeline { flex-direction: column; }
+            .timeline-step { border-radius: 0 !important; }
+            .timeline-step:first-child { border-radius: 8px 8px 0 0 !important; }
+            .timeline-step:last-child { border-radius: 0 0 8px 8px !important; }
+        }
+
+        @media print {
+            body { background: white; }
+            .page-header { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            section { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="page-header">
+    <div class="header-content">
+        <span class="doc-badge">Cenova nabidka</span>
+        <h1>Cenová nabídka č. 2026-04-001</h1>
+        <p class="subtitle">Excel/VBA CAMO System — Nástroj pro sledování letové způsobilosti</p>
+        <div class="meta-row">
+            <span>Datum vystavení: 30. března 2026</span>
+            <span>Platnost: do 30. dubna 2026</span>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- Strany -->
+    <div class="parties">
+        <div class="party-card">
+            <h3>Dodavatel</h3>
+            <p class="name">PRAUT s.r.o.</p>
+            <p>Obrněné brigády 552/33</p>
+            <p>350 02 Cheb</p>
+            <p style="margin-top:0.5rem;">IČO: 22545107</p>
+            <p>Neplátce DPH</p>
+            <p style="margin-top:0.5rem;">Zastoupený: Martin Švanda</p>
+            <p>E-mail: svanda@praut.cz</p>
+        </div>
+        <div class="party-card">
+            <h3>Odběratel</h3>
+            <p class="name">CAMO solution, s.r.o.</p>
+            <p>Kamýk č. p. 40</p>
+            <p>Kamýk</p>
+            <p style="margin-top:0.5rem;">IČO: 23486724</p>
+            <p style="margin-top:0.5rem;">Kontakt: Ondřej Süsser</p>
+            <p>E-mail: sussdesign@email.cz</p>
+            <p>Tel: +420 721 121 598</p>
+        </div>
+    </div>
+
+    <!-- Předmět -->
+    <section>
+        <h2>Předmět nabídky</h2>
+        <p>Vývoj komplexního <strong>Excel/VBA nástroje</strong> pro sledování letové způsobilosti letadel a vrtulníků (mini CAMO systém). Nástroj automatizuje výpočty údržbových intervalů, zjednodušuje sledování údržby a generuje přehledný Due List bez ruční práce.</p>
+        <p>Dodávka je rozdělena do dvou fází — <strong>MVP</strong> (základní funkcionality) a <strong>Fáze 2</strong> (pokročilé moduly).</p>
+    </section>
+
+    <!-- Cenové balíčky -->
+    <section>
+        <h2>Cenové balíčky</h2>
+
+        <div class="pricing-grid">
+            <div class="pricing-card featured">
+                <div class="phase">Fáze 1 — MVP</div>
+                <div class="title">Základní CAMO systém</div>
+                <div class="price">25 000 Kč <small>bez DPH</small></div>
+                <p style="font-size:0.85rem; color:var(--gray-500); margin-bottom:0;">Dodání: 4 týdny od zahájení</p>
+                <ul>
+                    <li>Aircraft Master — registr flotily</li>
+                    <li>Task Cards — karty údržbových úkonů</li>
+                    <li>Due List s automatickým přepočtem</li>
+                    <li>Logbook modul pro zápis letů</li>
+                    <li>UserForms pro uživatelský vstup</li>
+                    <li>Barevné kódování priorit</li>
+                    <li>Komentovaný VBA kód</li>
+                    <li>14denní podpora po předání</li>
+                </ul>
+            </div>
+            <div class="pricing-card">
+                <div class="phase">Fáze 2 — Rozšíření</div>
+                <div class="title">Pokročilé moduly</div>
+                <div class="price">12 000 Kč <small>bez DPH</small></div>
+                <p style="font-size:0.85rem; color:var(--gray-500); margin-bottom:0;">Dodání: 2 týdny po schválení MVP</p>
+                <ul>
+                    <li>AD/SB Tracking — sledování direktiv</li>
+                    <li>Component Control — life-limited parts</li>
+                    <li>Automatické reporty (Fleet, Detail, Overdue)</li>
+                    <li>Filtrované přehledy</li>
+                    <li>Report generátor s UserForm</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>Proč je cena výhodná?</h4>
+            <p>Využíváme AI-asistovaný vývoj VBA kódu, který výrazně snižuje čas potřebný na implementaci při zachování plné kvality a komentovanosti kódu. Díky tomu se cena MVP vejde do rozpočtu 15 000 – 30 000 Kč a současně pokrývá všechny klíčové funkcionality.</p>
+        </div>
+    </section>
+
+    <!-- Rozpad MVP -->
+    <section>
+        <h2>Detailní rozpad ceny — MVP (Fáze 1)</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Položka</th>
+                    <th>Popis</th>
+                    <th class="text-right">Cena</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Aircraft Master</strong></td>
+                    <td>Struktura listu, datová validace, Named Ranges</td>
+                    <td class="text-right">3 500 Kč</td>
+                </tr>
+                <tr>
+                    <td><strong>Task Cards</strong></td>
+                    <td>List s intervaly (FH/FC/Calendar), vazba na Aircraft Master</td>
+                    <td class="text-right">4 500 Kč</td>
+                </tr>
+                <tr>
+                    <td><strong>Due List + výpočty</strong></td>
+                    <td>Automatický přepočet remaining, barevné kódování, řazení</td>
+                    <td class="text-right">6 000 Kč</td>
+                </tr>
+                <tr>
+                    <td><strong>Logbook modul</strong></td>
+                    <td>Záznam letů, aktualizace Total FH/FC v Aircraft Master</td>
+                    <td class="text-right">3 500 Kč</td>
+                </tr>
+                <tr>
+                    <td><strong>UserForms (VBA)</strong></td>
+                    <td>Formuláře pro zápis letu, úkonu a letadla s validací</td>
+                    <td class="text-right">4 500 Kč</td>
+                </tr>
+                <tr>
+                    <td><strong>Testování a dokumentace</strong></td>
+                    <td>Vzorová data, README list, ověření funkcionality</td>
+                    <td class="text-right">3 000 Kč</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"><strong>CELKEM MVP (Fáze 1)</strong></td>
+                    <td class="text-right"><strong>25 000 Kč</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <p style="font-size:0.85rem; color:var(--gray-500); margin-top:0.5rem;">PRAUT s.r.o. je neplátce DPH — ceny jsou konečné.</p>
+    </section>
+
+    <!-- Platební podmínky -->
+    <section>
+        <h2>Platební podmínky</h2>
+
+        <div class="timeline">
+            <div class="timeline-step">
+                <div class="step-num">1</div>
+                <span class="amount">12 500 Kč</span>
+                <span class="label">Záloha 50 %<br>Před zahájením prací</span>
+            </div>
+            <div class="timeline-step">
+                <div class="step-num">2</div>
+                <span class="amount">Vývoj</span>
+                <span class="label">4 týdny<br>Po obdržení zálohy a podkladů</span>
+            </div>
+            <div class="timeline-step">
+                <div class="step-num">3</div>
+                <span class="amount">12 500 Kč</span>
+                <span class="label">Doplatek 50 %<br>Po předání a akceptaci</span>
+            </div>
+        </div>
+
+        <ul style="font-size:0.9rem;">
+            <li>Splatnost faktur: 14 dní od vystavení</li>
+            <li>Platba bankovním převodem na účet dodavatele</li>
+            <li>Faktura za zálohu vystavena po podpisu smlouvy</li>
+            <li>Faktura za doplatek vystavena po akceptaci díla</li>
+        </ul>
+
+        <div class="orange-box">
+            <h4>Předpoklad zahájení</h4>
+            <p style="margin-bottom:0; font-size:0.9rem;">Práce budou zahájeny po splnění dvou podmínek: <strong>(1)</strong> přijetí zálohy na účet dodavatele a <strong>(2)</strong> dodání Airworthiness logiky (intervalů údržby, pravidel pro výpočty) ze strany klienta. Termín dodání se počítá od splnění obou podmínek.</p>
+        </div>
+    </section>
+
+    <!-- Fáze 2 rozpad -->
+    <section>
+        <h2>Rozšíření — Fáze 2 (volitelné)</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Položka</th>
+                    <th>Popis</th>
+                    <th class="text-right">Cena</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>AD/SB Tracking</strong></td>
+                    <td>List pro Airworthiness Directives a Service Bulletins</td>
+                    <td class="text-right">4 000 Kč</td>
+                </tr>
+                <tr>
+                    <td><strong>Component Control</strong></td>
+                    <td>Sledování komponent s limitovanou životností</td>
+                    <td class="text-right">4 000 Kč</td>
+                </tr>
+                <tr>
+                    <td><strong>Reports modul</strong></td>
+                    <td>Automatické reporty, filtrované přehledy, UserForm</td>
+                    <td class="text-right">4 000 Kč</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"><strong>CELKEM Fáze 2</strong></td>
+                    <td class="text-right"><strong>12 000 Kč</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <p style="font-size:0.9rem;">Fáze 2 je volitelná a může být objednána kdykoliv po dokončení MVP. Platební podmínky: 100 % po předání.</p>
+    </section>
+
+    <!-- Celkový souhrn -->
+    <section>
+        <h2>Celkový souhrn</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Fáze</th>
+                    <th>Rozsah</th>
+                    <th>Termín</th>
+                    <th class="text-right">Cena</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>MVP (Fáze 1)</strong></td>
+                    <td>Aircraft Master, Task Cards, Due List, Logbook, UserForms</td>
+                    <td>4 týdny</td>
+                    <td class="text-right"><strong>25 000 Kč</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Rozšíření (Fáze 2)</strong></td>
+                    <td>AD/SB Tracking, Component Control, Reports</td>
+                    <td>2 týdny</td>
+                    <td class="text-right"><strong>12 000 Kč</strong></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>CELKEM (obě fáze)</strong></td>
+                    <td class="text-right"><strong>37 000 Kč</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="validity">
+            <strong>Platnost nabídky:</strong> Tato cenová nabídka je platná do <strong>30. dubna 2026</strong>. Po tomto datu si dodavatel vyhrazuje právo ceny upravit.
+        </div>
+    </section>
+
+    <!-- Podpisy -->
+    <section>
+        <h2>Souhlas s nabídkou</h2>
+        <p>Podpisem této nabídky obě strany potvrzují souhlas s uvedenými podmínkami. Závazná smlouva o dílo bude uzavřena samostatným dokumentem.</p>
+
+        <div class="sig-grid">
+            <div class="sig-box">
+                <div class="sig-label">Za dodavatele</div>
+                <div class="sig-name">Martin Švanda</div>
+                <div class="sig-company">PRAUT s.r.o.</div>
+                <p style="font-size:0.85rem; color:var(--gray-500); margin-top:1.5rem;">V Chebu dne 30. března 2026</p>
+                <p style="font-size:0.85rem; color:var(--gray-500); margin-top:2rem; border-top: 1px dashed var(--gray-300); padding-top:0.5rem;">Podpis: .................................</p>
+            </div>
+            <div class="sig-box">
+                <div class="sig-label">Za objednatele</div>
+                <div class="sig-name">Ondřej Süsser</div>
+                <div class="sig-company">CAMO solution, s.r.o.</div>
+                <p style="font-size:0.85rem; color:var(--gray-500); margin-top:1.5rem;">V ................ dne ................</p>
+                <p style="font-size:0.85rem; color:var(--gray-500); margin-top:2rem; border-top: 1px dashed var(--gray-300); padding-top:0.5rem;">Podpis: .................................</p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<footer class="footer">
+    <p>Cenová nabídka č. 2026-04-001 &mdash; PRAUT s.r.o. &mdash; 30. března 2026</p>
+    <p style="margin-top:0.25rem;">Dokument je důvěrný a určen výhradně pro CAMO solution, s.r.o.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kolosov — Přehled projektů</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f172a;--card:#1e293b;--card-hover:#273548;--text:#e2e8f0;--muted:#94a3b8;--accent:#3b82f6;--accent2:#8b5cf6;--border:#334155;--green:#10b981;--amber:#f59e0b;--rose:#f43f5e}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{padding:3rem 2rem 2rem;text-align:center;background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f172a 100%);border-bottom:1px solid var(--border)}
+header h1{font-size:2.2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.5rem}
+header h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header p{color:var(--muted);font-size:1.05rem;max-width:600px;margin:0 auto}
+.grid{max-width:1100px;margin:0 auto;padding:2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;transition:all .25s ease;position:relative;overflow:hidden}
+.card:hover{background:var(--card-hover);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.card:nth-child(1)::before{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.card:nth-child(2)::before{background:linear-gradient(90deg,#10b981,#34d399)}
+.card:nth-child(3)::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.card:nth-child(4)::before{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.card:nth-child(5)::before{background:linear-gradient(90deg,#f43f5e,#fb7185)}
+.card:nth-child(6)::before{background:linear-gradient(90deg,#06b6d4,#22d3ee)}
+.card-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;font-weight:700;font-size:.9rem;margin-bottom:1rem}
+.card:nth-child(1) .card-num{background:rgba(59,130,246,.15);color:#60a5fa}
+.card:nth-child(2) .card-num{background:rgba(16,185,129,.15);color:#34d399}
+.card:nth-child(3) .card-num{background:rgba(245,158,11,.15);color:#fbbf24}
+.card:nth-child(4) .card-num{background:rgba(139,92,246,.15);color:#a78bfa}
+.card:nth-child(5) .card-num{background:rgba(244,63,94,.15);color:#fb7185}
+.card:nth-child(6) .card-num{background:rgba(6,182,212,.15);color:#22d3ee}
+.card h2{font-size:1.15rem;font-weight:700;margin-bottom:.4rem;line-height:1.3}
+.card .subtitle{color:var(--muted);font-size:.85rem;margin-bottom:1.2rem;line-height:1.4}
+.links{display:flex;flex-direction:column;gap:.5rem}
+.link-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.link{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .9rem;border-radius:8px;font-size:.8rem;font-weight:500;text-decoration:none;transition:all .2s;border:1px solid var(--border);color:var(--text)}
+.link:hover{border-color:var(--accent);color:var(--accent)}
+.link.showcase{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.link.showcase:hover{background:#2563eb;border-color:#2563eb}
+.link svg{width:14px;height:14px;flex-shrink:0}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:1rem}
+@media(max-width:420px){.grid{padding:1rem;grid-template-columns:1fr}.link-row{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<header>
+<h1><span>Kolosov</span> — Konec března</h1>
+<p>Přehled 6 projektů: technické specifikace, cenové nabídky, smlouvy a interaktivní showcase dema</p>
+</header>
+
+<div class="grid">
+
+<!-- 01 -->
+<div class="card">
+<div class="card-num">01</div>
+<h2>CAD Digitalizér — AI Konverze Výkresů</h2>
+<p class="subtitle">FutureProductDesign · AI-asistovaná digitalizace technických výkresů</p>
+<div class="links">
+<a href="01-CAD-Prekreslovani-FutureProductDesign/showcase-demo/index.html" class="link showcase">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+Showcase demo
+</a>
+<div class="link-row">
+<a href="01-CAD-Prekreslovani-FutureProductDesign/technicka-specifikace.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+Specifikace
+</a>
+<a href="01-CAD-Prekreslovani-FutureProductDesign/cenova-nabidka.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg>
+Cenová nabídka
+</a>
+<a href="01-CAD-Prekreslovani-FutureProductDesign/smlouva-mvp.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+Smlouva
+</a>
+</div>
+</div>
+</div>
+
+<!-- 02 -->
+<div class="card">
+<div class="card-num">02</div>
+<h2>SEO Optimalizace webu</h2>
+<p class="subtitle">Morawiecova · Komplexní SEO audit a optimalizace</p>
+<div class="links">
+<a href="02-SEO-Optimalizace-Morawiecova/showcase-demo/index.html" class="link showcase">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+Showcase demo
+</a>
+<div class="link-row">
+<a href="02-SEO-Optimalizace-Morawiecova/technicka-specifikace.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+Specifikace
+</a>
+<a href="02-SEO-Optimalizace-Morawiecova/cenova-nabidka.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg>
+Cenová nabídka
+</a>
+<a href="02-SEO-Optimalizace-Morawiecova/smlouva-mvp.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+Smlouva
+</a>
+</div>
+</div>
+</div>
+
+<!-- 03 -->
+<div class="card">
+<div class="card-num">03</div>
+<h2>Web pro stavební práce</h2>
+<p class="subtitle">PRAUT s.r.o. / Kurbela · Prezentační web stavební firmy</p>
+<div class="links">
+<a href="03-Web-Stavebni-Prace-Kurbela/showcase-demo/index.html" class="link showcase">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+Showcase demo
+</a>
+<div class="link-row">
+<a href="03-Web-Stavebni-Prace-Kurbela/technicka-specifikace.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+Specifikace
+</a>
+<a href="03-Web-Stavebni-Prace-Kurbela/cenova-nabidka.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg>
+Cenová nabídka
+</a>
+<a href="03-Web-Stavebni-Prace-Kurbela/smlouva-mvp.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+Smlouva
+</a>
+</div>
+</div>
+</div>
+
+<!-- 04 -->
+<div class="card">
+<div class="card-num">04</div>
+<h2>Excel/VBA CAMO Systém</h2>
+<p class="subtitle">Správa letové způsobilosti · Automatizace v Excelu</p>
+<div class="links">
+<a href="04-Excel-VBA-CAMO-System/showcase-demo/index.html" class="link showcase">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+Showcase demo
+</a>
+<div class="link-row">
+<a href="04-Excel-VBA-CAMO-System/technicka-specifikace.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+Specifikace
+</a>
+<a href="04-Excel-VBA-CAMO-System/cenova-nabidka.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg>
+Cenová nabídka
+</a>
+<a href="04-Excel-VBA-CAMO-System/smlouva-mvp.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+Smlouva
+</a>
+</div>
+</div>
+</div>
+
+<!-- 05 -->
+<div class="card">
+<div class="card-num">05</div>
+<h2>Webový portál o bydlení</h2>
+<p class="subtitle">Bonafide · Komplexní portál o bydlení a realitách</p>
+<div class="links">
+<a href="05-Webovy-Portal-Bonafide/showcase-demo/index.html" class="link showcase">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+Showcase demo
+</a>
+<div class="link-row">
+<a href="05-Webovy-Portal-Bonafide/technicka-specifikace.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+Specifikace
+</a>
+<a href="05-Webovy-Portal-Bonafide/cenova-nabidka.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg>
+Cenová nabídka
+</a>
+<a href="05-Webovy-Portal-Bonafide/smlouva-mvp.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+Smlouva
+</a>
+</div>
+</div>
+</div>
+
+<!-- 06 -->
+<div class="card">
+<div class="card-num">06</div>
+<h2>Porovnání dodavatelů energií</h2>
+<p class="subtitle">Srovnávací nástroj pro energie · Kalkulačka úspor</p>
+<div class="links">
+<a href="06-Porovnani-Energii/showcase-demo/index.html" class="link showcase">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+Showcase demo
+</a>
+<div class="link-row">
+<a href="06-Porovnani-Energii/technicka-specifikace.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+Specifikace
+</a>
+<a href="06-Porovnani-Energii/cenova-nabidka.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg>
+Cenová nabídka
+</a>
+<a href="06-Porovnani-Energii/smlouva-mvp.html" class="link">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+Smlouva
+</a>
+</div>
+</div>
+</div>
+
+</div>
+
+<footer>
+Martin Švanda · Kolosov · Březen 2026
+</footer>
+
+</body>
+</html>

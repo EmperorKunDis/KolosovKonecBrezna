@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smlouva o dílo — Excel/VBA CAMO systém (MVP)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Georgia','Times New Roman',serif;color:#1a1a1a;line-height:1.7;max-width:210mm;margin:0 auto;padding:2cm;background:#fff}
+@media screen{body{box-shadow:0 0 20px rgba(0,0,0,.1);margin:2rem auto}}
+@media print{body{padding:1.5cm;box-shadow:none;margin:0 auto}}
+h1{text-align:center;font-size:1.5rem;margin-bottom:.3rem;letter-spacing:1px}
+h2{font-size:1.1rem;margin:1.8rem 0 .8rem;padding-bottom:.4rem;border-bottom:2px solid #1a365d;color:#1a365d}
+h3{font-size:.95rem;margin:1rem 0 .5rem;color:#2d3748}
+p{margin-bottom:.7rem;text-align:justify;font-size:.9rem}
+.center{text-align:center}
+.subtitle{text-align:center;font-size:.85rem;color:#555;margin-bottom:2rem;font-style:italic}
+.parties{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:1.5rem 0;font-size:.85rem}
+@media(max-width:600px){.parties{grid-template-columns:1fr}}
+.party{padding:1rem;border:1px solid #e2e8f0;border-radius:8px;background:#f7fafc}
+.party h3{margin-top:0;color:#1a365d;font-size:.95rem;border:none;padding:0}
+.party p{margin-bottom:.3rem;font-size:.85rem;text-align:left}
+ol{margin:.5rem 0 .5rem 1.5rem;font-size:.9rem}
+ol li{margin-bottom:.5rem;text-align:justify}
+ol ol{margin-top:.3rem;list-style-type:lower-alpha}
+ul{margin:.3rem 0 .3rem 1.5rem;font-size:.9rem}
+ul li{margin-bottom:.3rem}
+.highlight{background:#fffbeb;border-left:4px solid #d97706;padding:.8rem 1rem;margin:1rem 0;font-size:.85rem;border-radius:0 6px 6px 0}
+.signatures{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem;font-size:.85rem}
+.sig-box{border-top:2px solid #1a365d;padding-top:1rem}
+.sig-box p{text-align:left;margin-bottom:.2rem}
+.footer-note{margin-top:2rem;padding-top:1rem;border-top:1px solid #e2e8f0;font-size:.75rem;color:#888;text-align:center}
+.article-num{color:#1a365d;font-weight:700}
+</style>
+</head>
+<body>
+
+<h1>SMLOUVA O DÍLO</h1>
+<p class="subtitle">uzavřená ve smyslu § 2586 a násl. zákona č. 89/2012 Sb., občanský zákoník,<br>a zákona č. 121/2000 Sb., autorský zákon<br>(dále jen „Smlouva")</p>
+
+<div class="parties">
+<div class="party">
+<h3>Zhotovitel</h3>
+<p><strong>PRAUT s.r.o.</strong></p>
+<p>Sídlo: Obrněné brigády 552/33, 350 02 Cheb</p>
+<p>IČO: 22545107</p>
+<p>Neplátce DPH</p>
+<p>Zastoupený: Martin Švanda, jednatel</p>
+<p>E-mail: svanda@praut.cz</p>
+<p>(dále jen „Zhotovitel")</p>
+</div>
+<div class="party">
+<h3>Objednatel</h3>
+<p><strong>CAMO solution, s.r.o.</strong></p>
+<p>Sídlo: Kamýk č. p. 40</p>
+<p>IČO: 23486724</p>
+<p>Zastoupený: Ondřej Süsser</p>
+<p>E-mail: sussdesign@email.cz</p>
+<p>Telefon: +420 721 121 598</p>
+<p>(dále jen „Objednatel")</p>
+</div>
+</div>
+
+<h2>Článek I. — Předmět smlouvy</h2>
+<ol>
+<li>Předmětem této Smlouvy je závazek Zhotovitele vytvořit a dodat Objednateli softwarové dílo — <strong>Excel/VBA nástroj pro sledování letové způsobilosti letadel a vrtulníků</strong> (mini CAMO systém) v rozsahu prvního milníku (MVP), jak je specifikováno v Příloze č. 1 (dále jen „Dílo").</li>
+<li>Dílo bude realizováno ve formátu souboru Microsoft Excel s podporou maker (.xlsm) a bude zahrnovat tyto moduly MVP:
+<ol>
+<li><strong>Aircraft Master</strong> — evidence letadel/vrtulníků s klíčovými parametry (registrační značka, typ, S/N, celkové FH/FC);</li>
+<li><strong>Task Cards</strong> — karty údržbových úkonů s intervaly (FH, FC, kalendářní);</li>
+<li><strong>Due List</strong> — automatický přepočet termínů údržby s barevným kódováním urgence;</li>
+<li><strong>Logbook modul</strong> — záznam letových hodin a cyklů s možností importu;</li>
+<li><strong>UserForms</strong> — formuláře pro uživatelsky přívětivé zadávání dat.</li>
+</ol></li>
+<li>Objednatel se zavazuje Dílo převzít, poskytnout nezbytnou součinnost a zaplatit sjednanou cenu.</li>
+</ol>
+
+<h2>Článek II. — Cena díla a platební podmínky</h2>
+<ol>
+<li>Smluvní strany se dohodly na celkové ceně za Dílo ve výši <strong>25 000 Kč</strong> (slovy: dvacet pět tisíc korun českých). Zhotovitel není plátcem DPH.</li>
+<li>Úhrada bude provedena ve dvou splátkách:
+<ol>
+<li><strong>Záloha 50 %</strong> (12 500 Kč) — splatná do 7 dnů od podpisu Smlouvy na základě zálohové faktury;</li>
+<li><strong>Doplatek 50 %</strong> (12 500 Kč) — splatný do 14 dnů od předání Díla na základě konečné faktury.</li>
+</ol></li>
+<li>Zhotovitel nezahájí práce na Díle před úplným připsáním zálohy na svůj bankovní účet. Termín dodání dle článku III. se automaticky posouvá o dobu prodlení s úhradou zálohy.</li>
+</ol>
+
+<h2>Článek III. — Termín a způsob plnění</h2>
+<ol>
+<li>Zhotovitel se zavazuje dokončit a předat Dílo nejpozději do <strong>4 týdnů</strong> od splnění obou podmínek: (a) připsání zálohy na účet Zhotovitele a (b) dodání Airworthiness logiky a vzorových dat Objednatelem.</li>
+<li>Předání Díla proběhne elektronicky zasláním souboru .xlsm na e-mail Objednatele nebo prostřednictvím sdíleného úložiště.</li>
+<li>Termín dodání se automaticky prodlužuje o dobu, po kterou je Objednatel v prodlení s poskytnutím součinnosti dle článku V.</li>
+</ol>
+
+<h2>Článek IV. — Předání díla a odpovědnost za vady</h2>
+<ol>
+<li>Dílo je považováno za předané okamžikem jeho odeslání/zpřístupnění Objednateli. Objednatel má následně <strong>14 dnů</strong> na testování Díla (dále jen „akceptační lhůta").</li>
+<li>Pokud Objednatel v akceptační lhůtě písemně nenahlásí vady bránící běžnému užívání, považuje se Dílo za bez výhrad akceptované.</li>
+<li>Vadou se rozumí nesoulad Díla s technickou specifikací uvedenou v Příloze č. 1. Za vadu se nepovažují:
+<ol>
+<li>požadavky, které nejsou uvedeny v Příloze č. 1;</li>
+<li>nesprávné výstupy způsobené chybnými vstupními daty;</li>
+<li>problémy způsobené nekompatibilním prostředím (verze Excel, operační systém).</li>
+</ol></li>
+<li>Zhotovitel se zavazuje bezplatně opravit uznané vady do 10 pracovních dnů od jejich nahlášení v akceptační lhůtě.</li>
+</ol>
+
+<div class="highlight">
+<strong>DŮLEŽITÉ UPOZORNĚNÍ — Odpovědnost za Airworthiness výpočty:</strong><br>
+Zhotovitel výslovně neodpovídá za správnost výpočtů letové způsobilosti, údržbových intervalů a souvisejících parametrů. Veškerou výpočetní logiku, vzorce a pravidla pro určení termínů údržby dodává Objednatel. Zhotovitel pouze implementuje tuto logiku do prostředí Excel/VBA. Objednatel nese plnou odpovědnost za ověření správnosti výstupů nástroje a za veškerá rozhodnutí učiněná na jejich základě.
+</div>
+
+<h2>Článek V. — Součinnost objednatele</h2>
+<ol>
+<li>Objednatel se zavazuje poskytnout Zhotoviteli nezbytnou součinnost, zejména:
+<ol>
+<li>dodání kompletní <strong>Airworthiness logiky</strong> — výpočetní vzorce, pravidla pro určení intervalů údržby, definice stavů (due/overdue);</li>
+<li>dodání <strong>vzorových dat</strong> pro testování (Aircraft Master data, vzorové Task Cards, ukázkové záznamy z logbooku);</li>
+<li>specifikaci <strong>technického prostředí</strong> — verze Microsoft Excel a operačního systému;</li>
+<li>včasné reakce na dotazy Zhotovitele (do 3 pracovních dnů).</li>
+</ol></li>
+<li>V případě prodlení Objednatele s dodáním součinnosti delším než 14 dnů je Zhotovitel oprávněn od Smlouvy odstoupit.</li>
+</ol>
+
+<h2>Článek VI. — Licenční ujednání</h2>
+<ol>
+<li>Zhotovitel uděluje Objednateli <strong>nevýhradní licenci</strong> k užití Díla pro vlastní potřebu bez územního a časového omezení.</li>
+<li>Licence zahrnuje právo Dílo používat, kopírovat pro účely zálohování a upravovat v rozsahu nutném pro vlastní provoz.</li>
+<li>Objednatel není oprávněn Dílo dále šířit, prodávat ani sublicencovat třetím osobám bez písemného souhlasu Zhotovitele.</li>
+<li>Zdrojový VBA kód bude odevzdán v otevřené (nechráněné) podobě umožňující budoucí úpravy.</li>
+</ol>
+
+<h2>Článek VII. — Mlčenlivost</h2>
+<ol>
+<li>Obě smluvní strany se zavazují zachovávat mlčenlivost o všech důvěrných informacích druhé strany, které získají v souvislosti s plněním této Smlouvy.</li>
+<li>Za důvěrné informace se považují zejména: obchodní a technické informace, know-how, finanční údaje, Airworthiness logika a data o letadlech.</li>
+<li>Povinnost mlčenlivosti trvá po dobu 3 let od ukončení této Smlouvy.</li>
+</ol>
+
+<h2>Článek VIII. — Ochrana osobních údajů</h2>
+<ol>
+<li>Smluvní strany se zavazují zpracovávat osobní údaje v souladu s Nařízením Evropského parlamentu a Rady (EU) 2016/679 (GDPR).</li>
+<li>Osobní údaje kontaktních osob jsou zpracovávány výhradně za účelem plnění této Smlouvy.</li>
+</ol>
+
+<h2>Článek IX. — Smluvní sankce</h2>
+<ol>
+<li>V případě prodlení Zhotovitele s předáním Díla je Objednatel oprávněn požadovat smluvní pokutu ve výši <strong>0,05 %</strong> z celkové ceny Díla za každý započatý den prodlení, maximálně však do výše 10 % celkové ceny.</li>
+<li>V případě prodlení Objednatele s úhradou faktury je Zhotovitel oprávněn požadovat úrok z prodlení ve výši 0,05 % z dlužné částky za každý den prodlení.</li>
+<li>Uplatnění smluvní pokuty nemá vliv na právo poškozené strany na náhradu škody.</li>
+</ol>
+
+<h2>Článek X. — Odstoupení od smlouvy</h2>
+<ol>
+<li>Obě strany jsou oprávněny od Smlouvy odstoupit v případě podstatného porušení povinností druhou stranou, přičemž podstatným porušením se rozumí zejména:
+<ol>
+<li>prodlení s plněním delší než 30 dnů;</li>
+<li>opakované neposkytnutí součinnosti i po písemné výzvě;</li>
+<li>porušení povinnosti mlčenlivosti.</li>
+</ol></li>
+<li>Odstoupení musí být učiněno písemně a je účinné dnem doručení druhé straně.</li>
+<li>V případě odstoupení ze strany Objednatele bez zavinění Zhotovitele má Zhotovitel nárok na úhradu prací prokazatelně vykonaných do dne odstoupení.</li>
+<li>V případě odstoupení ze strany Zhotovitele vrátí Zhotovitel poměrnou část zálohy odpovídající nedodaným částem Díla.</li>
+</ol>
+
+<h2>Článek XI. — Vyšší moc</h2>
+<ol>
+<li>Žádná ze stran neodpovídá za nesplnění povinností způsobené okolnostmi vyšší moci (vis maior), tj. okolnostmi nepředvídatelnými a neodvratitelnými, jako jsou přírodní katastrofy, válečné konflikty, pandemie, výpadky infrastruktury či zásahy státní moci.</li>
+<li>Dotčená strana je povinna druhou stranu o okolnostech vyšší moci neprodleně informovat.</li>
+</ol>
+
+<h2>Článek XII. — Omezení odpovědnosti</h2>
+<ol>
+<li>Celková odpovědnost Zhotovitele za škody vzniklé v souvislosti s touto Smlouvou je omezena na celkovou cenu Díla.</li>
+<li>Zhotovitel neodpovídá za nepřímé škody, ušlý zisk ani následné škody.</li>
+<li><strong>Zhotovitel výslovně neodpovídá za jakákoliv rozhodnutí Objednatele učiněná na základě výstupů Díla, včetně rozhodnutí o letové způsobilosti, termínech údržby a provozuschopnosti letadel.</strong></li>
+</ol>
+
+<h2>Článek XIII. — Řešení sporů</h2>
+<ol>
+<li>Tato Smlouva se řídí právním řádem České republiky.</li>
+<li>Veškeré spory budou nejprve řešeny smírnou cestou. Pokud nedojde k dohodě do 30 dnů, bude spor předložen příslušnému soudu České republiky.</li>
+</ol>
+
+<h2>Článek XIV. — Závěrečná ustanovení</h2>
+<ol>
+<li>Smlouva nabývá platnosti a účinnosti dnem podpisu oběma smluvními stranami.</li>
+<li>Smlouvu lze měnit pouze písemnými dodatky podepsanými oběma stranami.</li>
+<li>Nedílnou součástí Smlouvy je Příloha č. 1 — Technická specifikace (Zadávací dokumentace).</li>
+<li>Smlouva je vyhotovena ve dvou stejnopisech, z nichž každá strana obdrží jeden.</li>
+<li>Smluvní strany prohlašují, že si Smlouvu přečetly, s jejím obsahem souhlasí, a na důkaz toho připojují své podpisy.</li>
+</ol>
+
+<div class="signatures">
+<div class="sig-box">
+<p><strong>Za Zhotovitele:</strong></p>
+<p>V Chebu dne .....................</p>
+<br><br><br>
+<p>_________________________________</p>
+<p>Martin Švanda, jednatel</p>
+<p>PRAUT s.r.o.</p>
+</div>
+<div class="sig-box">
+<p><strong>Za Objednatele:</strong></p>
+<p>V Kamýku dne .....................</p>
+<br><br><br>
+<p>_________________________________</p>
+<p>Ondřej Süsser</p>
+<p>CAMO solution, s.r.o.</p>
+</div>
+</div>
+
+<div class="footer-note">
+<p>Příloha č. 1: Technická specifikace (Zadávací dokumentace) — viz samostatný dokument technicka-specifikace.html</p>
+<p>Dokument vytvořen: 30. března 2026 | PRAUT s.r.o.</p>
+</div>
+
+</body>
+</html>

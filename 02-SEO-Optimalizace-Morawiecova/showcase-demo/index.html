@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Analyzér — AI Audit Webu</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#7c3aed;--primary-light:#a78bfa;--bg:#f8f7ff;--card:#fff;--text:#1e1b4b;--muted:#6b7280;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e5e7eb}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:linear-gradient(135deg,#4c1d95 0%,#7c3aed 50%,#2563eb 100%);color:#fff;padding:1.5rem 2rem;text-align:center}
+header h1{font-size:1.6rem;margin-bottom:.3rem}
+header p{opacity:.8;font-size:.9rem}
+.container{max-width:1000px;margin:0 auto;padding:2rem}
+.search-box{background:var(--card);border-radius:16px;padding:2rem;box-shadow:0 4px 12px rgba(0,0,0,.08);margin-bottom:2rem;text-align:center}
+.search-box h2{margin-bottom:1rem;font-size:1.2rem}
+.input-group{display:flex;gap:.5rem;max-width:600px;margin:0 auto}
+.input-group input{flex:1;padding:.8rem 1.2rem;border:2px solid var(--border);border-radius:10px;font-size:1rem;outline:none;transition:border .2s}
+.input-group input:focus{border-color:var(--primary)}
+.btn{background:var(--primary);color:#fff;border:none;padding:.8rem 1.5rem;border-radius:10px;font-size:.95rem;cursor:pointer;transition:background .2s;font-weight:600}
+.btn:hover{background:#6d28d9}
+.dashboard{display:none}
+.dashboard.visible{display:block;animation:fadeIn .6s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+.score-section{display:grid;grid-template-columns:240px 1fr;gap:2rem;margin-bottom:2rem;background:var(--card);border-radius:16px;padding:2rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+@media(max-width:700px){.score-section{grid-template-columns:1fr}}
+.score-circle{width:180px;height:180px;margin:0 auto;position:relative}
+.score-circle svg{transform:rotate(-90deg)}
+.score-circle .score-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-circle .score-num{font-size:3rem;font-weight:800;color:var(--warn)}
+.score-circle .score-label{color:var(--muted);font-size:.85rem}
+.score-details h3{margin-bottom:1rem;font-size:1.1rem}
+.score-bar{margin-bottom:.8rem}
+.score-bar .bar-label{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.3rem}
+.score-bar .bar-track{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.score-bar .bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.issues{background:var(--card);border-radius:16px;padding:2rem;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:2rem}
+.issues h3{margin-bottom:1rem}
+.issue{display:flex;align-items:flex-start;gap:1rem;padding:1rem;border-bottom:1px solid var(--border);transition:background .2s}
+.issue:hover{background:var(--bg)}
+.issue:last-child{border:none}
+.issue-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.issue-high .issue-icon{background:#fef2f2;color:var(--danger)}
+.issue-med .issue-icon{background:#fffbeb;color:var(--warn)}
+.issue-low .issue-icon{background:#f0fdf4;color:var(--success)}
+.issue-title{font-weight:600;font-size:.9rem;margin-bottom:.2rem}
+.issue-desc{color:var(--muted);font-size:.8rem;line-height:1.4}
+.priority{display:inline-block;padding:.15rem .5rem;border-radius:6px;font-size:.7rem;font-weight:700;margin-left:.5rem}
+.p-high{background:#fef2f2;color:#b91c1c}
+.p-med{background:#fffbeb;color:#92400e}
+.p-low{background:#f0fdf4;color:#166534}
+.keywords{background:var(--card);border-radius:16px;padding:2rem;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:2rem}
+.keywords h3{margin-bottom:1rem}
+.kw-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.kw-table th{text-align:left;padding:.6rem .8rem;background:var(--bg);font-weight:600;border-bottom:2px solid var(--border)}
+.kw-table td{padding:.6rem .8rem;border-bottom:1px solid var(--border)}
+.pos{display:inline-block;width:32px;height:32px;border-radius:8px;text-align:center;line-height:32px;font-weight:700;font-size:.85rem}
+.pos-good{background:#dcfce7;color:#166534}
+.pos-ok{background:#fef3c7;color:#92400e}
+.pos-bad{background:#fef2f2;color:#b91c1c}
+.trend{font-size:.75rem}
+.trend-up{color:var(--success)}
+.trend-down{color:var(--danger)}
+.reco{background:linear-gradient(135deg,#ede9fe,#dbeafe);border-radius:16px;padding:2rem;margin-bottom:2rem}
+.reco h3{margin-bottom:1rem}
+.reco-list{list-style:none}
+.reco-list li{padding:.6rem 0;border-bottom:1px dashed rgba(0,0,0,.1);font-size:.9rem;display:flex;align-items:flex-start;gap:.5rem}
+.reco-list li:last-child{border:none}
+.check{color:var(--primary);font-weight:bold;font-size:1.1rem}
+.spinner{display:inline-block;width:20px;height:20px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:.5rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-screen{text-align:center;padding:3rem;display:none}
+.loading-screen.visible{display:block}
+.loading-screen h3{margin:1rem 0 .5rem}
+.loading-screen p{color:var(--muted);font-size:.9rem}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem}
+</style>
+</head>
+<body>
+<header>
+<h1>SEO Analyzér</h1>
+<p>AI-powered audit vašeho webu za pár sekund</p>
+</header>
+<div class="container">
+<div class="search-box" id="searchBox">
+<h2>Zadejte URL webu k analýze</h2>
+<div class="input-group">
+<input type="text" id="urlInput" placeholder="https://www.example.cz" value="https://www.stavby-kurbela.cz">
+<button class="btn" onclick="startAnalysis()">Analyzovat</button>
+</div>
+</div>
+
+<div class="loading-screen" id="loadingScreen">
+<div class="spinner" style="width:48px;height:48px;border-width:4px"></div>
+<h3 id="loadingText">AI analyzuje web...</h3>
+<p id="loadingDetail">Stahujeme a parsujeme stránky</p>
+<div style="max-width:400px;margin:1.5rem auto">
+<div class="progress-bar" style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+<div id="analysisProgress" style="height:100%;background:linear-gradient(90deg,var(--primary),#2563eb);width:0;transition:width .4s;border-radius:3px"></div>
+</div>
+</div>
+</div>
+
+<div class="dashboard" id="dashboard">
+<div class="score-section">
+<div>
+<div class="score-circle">
+<svg width="180" height="180" viewBox="0 0 180 180">
+<circle cx="90" cy="90" r="78" fill="none" stroke="#e5e7eb" stroke-width="12"/>
+<circle cx="90" cy="90" r="78" fill="none" stroke="#f59e0b" stroke-width="12" stroke-linecap="round" stroke-dasharray="490" stroke-dashoffset="284" id="scoreArc"/>
+</svg>
+<div class="score-text">
+<div class="score-num" id="scoreNum">0</div>
+<div class="score-label">ze 100</div>
+</div>
+</div>
+<p style="text-align:center;margin-top:.8rem;color:var(--warn);font-weight:600;font-size:.9rem">Vyžaduje zlepšení</p>
+</div>
+<div class="score-details">
+<h3>Detailní skóre</h3>
+<div class="score-bar"><div class="bar-label"><span>On-page SEO</span><span>35/100</span></div><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--danger)"></div></div></div>
+<div class="score-bar"><div class="bar-label"><span>Technické SEO</span><span>58/100</span></div><div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--warn)"></div></div></div>
+<div class="score-bar"><div class="bar-label"><span>Rychlost načítání</span><span>44/100</span></div><div class="bar-track"><div class="bar-fill" style="width:44%;background:var(--warn)"></div></div></div>
+<div class="score-bar"><div class="bar-label"><span>Mobilní optimalizace</span><span>62/100</span></div><div class="bar-track"><div class="bar-fill" style="width:62%;background:var(--warn)"></div></div></div>
+<div class="score-bar"><div class="bar-label"><span>Obsah a klíčová slova</span><span>28/100</span></div><div class="bar-track"><div class="bar-fill" style="width:28%;background:var(--danger)"></div></div></div>
+</div>
+</div>
+
+<div class="issues">
+<h3>Nalezené problémy (12)</h3>
+<div class="issue issue-high"><div class="issue-icon">!</div><div><div class="issue-title">Chybějící meta description na 8 stránkách <span class="priority p-high">Vysoká</span></div><div class="issue-desc">Meta description pomáhá vyhledávačům zobrazit relevantní popis ve výsledcích. Bez něj Google generuje popis sám, což snižuje CTR.</div></div></div>
+<div class="issue issue-high"><div class="issue-icon">!</div><div><div class="issue-title">Žádná H1 na hlavní stránce <span class="priority p-high">Vysoká</span></div><div class="issue-desc">Hlavní nadpis (H1) je klíčový signál pro vyhledávače. Stránka používá pouze H3 a H4.</div></div></div>
+<div class="issue issue-high"><div class="issue-icon">!</div><div><div class="issue-title">Pomalé načítání: LCP 5.8s <span class="priority p-high">Vysoká</span></div><div class="issue-desc">Largest Contentful Paint překračuje doporučenou hranici 2.5s. Neoptimalizované obrázky (3.2 MB hero image).</div></div></div>
+<div class="issue issue-med"><div class="issue-icon">⚠</div><div><div class="issue-title">Chybějící alt texty u 15 obrázků <span class="priority p-med">Střední</span></div><div class="issue-desc">Alt texty zlepšují přístupnost a pomáhají vyhledávačům pochopit obsah obrázků.</div></div></div>
+<div class="issue issue-med"><div class="issue-icon">⚠</div><div><div class="issue-title">Chybí sitemap.xml <span class="priority p-med">Střední</span></div><div class="issue-desc">XML sitemap pomáhá robotům efektivněji indexovat web. Soubor /sitemap.xml vrací 404.</div></div></div>
+<div class="issue issue-med"><div class="issue-icon">⚠</div><div><div class="issue-title">Neoptimalizované URL adresy <span class="priority p-med">Střední</span></div><div class="issue-desc">Nalezeny URL s parametry (?id=123) místo čitelných slug adres (/rekonstrukce-bytu).</div></div></div>
+<div class="issue issue-low"><div class="issue-icon">i</div><div><div class="issue-title">Chybí robots.txt <span class="priority p-low">Nízká</span></div><div class="issue-desc">Soubor robots.txt řídí indexování stránek roboty. Doporučujeme vytvořit.</div></div></div>
+<div class="issue issue-low"><div class="issue-icon">i</div><div><div class="issue-title">Chybí strukturovaná data (Schema.org) <span class="priority p-low">Nízká</span></div><div class="issue-desc">LocalBusiness schema markup zlepší zobrazení ve výsledcích vyhledávání.</div></div></div>
+</div>
+
+<div class="keywords">
+<h3>Pozice klíčových slov</h3>
+<table class="kw-table">
+<thead><tr><th>Klíčové slovo</th><th>Pozice</th><th>Změna</th><th>Objem/měs.</th></tr></thead>
+<tbody>
+<tr><td>stavební práce praha</td><td><span class="pos pos-bad">47</span></td><td><span class="trend trend-down">-3</span></td><td>1 200</td></tr>
+<tr><td>rekonstrukce bytu</td><td><span class="pos pos-bad">62</span></td><td><span class="trend trend-down">-8</span></td><td>2 900</td></tr>
+<tr><td>stavební firma řepy</td><td><span class="pos pos-ok">18</span></td><td><span class="trend trend-up">+2</span></td><td>90</td></tr>
+<tr><td>zateplení domu praha</td><td><span class="pos pos-bad">55</span></td><td><span class="trend trend-down">-1</span></td><td>880</td></tr>
+<tr><td>zedník praha 6</td><td><span class="pos pos-ok">23</span></td><td><span class="trend trend-up">+5</span></td><td>320</td></tr>
+<tr><td>malířské práce</td><td><span class="pos pos-bad">71</span></td><td><span class="trend trend-down">-12</span></td><td>1 600</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="reco">
+<h3>AI doporučení pro zlepšení</h3>
+<ul class="reco-list">
+<li><span class="check">1.</span> Přidat unikátní meta description na každou stránku s klíčovými slovy (předpokládaný dopad: +15-25% CTR)</li>
+<li><span class="check">2.</span> Přidat H1 nadpis s hlavním klíčovým slovem na homepage</li>
+<li><span class="check">3.</span> Komprimovat hero obrázek z 3.2 MB na ~200 KB (WebP formát) — zrychlení LCP o ~3s</li>
+<li><span class="check">4.</span> Vytvořit sitemap.xml a robots.txt, odeslat do Google Search Console</li>
+<li><span class="check">5.</span> Přidat LocalBusiness Schema.org markup pro lepší zobrazení ve vyhledávání</li>
+<li><span class="check">6.</span> Přepsat URL na čitelné tvary: /sluzby/rekonstrukce-bytu místo ?page_id=15</li>
+</ul>
+</div>
+</div>
+</div>
+<footer>SEO Analyzér — PRAUT s.r.o. — Demonstrační verze © 2026</footer>
+<script>
+function startAnalysis(){
+document.getElementById('searchBox').style.display='none';
+var ls=document.getElementById('loadingScreen');
+ls.classList.add('visible');
+var prog=document.getElementById('analysisProgress');
+var texts=[['Stahujeme HTML...','Parsujeme DOM strukturu'],['Analyzujeme meta tagy...','Kontrola H1-H6 hierarchie'],['Měříme rychlost načítání...','Core Web Vitals analýza'],['AI vyhodnocuje klíčová slova...','Porovnání s konkurencí'],['Generujeme report...','Kompletní SEO audit']];
+var i=0;
+function step(){
+if(i<texts.length){
+document.getElementById('loadingText').textContent=texts[i][0];
+document.getElementById('loadingDetail').textContent=texts[i][1];
+prog.style.width=((i+1)*20)+'%';
+i++;setTimeout(step,1200);
+}else{
+ls.classList.remove('visible');
+document.getElementById('dashboard').classList.add('visible');
+animateScore();
+}
+}
+step();
+}
+function animateScore(){
+var el=document.getElementById('scoreNum');
+var target=42;var current=0;
+var interval=setInterval(function(){
+current++;el.textContent=current;
+if(current>=target)clearInterval(interval);
+},30);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini CAMO — Sledování letové způsobilosti</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#1e3a5f;--primary-light:#2563eb;--bg:#f0f4f8;--card:#fff;--text:#1e293b;--muted:#64748b;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e2e8f0;--orange:#ea580c}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 60%,#1e40af 100%);color:#fff;padding:0}
+.header-inner{max-width:1200px;margin:0 auto;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:1.3rem;font-weight:700;display:flex;align-items:center;gap:.6rem}
+header h1 .icon{font-size:1.5rem}
+.badge{background:rgba(255,255,255,.12);padding:.3rem .7rem;border-radius:16px;font-size:.7rem;letter-spacing:.5px}
+.tabs{display:flex;background:#0f172a;padding:0 2rem;gap:0;overflow-x:auto}
+.tab{padding:.7rem 1.2rem;color:rgba(255,255,255,.6);font-size:.85rem;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap}
+.tab:hover{color:#fff;background:rgba(255,255,255,.05)}
+.tab.active{color:#fff;border-bottom-color:var(--orange);font-weight:600}
+.container{max-width:1200px;margin:0 auto;padding:1.5rem 2rem}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat{background:var(--card);border-radius:10px;padding:1.2rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.3rem}
+.stat .value{font-size:1.6rem;font-weight:700}
+.stat .sub{font-size:.75rem;color:var(--muted);margin-top:.2rem}
+.stat.alert{border-left:4px solid var(--danger)}
+.stat.alert .value{color:var(--danger)}
+.stat.ok{border-left:4px solid var(--success)}
+.stat.ok .value{color:var(--success)}
+
+/* Fleet */
+.section-title{font-size:1.1rem;font-weight:700;margin:1.5rem 0 .8rem;display:flex;align-items:center;gap:.5rem}
+.fleet{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem;margin-bottom:1.5rem}
+.aircraft-card{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:transform .2s}
+.aircraft-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.ac-header{background:var(--primary);color:#fff;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center}
+.ac-header h3{font-size:1rem}
+.ac-type{font-size:.75rem;opacity:.8}
+.ac-body{padding:1rem}
+.ac-row{display:flex;justify-content:space-between;padding:.3rem 0;font-size:.85rem;border-bottom:1px solid var(--border)}
+.ac-row:last-child{border:none}
+.ac-row .lbl{color:var(--muted)}
+.ac-status{display:inline-block;padding:.15rem .5rem;border-radius:6px;font-size:.7rem;font-weight:700}
+.status-serviceable{background:#dcfce7;color:#166534}
+.status-attention{background:#fef3c7;color:#92400e}
+
+/* Due List */
+.due-list{background:var(--card);border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden;margin-bottom:1.5rem}
+.due-header{padding:1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
+.due-header h3{font-size:1rem}
+.filters{display:flex;gap:.5rem}
+.filter-btn{padding:.3rem .8rem;border-radius:6px;border:1px solid var(--border);background:var(--card);font-size:.75rem;cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+thead{background:var(--bg)}
+th{padding:.6rem .8rem;text-align:left;font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.3px;color:var(--muted)}
+td{padding:.6rem .8rem;border-bottom:1px solid var(--border)}
+.urgency{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.4rem}
+.u-green{background:var(--success)}
+.u-yellow{background:var(--warn)}
+.u-red{background:var(--danger)}
+.remaining{font-weight:600;font-size:.85rem}
+.r-green{color:var(--success)}
+.r-yellow{color:#b45309}
+.r-red{color:var(--danger)}
+tr.row-red{background:#fef2f2}
+tr.row-yellow{background:#fffbeb}
+
+/* Log Form */
+.log-form{background:var(--card);border-radius:12px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
+.log-form h3{margin-bottom:1rem;font-size:1rem}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}
+.form-group label{display:block;font-size:.75rem;color:var(--muted);margin-bottom:.3rem;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.form-group input,.form-group select{width:100%;padding:.6rem .8rem;border:2px solid var(--border);border-radius:8px;font-size:.85rem;outline:none;transition:border .2s}
+.form-group input:focus,.form-group select:focus{border-color:var(--primary-light)}
+.btn{padding:.6rem 1.2rem;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--primary-light);color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-outline{background:transparent;border:2px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--primary-light);color:var(--primary-light)}
+.form-actions{display:flex;gap:.8rem;margin-top:1rem;align-items:center}
+.demo-badge{position:fixed;bottom:1rem;right:1rem;background:var(--primary);color:#fff;padding:.4rem .8rem;border-radius:6px;font-size:.7rem;font-weight:600;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+footer{text-align:center;padding:1.5rem;color:var(--muted);font-size:.75rem}
+@media(max-width:600px){.container{padding:1rem}.fleet{grid-template-columns:1fr}table{font-size:.75rem}th,td{padding:.4rem}}
+</style>
+</head>
+<body>
+<div class="demo-badge">DEMO — PRAUT s.r.o.</div>
+<header>
+<div class="header-inner">
+<h1><span class="icon">✈️</span> Mini CAMO System</h1>
+<span class="badge">DEMO VERZE</span>
+</div>
+<div class="tabs">
+<div class="tab active" onclick="showView('dashboard')">Dashboard</div>
+<div class="tab" onclick="showView('duelist')">Due List</div>
+<div class="tab" onclick="showView('logbook')">Logbook</div>
+</div>
+</header>
+
+<div class="container">
+<!-- DASHBOARD VIEW -->
+<div id="view-dashboard">
+<div class="stats">
+<div class="stat ok"><div class="label">Letadla v evidenci</div><div class="value">3</div><div class="sub">Všechna aktivní</div></div>
+<div class="stat"><div class="label">Celkem FH flotily</div><div class="value">8 247</div><div class="sub">+23 FH tento měsíc</div></div>
+<div class="stat alert"><div class="label">Položky Due Soon</div><div class="value">4</div><div class="sub">Vyžadují pozornost</div></div>
+<div class="stat"><div class="label">Příští údržba</div><div class="value">12 dní</div><div class="sub">OK-ABC — 100h check</div></div>
+</div>
+
+<div class="section-title">Flotila</div>
+<div class="fleet">
+<div class="aircraft-card">
+<div class="ac-header"><h3>OK-ABC</h3><span class="ac-type">Cessna 172S</span></div>
+<div class="ac-body">
+<div class="ac-row"><span class="lbl">S/N</span><span>172S-10842</span></div>
+<div class="ac-row"><span class="lbl">Total FH</span><span><strong>3 456.2</strong></span></div>
+<div class="ac-row"><span class="lbl">Total FC</span><span><strong>2 891</strong></span></div>
+<div class="ac-row"><span class="lbl">Poslední update</span><span>28.3.2026</span></div>
+<div class="ac-row"><span class="lbl">Status</span><span class="ac-status status-attention">Pozor — due items</span></div>
+</div>
+</div>
+<div class="aircraft-card">
+<div class="ac-header" style="background:#166534"><h3>OK-DEF</h3><span class="ac-type">Piper PA-28-181</span></div>
+<div class="ac-body">
+<div class="ac-row"><span class="lbl">S/N</span><span>28-8290117</span></div>
+<div class="ac-row"><span class="lbl">Total FH</span><span><strong>2 891.7</strong></span></div>
+<div class="ac-row"><span class="lbl">Total FC</span><span><strong>3 102</strong></span></div>
+<div class="ac-row"><span class="lbl">Poslední update</span><span>27.3.2026</span></div>
+<div class="ac-row"><span class="lbl">Status</span><span class="ac-status status-serviceable">Serviceable</span></div>
+</div>
+</div>
+<div class="aircraft-card">
+<div class="ac-header" style="background:#92400e"><h3>OK-GHI</h3><span class="ac-type">Robinson R44 Raven II</span></div>
+<div class="ac-body">
+<div class="ac-row"><span class="lbl">S/N</span><span>13847</span></div>
+<div class="ac-row"><span class="lbl">Total FH</span><span><strong>1 899.4</strong></span></div>
+<div class="ac-row"><span class="lbl">Total FC</span><span><strong>1 654</strong></span></div>
+<div class="ac-row"><span class="lbl">Poslední update</span><span>26.3.2026</span></div>
+<div class="ac-row"><span class="lbl">Status</span><span class="ac-status status-attention">Pozor — due items</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- DUE LIST VIEW -->
+<div id="view-duelist" style="display:none">
+<div class="due-list">
+<div class="due-header">
+<h3>Due List — Přehled údržby</h3>
+<div class="filters">
+<button class="filter-btn active" onclick="filterDue('all',this)">Vše</button>
+<button class="filter-btn" onclick="filterDue('red',this)">Kritické</button>
+<button class="filter-btn" onclick="filterDue('yellow',this)">Blížící se</button>
+<button class="filter-btn" onclick="filterDue('green',this)">OK</button>
+</div>
+</div>
+<table>
+<thead><tr><th></th><th>Letadlo</th><th>Úkon</th><th>Typ</th><th>Interval</th><th>Poslední</th><th>Zbývá</th><th>Due date</th></tr></thead>
+<tbody id="dueBody">
+<tr class="row-red" data-urg="red"><td><span class="urgency u-red"></span></td><td><strong>OK-GHI</strong></td><td>Main Rotor Blade Inspection</td><td>FH</td><td>300 FH</td><td>1 780.0 FH</td><td class="remaining r-red">−19.4 FH</td><td style="color:var(--danger);font-weight:600">OVERDUE</td></tr>
+<tr class="row-red" data-urg="red"><td><span class="urgency u-red"></span></td><td><strong>OK-ABC</strong></td><td>100h Inspection</td><td>FH</td><td>100 FH</td><td>3 380.0 FH</td><td class="remaining r-red">23.8 FH</td><td>~12 dní</td></tr>
+<tr class="row-yellow" data-urg="yellow"><td><span class="urgency u-yellow"></span></td><td><strong>OK-ABC</strong></td><td>ELT Battery Replacement</td><td>CAL</td><td>24 měs.</td><td>15.5.2024</td><td class="remaining r-yellow">46 dní</td><td>15.5.2026</td></tr>
+<tr class="row-yellow" data-urg="yellow"><td><span class="urgency u-yellow"></span></td><td><strong>OK-GHI</strong></td><td>Tail Rotor Gearbox Oil</td><td>FH</td><td>500 FH</td><td>1 500.0 FH</td><td class="remaining r-yellow">100.6 FH</td><td>~52 dní</td></tr>
+<tr data-urg="green"><td><span class="urgency u-green"></span></td><td><strong>OK-DEF</strong></td><td>Annual Inspection</td><td>CAL</td><td>12 měs.</td><td>10.9.2025</td><td class="remaining r-green">164 dní</td><td>10.9.2026</td></tr>
+<tr data-urg="green"><td><span class="urgency u-green"></span></td><td><strong>OK-ABC</strong></td><td>Propeller Overhaul</td><td>FH</td><td>2000 FH</td><td>2 100.0 FH</td><td class="remaining r-green">643.8 FH</td><td>~322 dní</td></tr>
+<tr data-urg="green"><td><span class="urgency u-green"></span></td><td><strong>OK-DEF</strong></td><td>500h Inspection</td><td>FH</td><td>500 FH</td><td>2 600.0 FH</td><td class="remaining r-green">208.3 FH</td><td>~104 dní</td></tr>
+<tr data-urg="green"><td><span class="urgency u-green"></span></td><td><strong>OK-GHI</strong></td><td>Engine TBO</td><td>FH</td><td>2200 FH</td><td>0 FH</td><td class="remaining r-green">300.6 FH</td><td>~155 dní</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- LOGBOOK VIEW -->
+<div id="view-logbook" style="display:none">
+<div class="log-form">
+<h3>Záznam letu</h3>
+<div class="form-grid">
+<div class="form-group"><label>Letadlo</label><select><option>OK-ABC (Cessna 172S)</option><option>OK-DEF (Piper PA-28)</option><option>OK-GHI (Robinson R44)</option></select></div>
+<div class="form-group"><label>Datum</label><input type="date" value="2026-03-30"></div>
+<div class="form-group"><label>Letové hodiny (FH)</label><input type="number" step="0.1" placeholder="1.5" value="1.8"></div>
+<div class="form-group"><label>Letové cykly (FC)</label><input type="number" placeholder="2" value="2"></div>
+<div class="form-group"><label>Pilot</label><input type="text" placeholder="Jméno pilota" value="Jan Novák"></div>
+<div class="form-group"><label>Poznámka</label><input type="text" placeholder="VFR training, local..."></div>
+</div>
+<div class="form-actions">
+<button class="btn btn-primary" onclick="alert('Demo — v produkční verzi se zápis uloží a přepočítá Due List')">Uložit záznam</button>
+<button class="btn btn-outline" onclick="alert('Demo — formulář by se vyčistil')">Nový záznam</button>
+</div>
+</div>
+
+<div class="due-list">
+<div class="due-header"><h3>Poslední záznamy</h3></div>
+<table>
+<thead><tr><th>Datum</th><th>Letadlo</th><th>FH</th><th>FC</th><th>Pilot</th><th>Total FH</th><th>Poznámka</th></tr></thead>
+<tbody>
+<tr><td>28.3.2026</td><td><strong>OK-ABC</strong></td><td>2.1</td><td>3</td><td>Jan Novák</td><td>3 456.2</td><td>Cross-country LKPR-LKMT</td></tr>
+<tr><td>27.3.2026</td><td><strong>OK-DEF</strong></td><td>1.3</td><td>2</td><td>Petr Dvořák</td><td>2 891.7</td><td>VFR training, local</td></tr>
+<tr><td>27.3.2026</td><td><strong>OK-ABC</strong></td><td>0.8</td><td>1</td><td>Jan Novák</td><td>3 454.1</td><td>Check flight po údržbě</td></tr>
+<tr><td>26.3.2026</td><td><strong>OK-GHI</strong></td><td>1.5</td><td>2</td><td>Martin Černý</td><td>1 899.4</td><td>Vyhlídkový let</td></tr>
+<tr><td>25.3.2026</td><td><strong>OK-DEF</strong></td><td>2.4</td><td>4</td><td>Petr Dvořák</td><td>2 890.4</td><td>Navigation training</td></tr>
+<tr><td>24.3.2026</td><td><strong>OK-ABC</strong></td><td>1.6</td><td>2</td><td>Tomáš Malý</td><td>3 453.3</td><td>IFR approach training</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<footer>Mini CAMO System — PRAUT s.r.o. — Demonstrační verze © 2026</footer>
+
+<script>
+function showView(v){
+document.querySelectorAll('[id^="view-"]').forEach(function(el){el.style.display='none'});
+document.getElementById('view-'+v).style.display='block';
+document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+event.target.classList.add('active');
+}
+function filterDue(urg,btn){
+document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});
+btn.classList.add('active');
+document.querySelectorAll('#dueBody tr').forEach(function(r){
+if(urg==='all')r.style.display='';
+else r.style.display=r.dataset.urg===urg?'':'none';
+});
+}
+</script>
+</body>
+</html>

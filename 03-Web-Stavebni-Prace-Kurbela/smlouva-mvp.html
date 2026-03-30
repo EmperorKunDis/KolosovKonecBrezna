@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smlouva o dílo - Web pro stavební práce | PRAUT s.r.o.</title>
+    <style>
+        :root {
+            --primary: #1a2a3a;
+            --accent: #c0392b;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #6c757d;
+            --border: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Header */
+        .doc-header {
+            background: var(--primary);
+            color: #fff;
+            padding: 48px 0;
+            margin-bottom: 40px;
+        }
+
+        .doc-header .container {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .doc-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .doc-header .subtitle {
+            font-size: 15px;
+            opacity: 0.8;
+        }
+
+        .doc-header .law-ref {
+            font-size: 13px;
+            opacity: 0.6;
+            margin-top: 4px;
+        }
+
+        .parties-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .parties-grid h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .parties-grid p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Contract body */
+        .contract-body {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 24px;
+        }
+
+        .article {
+            margin-bottom: 32px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .article h2 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .article h2 .article-num {
+            display: block;
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .article ol {
+            padding-left: 24px;
+            counter-reset: clause;
+            list-style: none;
+        }
+
+        .article ol > li {
+            counter-increment: clause;
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 8px;
+        }
+
+        .article ol > li::before {
+            content: counter(clause) ".";
+            position: absolute;
+            left: -24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .article ol ol {
+            margin-top: 8px;
+            padding-left: 20px;
+            counter-reset: subclause;
+            list-style: none;
+        }
+
+        .article ol ol > li {
+            counter-increment: subclause;
+        }
+
+        .article ol ol > li::before {
+            content: counter(subclause, lower-alpha) ")";
+            left: -20px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .article p {
+            margin-bottom: 10px;
+        }
+
+        .article ul {
+            padding-left: 24px;
+            margin-bottom: 10px;
+        }
+
+        .article ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Signature section */
+        .signatures {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 40px;
+            margin-top: 24px;
+        }
+
+        .signatures h2 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sig-text {
+            text-align: center;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .sig-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+        }
+
+        .sig-box {
+            text-align: center;
+        }
+
+        .sig-box .sig-role {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .sig-box .sig-name {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .sig-box .sig-company {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 48px;
+        }
+
+        .sig-box .sig-line {
+            border-top: 1px solid var(--text);
+            padding-top: 8px;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .sig-place-date {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        .doc-footer {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--text-light);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .doc-footer strong {
+            color: var(--text);
+        }
+
+        /* Print */
+        @media print {
+            body { background: #fff; font-size: 12px; }
+            .doc-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .contract-body, .signatures { box-shadow: none; border: 1px solid #ccc; }
+            .article { break-inside: avoid; }
+            .signatures { break-inside: avoid; }
+        }
+
+        @media (max-width: 600px) {
+            .doc-header h1 { font-size: 22px; }
+            .parties-grid { grid-template-columns: 1fr; gap: 16px; }
+            .contract-body { padding: 24px; }
+            .signatures { padding: 24px; }
+            .sig-grid { grid-template-columns: 1fr; gap: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="doc-header">
+        <div class="container">
+            <h1>Smlouva o dílo</h1>
+            <p class="subtitle">Vytvoření webové prezentace pro stavební firmu</p>
+            <p class="law-ref">uzavřená dle ustanovení § 2586 a násl. zákona č. 89/2012 Sb., občanský zákoník, v platném znění</p>
+
+            <div class="parties-grid">
+                <div>
+                    <h3>Zhotovitel</h3>
+                    <p>
+                        <strong>PRAUT s.r.o.</strong><br>
+                        Sídlo: Obrněné brigády 552/33, 350 02 Cheb<br>
+                        IČO: 22545107<br>
+                        Neplátce DPH<br>
+                        Zastoupený: Martin Švanda, jednatel<br>
+                        E-mail: svanda@praut.cz<br>
+                        <em>(dále jen „zhotovitel")</em>
+                    </p>
+                </div>
+                <div>
+                    <h3>Objednatel</h3>
+                    <p>
+                        <strong>Mykhaylo Kurbela</strong><br>
+                        Podnikající fyzická osoba (OSVČ)<br>
+                        Sídlo: Nevanova 1047/5, Praha 6 - Řepy<br>
+                        IČO: 01443607<br>
+                        Kontaktní osoba: Michal Kurbela<br>
+                        E-mail: michalkurbela@seznam.cz<br>
+                        Tel: +420 773 077 100<br>
+                        <em>(dále jen „objednatel")</em>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="contract-body">
+
+            <!-- Článek I -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek I.</span>
+                    Předmět smlouvy
+                </h2>
+                <ol>
+                    <li>Předmětem této smlouvy je závazek zhotovitele vytvořit pro objednatele dílo - webovou prezentaci (dále jen „web" nebo „dílo") dle specifikace uvedené v této smlouvě, a závazek objednatele zaplatit za provedení díla dohodnutou cenu.</li>
+                    <li>Dílem se rozumí jednoduchá one-page webová prezentace pro stavební firmu objednatele obsahující tyto sekce:
+                        <ol>
+                            <li>Hero sekce s hlavním vizuálem a CTA (výzva k akci)</li>
+                            <li>Sekce „O nás" s profilem firmy</li>
+                            <li>Sekce „Služby" s přehledem stavebních prací</li>
+                            <li>Sekce „Reference / Galerie" s fotografiemi realizací</li>
+                            <li>Sekce „Kontakt" s kontaktním formulářem a mapou</li>
+                        </ol>
+                    </li>
+                    <li>Web bude vytvořen v českém jazyce s využitím technologií HTML5, CSS3 a JavaScript bez závislosti na externích knihovnách a frameworcích.</li>
+                    <li>Web bude responzivní (přizpůsobený pro zobrazení na mobilních telefonech, tabletech a stolních počítačích).</li>
+                    <li>Součástí díla je základní SEO optimalizace (meta tagy, structured data ve formátu LocalBusiness schema, sitemap.xml) a nasazení na hosting.</li>
+                </ol>
+            </div>
+
+            <!-- Článek II -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek II.</span>
+                    Cena díla a platební podmínky
+                </h2>
+                <ol>
+                    <li>Celková cena za vytvoření díla dle čl. I. této smlouvy činí <strong>12 000 Kč</strong> (slovy: dvanáct tisíc korun českých). Zhotovitel není plátce DPH, uvedená cena je konečná.</li>
+                    <li>Cena bude uhrazena ve dvou splátkách:
+                        <ol>
+                            <li><strong>Záloha 50 %</strong> ve výši 6 000 Kč, splatná do 7 dnů od podpisu této smlouvy na základě zálohové faktury.</li>
+                            <li><strong>Doplatek 50 %</strong> ve výši 6 000 Kč, splatný do 14 dnů od předání díla na základě konečné faktury.</li>
+                        </ol>
+                    </li>
+                    <li>Platby budou prováděny bezhotovostně bankovním převodem na účet zhotovitele uvedený na faktuře.</li>
+                    <li>V případě prodlení s úhradou jakékoliv platby je objednatel povinen uhradit zhotoviteli smluvní úrok z prodlení ve výši 0,05 % z dlužné částky za každý den prodlení.</li>
+                    <li>Cena nezahrnuje náklady na registraci a provoz domény, webhosting ani průběžnou správu a aktualizace webu. Tyto služby lze doobjednat separátně dle aktuálního ceníku zhotovitele.</li>
+                </ol>
+            </div>
+
+            <!-- Článek III -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek III.</span>
+                    Termín plnění
+                </h2>
+                <ol>
+                    <li>Zhotovitel se zavazuje dokončit a předat dílo nejpozději do <strong>14 dnů</strong> ode dne, kdy budou kumulativně splněny obě následující podmínky:
+                        <ol>
+                            <li>Připsání zálohy dle čl. II. odst. 2a na účet zhotovitele.</li>
+                            <li>Dodání kompletních podkladů objednatelem dle čl. IV. této smlouvy.</li>
+                        </ol>
+                    </li>
+                    <li>Zhotovitel je oprávněn dokončit dílo i před uplynutím sjednané lhůty.</li>
+                    <li>V případě, že objednatel nedodá podklady v přiměřené lhůtě (do 30 dnů od podpisu smlouvy), je zhotovitel oprávněn od smlouvy odstoupit. V takovém případě je zhotoviteli záloha ponechána jako kompenzace za vynaložený čas na přípravu projektu.</li>
+                </ol>
+            </div>
+
+            <!-- Článek IV -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek IV.</span>
+                    Součinnost objednatele a podklady
+                </h2>
+                <ol>
+                    <li>Objednatel se zavazuje poskytnout zhotoviteli následující podklady potřebné pro vytvoření díla:
+                        <ol>
+                            <li>Texty o firmě, popis služeb a další obsahové podklady</li>
+                            <li>Fotografie realizací v dostatečné kvalitě (min. 1200 px šířka, formát JPG nebo PNG, min. 6 ks)</li>
+                            <li>Logo firmy v elektronické podobě (SVG nebo PNG s min. šířkou 500 px) - pokud objednatel logo nemá, může být vytvořeno za příplatek dle dohody</li>
+                            <li>Kontaktní údaje pro zobrazení na webu</li>
+                        </ol>
+                    </li>
+                    <li>Objednatel odpovídá za správnost, úplnost a zákonnost dodaných podkladů. Zhotovitel nenese odpovědnost za obsah textů a materiálů dodaných objednatelem.</li>
+                    <li>Objednatel prohlašuje, že je oprávněn užít veškeré dodané materiály (zejména fotografie a texty) pro účely webové prezentace a že jejich užitím nebudou porušena práva třetích osob.</li>
+                    <li>Objednatel se zavazuje poskytovat zhotoviteli přiměřenou součinnost po celou dobu realizace díla, zejména reagovat na dotazy a schvalovat dílčí výstupy v přiměřených lhůtách.</li>
+                </ol>
+            </div>
+
+            <!-- Článek V -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek V.</span>
+                    Předání a převzetí díla
+                </h2>
+                <ol>
+                    <li>Dílo bude předáno elektronicky formou nasazení na webový hosting a zpřístupnění na dohodnuté doméně, případně na dočasné adrese do doby registrace domény.</li>
+                    <li>O předání díla bude vyhotoven předávací protokol (e-mailem), ve kterém budou uvedeny případné výhrady objednatele.</li>
+                    <li>Objednatel je povinen dílo převzít, nemá-li vady bránící jeho řádnému užívání.</li>
+                    <li>Po předání díla běží <strong>testovací lhůta v délce 14 dnů</strong>, během které je objednatel povinen dílo otestovat a uplatnit případné připomínky a požadavky na úpravy v rámci dohodnutého rozsahu díla.</li>
+                    <li>Připomínky uplatněné po uplynutí testovací lhůty budou považovány za nové požadavky a mohou být zpoplatněny dle aktuálního ceníku zhotovitele.</li>
+                </ol>
+            </div>
+
+            <!-- Článek VI -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek VI.</span>
+                    Odpovědnost za vady
+                </h2>
+                <ol>
+                    <li>Zhotovitel odpovídá za to, že dílo bude mít v době předání vlastnosti stanovené touto smlouvou a bude odpovídat technické specifikaci.</li>
+                    <li>Zhotovitel poskytuje na dílo záruku v délce <strong>6 měsíců</strong> od předání. Zárukou se rozumí bezplatné odstranění vad, které nebyly způsobeny zásahem objednatele nebo třetí strany do zdrojového kódu díla.</li>
+                    <li>Za vadu se nepovažuje:
+                        <ol>
+                            <li>Změna ve funkčnosti třetích služeb (Google Maps, e-mailové služby apod.)</li>
+                            <li>Nefunkčnost způsobená zásahem objednatele nebo třetí osoby do kódu</li>
+                            <li>Požadavek na funkčnost, která nebyla součástí specifikace dle čl. I.</li>
+                            <li>Chyby v obsahu dodaném objednatelem</li>
+                        </ol>
+                    </li>
+                    <li>Vady uplatňuje objednatel písemně (e-mailem) s popisem vady. Zhotovitel se zavazuje vadu posoudit do 3 pracovních dnů a odstranit ji v přiměřené lhůtě.</li>
+                </ol>
+            </div>
+
+            <!-- Článek VII -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek VII.</span>
+                    Licence a autorská práva
+                </h2>
+                <ol>
+                    <li>Zhotovitel uděluje objednateli okamžikem úplného zaplacení ceny díla nevýhradní licenci k užívání díla pro účely prezentace podnikatelské činnosti objednatele, a to na dobu neurčitou a bez územního omezení.</li>
+                    <li>Objednatel není oprávněn dílo nebo jeho část poskytnout třetím osobám, šířit, pronajímat ani jinak komerčně využít bez předchozího písemného souhlasu zhotovitele.</li>
+                    <li>Zhotovitel si vyhrazuje právo uvést dílo ve svém portfoliu a referencích.</li>
+                    <li>Zdrojový kód díla zůstává ve vlastnictví zhotovitele. Objednatel získává právo k jeho užívání v rozsahu dle odst. 1 tohoto článku.</li>
+                </ol>
+            </div>
+
+            <!-- Článek VIII -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek VIII.</span>
+                    Mlčenlivost
+                </h2>
+                <ol>
+                    <li>Obě smluvní strany se zavazují zachovávat mlčenlivost o všech skutečnostech, které se dozvěděly v souvislosti s plněním této smlouvy, zejména o obchodních, technických a finančních informacích druhé strany.</li>
+                    <li>Povinnost mlčenlivosti trvá i po ukončení platnosti této smlouvy, a to po dobu 2 let.</li>
+                    <li>Povinnost mlčenlivosti se nevztahuje na informace, které jsou veřejně dostupné, nebo které je smluvní strana povinna sdělit na základě zákona či rozhodnutí orgánu veřejné moci.</li>
+                </ol>
+            </div>
+
+            <!-- Článek IX -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek IX.</span>
+                    Ochrana osobních údajů (GDPR)
+                </h2>
+                <ol>
+                    <li>Smluvní strany se zavazují při plnění této smlouvy dodržovat nařízení Evropského parlamentu a Rady (EU) 2016/679 (GDPR) a zákon č. 110/2019 Sb., o zpracování osobních údajů.</li>
+                    <li>Zhotovitel bude zpracovávat osobní údaje objednatele výhradně za účelem plnění této smlouvy a zákonných povinností.</li>
+                    <li>Kontaktní formulář na webu bude obsahovat povinný souhlas se zpracováním osobních údajů a odkaz na zásady ochrany osobních údajů. Text zásad dodá objednatel; pokud je nedodá, zhotovitel připraví základní verzi k odsouhlasení.</li>
+                    <li>Zhotovitel se zavazuje přijmout přiměřená technická a organizační opatření k ochraně osobních údajů zpracovávaných prostřednictvím díla.</li>
+                </ol>
+            </div>
+
+            <!-- Článek X -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek X.</span>
+                    Vyšší moc
+                </h2>
+                <ol>
+                    <li>Žádná ze smluvních stran nenese odpovědnost za nesplnění nebo opožděné plnění svých povinností z této smlouvy, pokud k němu došlo v důsledku vyšší moci.</li>
+                    <li>Za vyšší moc se považují mimořádné, nepředvídatelné a neodvratitelné okolnosti vzniklé nezávisle na vůli smluvní strany, zejména přírodní katastrofy, válečný stav, epidemie, rozsáhlé výpadky infrastruktury internetu nebo zásahy orgánů veřejné moci.</li>
+                    <li>Dotčená strana je povinna druhou stranu o okolnostech vyšší moci informovat bez zbytečného odkladu.</li>
+                </ol>
+            </div>
+
+            <!-- Článek XI -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek XI.</span>
+                    Odstoupení od smlouvy
+                </h2>
+                <ol>
+                    <li>Objednatel je oprávněn od smlouvy odstoupit kdykoliv do předání díla. V takovém případě je povinen uhradit zhotoviteli cenu za práce prokazatelně vykonané do dne doručení odstoupení.</li>
+                    <li>Zhotovitel je oprávněn od smlouvy odstoupit v případě, že:
+                        <ol>
+                            <li>Objednatel nedodá podklady dle čl. IV. ani do 30 dnů od podpisu smlouvy</li>
+                            <li>Objednatel je v prodlení s úhradou zálohy delším než 14 dní</li>
+                            <li>Objednatel neposkytuje potřebnou součinnost přes opakované písemné výzvy</li>
+                        </ol>
+                    </li>
+                    <li>Odstoupení od smlouvy musí být učiněno písemně (e-mailem na adresu uvedenou v záhlaví smlouvy) a je účinné dnem doručení druhé straně.</li>
+                    <li>Při odstoupení ze strany objednatele po zaplacení zálohy a před zahájením prací bude záloha vrácena snížená o 20 % jako kompenzace administrativních nákladů zhotovitele.</li>
+                </ol>
+            </div>
+
+            <!-- Článek XII -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek XII.</span>
+                    Sankce
+                </h2>
+                <ol>
+                    <li>V případě prodlení zhotovitele s předáním díla oproti termínu dle čl. III. je objednatel oprávněn požadovat smluvní pokutu ve výši 0,1 % z celkové ceny díla za každý započatý den prodlení, maximálně však do výše 10 % z celkové ceny díla.</li>
+                    <li>V případě prodlení objednatele s úhradou ceny díla je zhotovitel oprávněn požadovat smluvní pokutu ve výši 0,05 % z dlužné částky za každý započatý den prodlení.</li>
+                    <li>Zaplacením smluvní pokuty není dotčeno právo poškozené strany na náhradu škody.</li>
+                </ol>
+            </div>
+
+            <!-- Článek XIII -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek XIII.</span>
+                    Řešení sporů
+                </h2>
+                <ol>
+                    <li>Smluvní strany se zavazují řešit případné spory přednostně smírnou cestou.</li>
+                    <li>Nedojde-li k dohodě do 30 dnů od vzniku sporu, bude spor rozhodnut věcně a místně příslušným soudem České republiky.</li>
+                    <li>Tato smlouva se řídí právním řádem České republiky, zejména zákonem č. 89/2012 Sb., občanský zákoník, v platném znění.</li>
+                </ol>
+            </div>
+
+            <!-- Článek XIV -->
+            <div class="article">
+                <h2>
+                    <span class="article-num">Článek XIV.</span>
+                    Závěrečná ustanovení
+                </h2>
+                <ol>
+                    <li>Tato smlouva nabývá platnosti a účinnosti dnem podpisu oběma smluvními stranami.</li>
+                    <li>Smlouva je vyhotovena ve dvou stejnopisech, z nichž každá strana obdrží po jednom.</li>
+                    <li>Změny a doplňky této smlouvy jsou platné pouze ve formě písemných číslovaných dodatků podepsaných oběma stranami.</li>
+                    <li>Není-li v této smlouvě stanoveno jinak, řídí se právní vztahy smluvních stran příslušnými ustanoveními občanského zákoníku.</li>
+                    <li>Je-li nebo stane-li se některé ustanovení této smlouvy neplatným, zůstávají ostatní ustanovení platná a účinná. Smluvní strany se zavazují neplatné ustanovení nahradit ustanovením platným, které se svým obsahem a účelem co nejvíce blíží ustanovení nahrazovanému.</li>
+                    <li>Smluvní strany prohlašují, že si tuto smlouvu přečetly, s jejím obsahem souhlasí a na důkaz toho ji podepisují.</li>
+                    <li>Nedílnou součástí této smlouvy je technická specifikace díla (dokument TS-2026-003).</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Podpisy -->
+        <div class="signatures">
+            <h2>Podpisy smluvních stran</h2>
+            <p class="sig-text">Smluvní strany prohlašují, že si smlouvu přečetly, s jejím obsahem souhlasí, a na důkaz toho ji podepisují.</p>
+
+            <div class="sig-grid">
+                <div class="sig-box">
+                    <div class="sig-role">Zhotovitel</div>
+                    <div class="sig-name">Martin Švanda</div>
+                    <div class="sig-company">PRAUT s.r.o., jednatel</div>
+                    <div class="sig-line">Podpis</div>
+                </div>
+                <div class="sig-box">
+                    <div class="sig-role">Objednatel</div>
+                    <div class="sig-name">Mykhaylo Kurbela</div>
+                    <div class="sig-company">Mykhaylo Kurbela (OSVČ)</div>
+                    <div class="sig-line">Podpis</div>
+                </div>
+            </div>
+
+            <p class="sig-place-date">V Chebu dne ..................... 2026</p>
+        </div>
+    </main>
+
+    <footer class="doc-footer">
+        <p><strong>PRAUT s.r.o.</strong> | Obrněné brigády 552/33, 350 02 Cheb | IČO: 22545107</p>
+        <p>Smlouva o dílo | Vyhotoveno dne 30. března 2026</p>
+    </footer>
+</body>
+</html>

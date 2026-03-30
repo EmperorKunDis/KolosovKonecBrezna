@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smlouva o dilo - AI digitalizace technickych vykresu (MVP)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2b6cb0;
+            --accent: #ed8936;
+            --text: #2d3748;
+            --text-light: #718096;
+            --bg: #ffffff;
+            --bg-light: #f7fafc;
+            --border: #e2e8f0;
+        }
+
+        @page {
+            size: A4;
+            margin: 18mm 20mm;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            line-height: 1.75;
+            background: var(--bg);
+            font-size: 13px;
+        }
+
+        .document {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 36px 50px;
+        }
+
+        /* Header */
+        .doc-header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 28px;
+        }
+
+        .doc-header h1 {
+            font-size: 24px;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 4px;
+        }
+
+        .doc-header .subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .doc-header .doc-ref {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+
+        .doc-header .legal-ref {
+            font-size: 12px;
+            color: var(--primary-light);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Parties */
+        .parties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .party-card {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px 20px;
+        }
+
+        .party-card h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .party-card p {
+            font-size: 12px;
+            line-height: 1.65;
+        }
+
+        .party-card strong {
+            color: var(--primary);
+            font-size: 13px;
+        }
+
+        .party-label {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            color: white;
+            background: var(--primary);
+            padding: 2px 8px;
+            border-radius: 3px;
+            margin-top: 8px;
+        }
+
+        /* Articles */
+        .article {
+            margin-bottom: 22px;
+            page-break-inside: avoid;
+        }
+
+        .article h2 {
+            font-size: 15px;
+            color: var(--primary);
+            border-left: 4px solid var(--accent);
+            padding-left: 12px;
+            margin-bottom: 10px;
+        }
+
+        .article p {
+            margin-bottom: 8px;
+            text-align: justify;
+        }
+
+        .article ol {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .article ol li {
+            margin-bottom: 6px;
+            text-align: justify;
+        }
+
+        .article ol ol {
+            list-style-type: lower-alpha;
+            margin-top: 4px;
+        }
+
+        .article ul {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .article ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Important clause */
+        .important-clause {
+            background: #fffaf0;
+            border: 1px solid #feebc8;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+
+        /* Signature block */
+        .signature-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border);
+        }
+
+        .signature-section p {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 13px;
+        }
+
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .signature-side {
+            font-size: 12px;
+        }
+
+        .signature-side .role {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .signature-side .name {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 13px;
+        }
+
+        .signature-line {
+            border-top: 1px solid var(--text);
+            margin-top: 55px;
+            padding-top: 6px;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        .doc-footer {
+            margin-top: 30px;
+            padding-top: 12px;
+            border-top: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--text-light);
+        }
+
+        /* Appendix reference */
+        .appendix-ref {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin: 12px 0;
+            font-size: 12px;
+        }
+
+        .appendix-ref strong {
+            color: var(--primary);
+        }
+
+        @media print {
+            body { font-size: 11.5px; }
+            .document { padding: 0; max-width: none; }
+            .article { page-break-inside: avoid; }
+            .signature-section { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <!-- Header -->
+        <div class="doc-header">
+            <h1>Smlouva o dilo</h1>
+            <div class="subtitle">Vyvoj AI-asistovaneho nastroje pro konverzi technickych vykresu do CAD</div>
+            <div class="doc-ref">Cislo smlouvy: PRAUT-2026-CAD-SOD-001</div>
+            <div class="legal-ref">uzavrena dle ustanoveni &sect; 2586 a nasl. zakona c. 89/2012 Sb., obcanskeho zakoniku, v platnem zneni</div>
+        </div>
+
+        <!-- Smluvni strany -->
+        <div class="parties">
+            <div class="party-card">
+                <h3>Zhotovitel</h3>
+                <p>
+                    <strong>PRAUT s.r.o.</strong><br>
+                    Se sidlem: Obrnene brigady 552/33, 350 02 Cheb<br>
+                    ICO: 22545107<br>
+                    Neplatce DPH<br>
+                    Zastoupena: Martinem Svandou, jednatelem<br>
+                    E-mail: svanda@praut.cz<br>
+                    <span class="party-label">dale jen &bdquo;Zhotovitel&ldquo;</span>
+                </p>
+            </div>
+            <div class="party-card">
+                <h3>Objednatel</h3>
+                <p>
+                    <strong>FUTURE PRODUCT DESIGN a.s.</strong><br>
+                    Se sidlem: Trojicka 1910/7, 128 00 Praha<br>
+                    IC: 00553646 | DIC: CZ00553646<br>
+                    Zastoupena: Ladislavem Sulou<br>
+                    E-mail: sula@fpdco.com<br>
+                    Tel: +420 601 344 692<br>
+                    <span class="party-label">dale jen &bdquo;Objednatel&ldquo;</span>
+                </p>
+            </div>
+        </div>
+
+        <p style="text-align: center; margin-bottom: 20px; font-size: 13px; color: var(--text-light);">
+            (Zhotovitel a Objednatel dale spolecne tez &bdquo;Smluvni strany&ldquo; nebo jednotlive &bdquo;Smluvni strana&ldquo;)
+        </p>
+
+        <!-- Clanek I -->
+        <div class="article">
+            <h2>Clanek I. - Predmet smlouvy</h2>
+            <ol>
+                <li>Predmetem teto smlouvy je zavazek Zhotovitele vytvorit pro Objednatele dilo spocivajici ve vyvoji AI-asistovaneho softwaroveho nastroje pro automatizovanou konverzi rucne kreslenych technickych vykresu do digitalniho formatu CAD (DXF) v rozsahu specifikovanem v Priloze c. 1 - Technicka specifikace (dale jen &bdquo;Dilo&ldquo;).</li>
+                <li>Dilo v ramci teto smlouvy zahrnuje vyvoj a dodani funkcniho MVP (Minimum Viable Product) obsahujiciho:
+                    <ol>
+                        <li>AI konverzni pipeline pro automaticke rozpoznani car, tvaru a kotovani z rastroveho obrazu;</li>
+                        <li>Modul pro export rozpoznanych dat do formatu DXF;</li>
+                        <li>Webove rozhrani pro nahravani podkladu, spravu konverzi a stahovani vystupu;</li>
+                        <li>Nasazeni na produkcni prostredi vcetne konfigurace a zakladniho monitoringu.</li>
+                    </ol>
+                </li>
+                <li>Podrobna technicka specifikace Dila je obsazena v Priloze c. 1, ktera tvori nedilnou soucast teto smlouvy.</li>
+            </ol>
+
+            <div class="appendix-ref">
+                <strong>Priloha c. 1:</strong> Technicka specifikace (dokument PRAUT-2026-CAD-TS-001)
+            </div>
+        </div>
+
+        <!-- Clanek II -->
+        <div class="article">
+            <h2>Clanek II. - Cena a platebni podminky</h2>
+            <ol>
+                <li>Celkova cena za zhotoveni Dila (MVP) je sjednana ve vysi <strong>45 000 Kc</strong> (slovy: ctyricettpettisic korun ceskych). Zhotovitel neni platcem DPH, uvedena cena je konecna.</li>
+                <li>Cena bude uhrazena ve dvou splátkach:
+                    <ol>
+                        <li><strong>Zaloha ve vysi 22 500 Kc</strong> (50 % z celkove ceny) - splatna do 7 kalendarnich dnu od podpisu teto smlouvy obema Smluvnimi stranami. Zahajeni praci na Dile je podmineno uhrazenim teto zalohy.</li>
+                        <li><strong>Doplatek ve vysi 22 500 Kc</strong> (50 % z celkove ceny) - splatny do 14 kalendarnich dnu od podpisu akceptacniho protokolu Objednatelem.</li>
+                    </ol>
+                </li>
+                <li>Platby budou provadeny bezhotovostnim prevodem na bankovni ucet Zhotovitele uvedeny na prislusne fakture. Zhotovitel vystavi fakturu - danovy doklad v souladu s platnou legislativou.</li>
+                <li>V pripade prodleni Objednatele s uhradou jakekoli splatne castky je Zhotovitel opravnen pozadovat zaplaceni uroku z prodleni ve vysi 0,05 % z dluzne castky za kazdy zapocaty den prodleni.</li>
+                <li>Cena uvedena v odst. 1 tohoto clanku je konecna a zahrnuje veskere naklady Zhotovitele spojene se zhotovenim Dila, vcetne nakladu na vyvoj, testovani, nasazeni a dokumentaci.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek III -->
+        <div class="article">
+            <h2>Clanek III. - Termin a misto plneni</h2>
+            <ol>
+                <li>Zhotovitel se zavazuje dokoncit a predat Dilo nejpozdeji do <strong>5 tydnu</strong> (35 kalendarnich dnu) ode dne pripsani zalohy dle cl. II. odst. 2 pism. a) na ucet Zhotovitele.</li>
+                <li>Dilo bude predano elektronickou formou (zpristupnenim webove aplikace a pripadnym predanim zdrojovych kodu prostrednictvim Git repozitare).</li>
+                <li>O predani Dila bude sepsán akceptacni protokol podepsany obema Smluvnimi stranami. Akceptacni protokol muze byt podepsan i elektronicky prostrednictvim e-mailu.</li>
+                <li>Mistrem plneni je elektronicke prostredi (webova aplikace pristupna pres internet). Fyzicke predani se nevyzaduje.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek IV -->
+        <div class="article">
+            <h2>Clanek IV. - Testovaci lhuta a akceptace</h2>
+            <ol>
+                <li>Objednatel je opravnen Dilo podrobit testovani po dobu <strong>14 kalendarnich dnu</strong> ode dne predani Dila (dale jen &bdquo;Testovaci lhuta&ldquo;).</li>
+                <li>Behem Testovaci lhuty je Objednatel povinen:
+                    <ol>
+                        <li>Dilo rádne otestovat v souladu s kvalitativnimi kriterii uvedenymi v Technicke specifikaci (Priloha c. 1);</li>
+                        <li>Pisemne (vcetne e-mailem) sdelit Zhotoviteli pripadne vady a nedostatky.</li>
+                    </ol>
+                </li>
+                <li>Pokud Objednatel ve lhute dle odst. 1 Zhotoviteli nesdeli zadne vady, ma se za to, ze Dilo bylo akceptovano bez vyhrad a Objednatel podepise akceptacni protokol.</li>
+                <li>V pripade zjisteni vad je Zhotovitel povinen tyto vady odstranit v primerne lhute, ktera nebude delsi nez 14 kalendarnich dnu od doruceni oznameni o vadach. Po odstraneni vad zacina bezet nova Testovaci lhuta v delce 7 kalendarnich dnu.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek V -->
+        <div class="article">
+            <h2>Clanek V. - Soucinnost Objednatele</h2>
+            <ol>
+                <li>Objednatel se zavazuje poskytnout Zhotoviteli veskerou potrebnou soucinnost nezbytnou pro radne zhotoveni Dila, a to zejmena:
+                    <ol>
+                        <li>Dodat <strong>minimalne 20 vzorovych technickych vykresu</strong> ruzne slozitosti pro ucely trenovani AI modelu, a to nejpozdeji do 5 pracovnich dnu od zahajeni praci;</li>
+                        <li>Poskytovat prubeznou zpetnou vazbu k vysledkum konverze;</li>
+                        <li>Urcit kontaktni osobu s technickou zpusobilosti pro komunikaci se Zhotovitelem;</li>
+                        <li>Specifikovat preferovany CAD software pro overeni kompatibility vystupu.</li>
+                    </ol>
+                </li>
+                <li>V pripade prodleni Objednatele s poskytnutim soucinnosti se termin pro dokonceni Dila dle cl. III. odst. 1 prodluzuje o dobu prodleni Objednatele.</li>
+                <li>Neposkytne-li Objednatel potrebnou soucinnost ani v dodatecne lhute 10 pracovnich dnu, je Zhotovitel opravnen od teto smlouvy odstoupit. V takovem pripade ma Zhotovitel narok na uhrazeni jiz provedenych praci.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek VI -->
+        <div class="article">
+            <h2>Clanek VI. - Odpovědnost za vady</h2>
+            <ol>
+                <li>Zhotovitel odpovida za to, ze Dilo bude zhotoveno v souladu s touto smlouvou a Technickou specifikaci (Priloha c. 1) a bude mit vlastnosti tam uvedene.</li>
+                <li>Zhotovitel poskytuje zaruku na funkcnost Dila po dobu <strong>6 mesicu</strong> ode dne akceptace. Zaruka se vztahuje na vady v programovem kodu zpusobene Zhotovitelem.</li>
+                <li>Zaruka se nevztahuje na:
+                    <ol>
+                        <li>Vady zpusobene zasahem Objednatele nebo treti osoby do zdrojoveho kodu Dila;</li>
+                        <li>Vady zpusobene provozem Dila v rozporu s dokumentaci;</li>
+                        <li>Nepresnosti konverze zpusobene necitelnymi, poskozenymi nebo nekvalitnimi podklady (fotografie s nizkym rozlisenim, silne pokrcene ci vybledle vykresy apod.);</li>
+                        <li>Zmeny v prostredich tretich stran (operacni systemy, prohlizece, knihovny), ktere nebyly v dobe predani Dila dostupne.</li>
+                    </ol>
+                </li>
+                <li>Reklamaci vad je Objednatel povinen uplatnit pisemne (vcetne e-mailem) bez zbytecneho odkladu po jejich zjisteni, nejpozdeji vsak do konce zaruční doby.</li>
+                <li>Zhotovitel se zavazuje zahájit opravu vady do 5 pracovnich dnu od jejiho nahlaseni a dokoncit opravu v primerne lhute s ohledem na povahu vady.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek VII -->
+        <div class="article">
+            <h2>Clanek VII. - Licencni ujednani a dusevni vlastnictvi</h2>
+            <ol>
+                <li>Zhotovitel poskytuje Objednateli ke Dilu <strong>nevyhradni licenci</strong> k uzivani Dila pro ucely podnikatelske cinnosti Objednatele, a to na dobu neurceou a bez uzemniho omezeni.</li>
+                <li>Licence zahrnuje pravo Dilo uzivat, instalovat, provozovat a zhotovovat zalozni kopie. Objednatel neni opravnen Dilo ci jeho cast dale sirit, prodavat, pronajímat ci sublicencovat tretim osobam bez predchoziho pisemneho souhlasu Zhotovitele.</li>
+                <li>Zdrojove kody Dila budou Objednateli predany v ramci predani Dila. Objednatel je opravnen do zdrojovych kodu zasahovat a upravovat je pro vlastni potrebu.</li>
+                <li>Veskera prava dusevniho vlastnictvi k AI modelum, algoritmum a metodam vyvinutym Zhotovitelem v ramci plneni teto smlouvy zustavaji majetkem Zhotovitele. Objednateli je k nim poskytnuta licence dle odst. 1 tohoto clanku.</li>
+                <li>Objednatelem dodane vzorove vykresy a data zustavaji majetkem Objednatele. Zhotovitel je opravnen je pouzit vyhradne pro ucely plneni teto smlouvy (trenovani AI modelu).</li>
+            </ol>
+        </div>
+
+        <!-- Clanek VIII -->
+        <div class="article">
+            <h2>Clanek VIII. - Mlcenlivost</h2>
+            <ol>
+                <li>Obe Smluvni strany se zavazuji zachovavat mlcenlivost o vsech skutecnostech, ktere se dozvedely v souvislosti s plnenim teto smlouvy a ktere jsou oznaceny jako duverne nebo ktere jsou svou povahou duvernymi (dale jen &bdquo;Duverne informace&ldquo;).</li>
+                <li>Za Duverne informace se povazuji zejmena:
+                    <ol>
+                        <li>Obsah technickych vykresu a podkladu predanych Objednatelem;</li>
+                        <li>Obchodni a technicke informace Smluvnich stran;</li>
+                        <li>Podminky teto smlouvy (vcetne financnich podminek);</li>
+                        <li>Know-how, postupy a metody pouzite pri zhotoveni Dila.</li>
+                    </ol>
+                </li>
+                <li>Povinnost mlcenlivosti trva i po ukonceni platnosti teto smlouvy, a to po dobu <strong>3 let</strong> od ukonceni smlouvy.</li>
+                <li>Povinnost mlcenlivosti se nevztahuje na informace, ktere:
+                    <ol>
+                        <li>Jsou nebo se stanou verejne znanymi jinak nez porusenim teto smlouvy;</li>
+                        <li>Byly Smluvni strane znamy jeste pred jejich zpristupnenim druhou Smluvni stranou;</li>
+                        <li>Musi byt zverejneny na zaklade pravni povinnosti.</li>
+                    </ol>
+                </li>
+                <li>Zhotovitel je opravnen uvest nazev Objednatele a obecny popis projektu ve svem referencnim portfoliu, pokud Objednatel nevyjadri nesouhlas.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek IX -->
+        <div class="article">
+            <h2>Clanek IX. - Ochrana osobnich udaju (GDPR)</h2>
+            <ol>
+                <li>Smluvni strany se zavazuji pri plneni teto smlouvy dodrzovat povinnosti vyplyvajici z Narizeni Evropskeho parlamentu a Rady (EU) 2016/679 (GDPR) a ze zakona c. 110/2019 Sb., o zpracovani osobnich udaju.</li>
+                <li>Pokud budou v ramci plneni teto smlouvy zpracovavany osobni udaje, bude Zhotovitel vystupovat v pozici zpracovatele a Objednatel v pozici spravce osobnich udaju. V takovem pripade Smluvni strany uzavrou samostatnou smlouvu o zpracovani osobnich udaju.</li>
+                <li>Zhotovitel se zavazuje, ze nahrane technicke vykresy nebudou zpristupneny tretim osobam a po ukonceni smlouvy budou na zadost Objednatele nenávratne vymazany ze vsech ulozist.</li>
+                <li>Kontaktni udaje Smluvnich stran uvedene v teto smlouve budou zpracovavany za ucelem plneni smlouvy po dobu jeji platnosti a 3 roky po jejim ukonceni, resp. po dobu stanovenou platnymi pravnimi predpisy.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek X -->
+        <div class="article">
+            <h2>Clanek X. - Odstoupeni od smlouvy</h2>
+            <ol>
+                <li>Objednatel je opravnen od teto smlouvy odstoupit v pripade, ze:
+                    <ol>
+                        <li>Zhotovitel je v prodleni s predanim Dila delsim nez <strong>30 kalendarnich dnu</strong> oproti sjednanemu terminu dle cl. III. odst. 1;</li>
+                        <li>Zhotovitel opakovaně (tj. vice nez dvakrat) neodstrani vady Dila v ramci Testovaci lhuty;</li>
+                        <li>Na majetek Zhotovitele byl prohlaseny upadek nebo bylo zahajeno insolvencni rizeni.</li>
+                    </ol>
+                </li>
+                <li>Zhotovitel je opravnen od teto smlouvy odstoupit v pripade, ze:
+                    <ol>
+                        <li>Objednatel neposkytne soucinnost dle cl. V. ani v dodatecne lhute;</li>
+                        <li>Objednatel je v prodleni s uhradou zalohy nebo doplatku delsim nez 30 kalendarnich dnu.</li>
+                    </ol>
+                </li>
+                <li>Odstoupeni od smlouvy musi byt ucineno pisemne a je ucinne dnem doruceni druhe Smluvni strane.</li>
+                <li>V pripade odstoupeni od smlouvy ze strany Objednatele dle odst. 1 je Zhotovitel povinen vratit Objednateli zalohu sniženou o hodnotu jiz provedenych praci. Rozsah provedenych praci bude stanoven vzajemnou dohodou Smluvnich stran.</li>
+                <li>V pripade odstoupeni od smlouvy ze strany Zhotovitele dle odst. 2 ma Zhotovitel narok na uhrazeni provedenych praci, minimalne vsak na zadrzeni zalohy.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek XI -->
+        <div class="article">
+            <h2>Clanek XI. - Smluvni pokuty a sankce</h2>
+            <ol>
+                <li>V pripade prodleni Zhotovitele s predanim Dila oproti terminu dle cl. III. odst. 1 je Objednatel opravnen pozadovat smluvni pokutu ve vysi <strong>0,05 % z celkove ceny Dila za kazdy zapocaty den prodleni</strong>, maximalne vsak do vyse 15 % z celkove ceny Dila.</li>
+                <li>V pripade prodleni Objednatele s uhradou jakekoli platby dle teto smlouvy je Zhotovitel opravnen pozadovat urok z prodleni ve vysi 0,05 % z dluzne castky za kazdy zapocaty den prodleni.</li>
+                <li>Zaplacenim smluvni pokuty neni dotcen narok na nahradu skody, ktera prevysuje smluvni pokutu.</li>
+                <li>Celkova vyse nahradovych naroku jedne Smluvni strany vuci druhe z teto smlouvy nepresahne celkovou cenu Dila dle cl. II. odst. 1, s vyjimkou naroku z poruseni povinnosti mlcenlivosti dle cl. VIII.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek XII -->
+        <div class="article">
+            <h2>Clanek XII. - Vyssi moc</h2>
+            <ol>
+                <li>Zadna Smluvni strana neni odpovedna za nesplneni nebo opozdene splneni svych zavazku z teto smlouvy, pokud takove nesplneni nebo opozdeni bylo zpusobeno okolnostmi vyssi moci (force majeure).</li>
+                <li>Za okolnosti vyssi moci se povazuji udalosti, ktere jsou mimo rozumnou kontrolu dotcene Smluvni strany, jako zejmena: zivelne pohromy, valecny konflikt, teroristicke utoky, epidemie ci pandemie, vladni omezeni, rozsahle vypadky infrastruktury (internet, elektrina) trvajici dele nez 48 hodin.</li>
+                <li>Smluvni strana dotcena vyssi moci je povinna o teto skutecnosti neprodlene informovat druhou Smluvni stranu a vyvinout maximalni usili k minimalizaci nasledku.</li>
+                <li>Pokud okolnosti vyssi moci trvaji dele nez 60 kalendarnich dnu, je kazda ze Smluvnich stran opravnena od teto smlouvy odstoupit bez sankci.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek XIII -->
+        <div class="article">
+            <h2>Clanek XIII. - Reseni sporu a rozhodne pravo</h2>
+            <ol>
+                <li>Tato smlouva se ridi pravnim radem Ceske republiky, zejmena zakonem c. 89/2012 Sb., obcanskym zakonikem, v platnem zneni.</li>
+                <li>Veskeré spory vyplyvajici z teto smlouvy nebo v souvislosti s ni budou Smluvni strany resit prednostne smirnou cestou a vzajemnym jednáním.</li>
+                <li>Nedojde-li k vyreseni sporu smirnou cestou do 30 kalendarnich dnu ode dne, kdy jedna Smluvni strana pisemne vyzvala druhou k jednani, bude spor predlozen k rozhodnuti vecne a mistne prislusnemu soudu v Ceske republice.</li>
+            </ol>
+        </div>
+
+        <!-- Clanek XIV -->
+        <div class="article">
+            <h2>Clanek XIV. - Zaverecna ustanoveni</h2>
+            <ol>
+                <li>Tato smlouva nabyva platnosti a ucinnosti dnem podpisu obema Smluvnimi stranami.</li>
+                <li>Smlouvu lze menit nebo doplnovat pouze pisemnymi dodatky podepsanymi obema Smluvnimi stranami.</li>
+                <li>Tato smlouva je vyhotovena ve dvou stejnopisech, z nichz kazda Smluvni strana obdrzi po jednom. V pripade elektronickeho podpisu postacuje jeden elektronicky vyhotoveny dokument.</li>
+                <li>Smluvni strany si mohou dorucovet prostednictvim e-mailu na adresy uvedene v zahlavi teto smlouvy. Doruceni e-mailem se povazuje za ucinnne v okamziku prokazatelneho odeslani na spravnou e-mailovou adresu.</li>
+                <li>Je-li nebo stane-li se nektere ustanoveni teto smlouvy neplatnym ci nevymahatelnym, nedotyka se to platnosti a vymahatelnosti ostatnich ustanoveni teto smlouvy. Smluvni strany se v takovem pripade zavazuji nahradit neplatne ustanoveni ustanovenim platnym, ktere se svym obsahem a ucelem nejvice blizi puvodnimu zameru.</li>
+                <li>Neoddelitelnou soucasti teto smlouvy je:
+                    <ul>
+                        <li><strong>Priloha c. 1</strong> - Technicka specifikace (dokument PRAUT-2026-CAD-TS-001)</li>
+                    </ul>
+                </li>
+                <li>Smluvni strany prohlasuji, ze si tuto smlouvu pred podpisem precetly, ze jejimu obsahu rozumeji a ze ji uzaviraji svobodne a vazne, nikoliv v tisni za napadne nevyhodnych podminek. Na dukaz toho pripojuji sve podpisy.</li>
+            </ol>
+        </div>
+
+        <!-- Podpisy -->
+        <div class="signature-section">
+            <p>V Chebu dne 30. brezna 2026</p>
+
+            <div class="signature-grid">
+                <div class="signature-side">
+                    <div class="role">Za Zhotovitele</div>
+                    <p class="name">Martin Svanda</p>
+                    <p>jednatel PRAUT s.r.o.</p>
+                    <div class="signature-line">Podpis a razitko</div>
+                </div>
+                <div class="signature-side">
+                    <div class="role">Za Objednatele</div>
+                    <p class="name">Ladislav Sula</p>
+                    <p>FUTURE PRODUCT DESIGN a.s.</p>
+                    <div class="signature-line">Podpis a razitko</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="doc-footer">
+            <div>PRAUT s.r.o. | ICO: 22545107 | Smlouva PRAUT-2026-CAD-SOD-001</div>
+            <div>Strana 1 | 30. brezna 2026</div>
+        </div>
+    </div>
+</body>
+</html>

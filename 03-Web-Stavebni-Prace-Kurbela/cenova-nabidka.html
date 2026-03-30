@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cenová nabídka - Web pro stavební práce | PRAUT s.r.o.</title>
+    <style>
+        :root {
+            --primary: #1a2a3a;
+            --accent: #c0392b;
+            --accent-light: #e74c3c;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #6c757d;
+            --border: #dee2e6;
+            --success: #27ae60;
+            --gold: #f0b429;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Header */
+        .doc-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c3e50 100%);
+            color: #fff;
+            padding: 48px 0;
+            margin-bottom: 40px;
+        }
+
+        .doc-header .container {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .doc-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .doc-header .subtitle {
+            font-size: 16px;
+            opacity: 0.85;
+        }
+
+        .header-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .header-grid h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .header-grid p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Sections */
+        .section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .section p {
+            margin-bottom: 12px;
+        }
+
+        /* Pricing card - main */
+        .pricing-main {
+            background: linear-gradient(135deg, var(--primary) 0%, #34495e 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 24px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-main::before {
+            content: 'MVP';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--accent);
+            color: #fff;
+            padding: 6px 40px;
+            font-size: 13px;
+            font-weight: 700;
+            transform: rotate(45deg);
+            letter-spacing: 1px;
+        }
+
+        .pricing-main .price-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+
+        .pricing-main .price {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .pricing-main .price-note {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 24px;
+        }
+
+        .pricing-main .price-desc {
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .pricing-main .features {
+            list-style: none;
+            margin-top: 24px;
+            padding: 0;
+        }
+
+        .pricing-main .features li {
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+            font-size: 15px;
+        }
+
+        .pricing-main .features li::before {
+            content: '\2713';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* AI badge */
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        .ai-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+        }
+
+        /* Optional items */
+        .optional-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .optional-card {
+            background: #f8f9fa;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .optional-card .opt-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .optional-card .opt-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .optional-card .opt-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .optional-card .opt-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* Payment terms */
+        .payment-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+
+        .payment-step {
+            text-align: center;
+            padding: 20px;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .payment-step .step-amount {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .payment-step .step-percent {
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .payment-step .step-label {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .payment-arrow {
+            font-size: 24px;
+            color: var(--border);
+            flex-shrink: 0;
+        }
+
+        /* Summary table */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 15px;
+        }
+
+        .summary-table th {
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .summary-table tr:last-child td {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 16px;
+            background: #f0f4f8;
+        }
+
+        .summary-table .text-right {
+            text-align: right;
+        }
+
+        .summary-table .badge-opt {
+            font-size: 11px;
+            background: #fff3e0;
+            color: #e67e22;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        /* Validity */
+        .validity-box {
+            background: #fffde7;
+            border: 1px solid #ffd54f;
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-size: 14px;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .validity-box .icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        /* Signature */
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 32px;
+        }
+
+        .signature-box {
+            border-top: 2px solid var(--primary);
+            padding-top: 16px;
+        }
+
+        .signature-box .sig-role {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .signature-box .sig-name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .signature-box .sig-company {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .signature-box .sig-line {
+            margin-top: 48px;
+            border-bottom: 1px solid var(--text);
+            padding-bottom: 4px;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        .doc-footer {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--text-light);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .doc-footer strong {
+            color: var(--text);
+        }
+
+        /* Print */
+        @media print {
+            body { background: #fff; }
+            .doc-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .pricing-main { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .section { break-inside: avoid; }
+        }
+
+        @media (max-width: 600px) {
+            .doc-header h1 { font-size: 22px; }
+            .header-grid { grid-template-columns: 1fr; gap: 16px; }
+            .section { padding: 20px; }
+            .pricing-main { padding: 24px; }
+            .pricing-main .price { font-size: 36px; }
+            .optional-grid { grid-template-columns: 1fr; }
+            .payment-flow { flex-direction: column; }
+            .payment-arrow { transform: rotate(90deg); }
+            .signature-grid { grid-template-columns: 1fr; gap: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="doc-header">
+        <div class="container">
+            <h1>Cenová nabídka</h1>
+            <p class="subtitle">Webová prezentace pro stavební firmu</p>
+
+            <div class="header-grid">
+                <div>
+                    <h3>Dodavatel</h3>
+                    <p>
+                        <strong>PRAUT s.r.o.</strong><br>
+                        Obrněné brigády 552/33, 350 02 Cheb<br>
+                        IČO: 22545107 | Neplátce DPH<br>
+                        Zastoupený: Martin Švanda<br>
+                        E-mail: svanda@praut.cz
+                    </p>
+                </div>
+                <div>
+                    <h3>Odběratel</h3>
+                    <p>
+                        <strong>Mykhaylo Kurbela</strong> (OSVČ)<br>
+                        Nevanova 1047/5, Praha 6 - Řepy<br>
+                        IČO: 01443607<br>
+                        Kontakt: Michal Kurbela<br>
+                        E-mail: michalkurbela@seznam.cz<br>
+                        Tel: +420 773 077 100
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hlavní nabídka -->
+        <div class="section">
+            <h2>Nabídka služeb</h2>
+
+            <div class="pricing-main">
+                <div class="price-label">One-page webová prezentace</div>
+                <div class="price">12 000 Kč</div>
+                <div class="price-note">Jednorázová cena | Neplátce DPH</div>
+
+                <div class="price-desc">
+                    Kompletní webová prezentace pro stavební firmu. Moderní one-page web
+                    s důrazem na získávání klientů a prezentaci realizací.
+                </div>
+
+                <ul class="features">
+                    <li>Responzivní design (mobil, tablet, desktop)</li>
+                    <li>Hero sekce s call-to-action</li>
+                    <li>Sekce O nás s profilem firmy</li>
+                    <li>Přehled služeb s ikonami a popisy</li>
+                    <li>Galerie realizací / reference</li>
+                    <li>Kontaktní formulář s odesíláním na e-mail</li>
+                    <li>Google Maps integrace</li>
+                    <li>SEO optimalizace (meta tagy, structured data, sitemap)</li>
+                    <li>Nasazení na hosting a napojení domény</li>
+                    <li>14denní testovací lhůta po předání</li>
+                </ul>
+
+                <div class="ai-badge">
+                    <span class="dot"></span>
+                    AI generuje layout, texty a optimalizuje obrázky = nižší cena
+                </div>
+            </div>
+        </div>
+
+        <!-- Volitelné služby -->
+        <div class="section">
+            <h2>Volitelné služby</h2>
+            <p>Následující služby lze doobjednat k základní nabídce:</p>
+
+            <div class="optional-grid">
+                <div class="optional-card">
+                    <div class="opt-label">Volitelně</div>
+                    <div class="opt-name">Doména + hosting</div>
+                    <div class="opt-price">1 500 Kč/rok</div>
+                    <div class="opt-desc">
+                        Registrace a správa domény .cz, webhosting na rok včetně SSL certifikátu, e-mailových schránek a technické podpory.
+                    </div>
+                </div>
+                <div class="optional-card">
+                    <div class="opt-label">Volitelně</div>
+                    <div class="opt-name">Správa a aktualizace</div>
+                    <div class="opt-price">1 000 Kč/měsíc</div>
+                    <div class="opt-desc">
+                        Průběžné aktualizace obsahu webu, přidávání nových realizací, úpravy textů, technická údržba a zálohy.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cenový přehled -->
+        <div class="section">
+            <h2>Cenový přehled</h2>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Položka</th>
+                        <th class="text-right">Cena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>One-page webová prezentace (MVP)</td>
+                        <td class="text-right">12 000 Kč</td>
+                    </tr>
+                    <tr>
+                        <td>Doména + hosting (1 rok) <span class="badge-opt">volitelné</span></td>
+                        <td class="text-right">1 500 Kč/rok</td>
+                    </tr>
+                    <tr>
+                        <td>Správa a aktualizace <span class="badge-opt">volitelné</span></td>
+                        <td class="text-right">1 000 Kč/měsíc</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Celkem za web (bez volitelných)</strong></td>
+                        <td class="text-right"><strong>12 000 Kč</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><em>Pozn.: PRAUT s.r.o. není plátce DPH. Uvedené ceny jsou konečné.</em></p>
+        </div>
+
+        <!-- Platební podmínky -->
+        <div class="section">
+            <h2>Platební podmínky</h2>
+
+            <div class="payment-flow">
+                <div class="payment-step">
+                    <div class="step-percent">50 % záloha</div>
+                    <div class="step-amount">6 000 Kč</div>
+                    <div class="step-label">Před zahájením prací</div>
+                </div>
+                <div class="payment-arrow">&rarr;</div>
+                <div class="payment-step">
+                    <div class="step-percent">50 % doplatek</div>
+                    <div class="step-amount">6 000 Kč</div>
+                    <div class="step-label">Po předání hotového webu</div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 16px; margin-top: 20px; margin-bottom: 12px;">Platba bankovním převodem</h3>
+            <ul style="padding-left: 24px;">
+                <li>Platba probíhá na základě vystavené faktury</li>
+                <li>Splatnost faktur: 14 dní od vystavení</li>
+                <li>Práce budou zahájeny po připsání zálohy na účet a dodání podkladů</li>
+            </ul>
+
+            <div class="validity-box">
+                <span class="icon">&#9200;</span>
+                <div>
+                    <strong>Platnost nabídky:</strong> Tato cenová nabídka je platná do <strong>30. dubna 2026</strong> (30 dní od vystavení). Po uplynutí této lhůty si dodavatel vyhrazuje právo nabídku upravit.
+                </div>
+            </div>
+        </div>
+
+        <!-- Termín dodání -->
+        <div class="section">
+            <h2>Termín dodání</h2>
+            <p>Webová prezentace bude dokončena a předána do <strong>2 týdnů</strong> od splnění obou podmínek:</p>
+            <ol style="padding-left: 24px; margin-top: 12px;">
+                <li style="margin-bottom: 8px;">Zaplacení zálohy ve výši 6 000 Kč</li>
+                <li>Dodání kompletních podkladů (texty, fotografie, logo)</li>
+            </ol>
+            <p style="margin-top: 16px;"><em>Po dokončení následuje 14denní testovací lhůta, během které objednatel může uplatnit připomínky a požadavky na úpravy v rámci dohodnutého rozsahu.</em></p>
+        </div>
+
+        <!-- Podpisy -->
+        <div class="section">
+            <h2>Souhlas s nabídkou</h2>
+            <p>Podpisem tohoto dokumentu obě strany souhlasí s výše uvedenými podmínkami. Závazná objednávka bude potvrzena podpisem smlouvy o dílo.</p>
+
+            <div class="signature-grid">
+                <div class="signature-box">
+                    <div class="sig-role">Dodavatel</div>
+                    <div class="sig-name">Martin Švanda</div>
+                    <div class="sig-company">PRAUT s.r.o.</div>
+                    <div class="sig-line">Podpis a datum</div>
+                </div>
+                <div class="signature-box">
+                    <div class="sig-role">Odběratel</div>
+                    <div class="sig-name">Michal Kurbela</div>
+                    <div class="sig-company">Mykhaylo Kurbela (OSVČ)</div>
+                    <div class="sig-line">Podpis a datum</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="doc-footer">
+        <p><strong>PRAUT s.r.o.</strong> | Obrněné brigády 552/33, 350 02 Cheb | IČO: 22545107</p>
+        <p>Cenová nabídka č. CN-2026-003 | Vystaveno: 30. března 2026 | Platnost: 30. dubna 2026</p>
+    </footer>
+</body>
+</html>

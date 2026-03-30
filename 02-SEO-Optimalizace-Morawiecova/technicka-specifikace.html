@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technická specifikace - SEO Optimalizace webu</title>
+    <style>
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e3a8a;
+            --primary-light: #dbeafe;
+            --accent: #059669;
+            --accent-light: #d1fae5;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--gray-800);
+            line-height: 1.7;
+            background: var(--gray-50);
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: #fff;
+            padding: 48px 60px 40px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .company-name {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .doc-badge {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 32px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 13px;
+        }
+
+        .header-meta span {
+            opacity: 0.8;
+        }
+
+        .header-meta strong {
+            display: block;
+            opacity: 1;
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        /* Content */
+        .content {
+            padding: 48px 60px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: var(--primary);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            color: var(--gray-700);
+        }
+
+        /* Phase cards */
+        .phase-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            background: var(--gray-50);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+
+        .phase-card.phase-1::before { background: var(--primary); }
+        .phase-card.phase-2::before { background: var(--accent); }
+        .phase-card.phase-3::before { background: var(--warning); }
+
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .phase-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 4px;
+        }
+
+        .phase-1 .phase-label { background: var(--primary-light); color: var(--primary-dark); }
+        .phase-2 .phase-label { background: var(--accent-light); color: #065f46; }
+        .phase-3 .phase-label { background: var(--warning-light); color: #92400e; }
+
+        .phase-timeline {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .phase-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 6px 0 6px 28px;
+            position: relative;
+            color: var(--gray-700);
+            font-size: 14px;
+        }
+
+        .checklist li::before {
+            content: '\2713';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Tools table */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .tool-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .tool-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray-800);
+        }
+
+        .tool-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        /* Scope tables */
+        .scope-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .scope-table th {
+            background: var(--gray-100);
+            padding: 10px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray-700);
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .scope-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .included { color: var(--accent); font-weight: 700; }
+        .excluded { color: var(--danger); font-weight: 700; }
+
+        /* KPI cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .kpi-card h4 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.85;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .kpi-desc {
+            font-size: 12px;
+            opacity: 0.75;
+            margin-top: 4px;
+        }
+
+        /* Info box */
+        .info-box {
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-size: 14px;
+            color: var(--primary-dark);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-100);
+            padding: 32px 60px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        @media print {
+            .page { max-width: 100%; }
+            .header { padding: 32px 40px 28px; }
+            .content { padding: 32px 40px; }
+            .footer { padding: 24px 40px; }
+            .phase-card { break-inside: avoid; }
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 32px 24px 28px; }
+            .content { padding: 32px 24px; }
+            .footer { padding: 24px; flex-direction: column; gap: 8px; }
+            .header-meta { flex-direction: column; gap: 12px; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="header-top">
+                <div class="company-name">PRAUT s.r.o.</div>
+                <div class="doc-badge">Technická specifikace</div>
+            </div>
+            <h1>SEO Optimalizace webu</h1>
+            <p class="header-subtitle">Kompletní technická dokumentace projektu optimalizace pro vyhledávače</p>
+            <div class="header-meta">
+                <div>
+                    <span>Dokument č.</span>
+                    <strong>TS-2026-003</strong>
+                </div>
+                <div>
+                    <span>Datum vytvoření</span>
+                    <strong>30. března 2026</strong>
+                </div>
+                <div>
+                    <span>Verze</span>
+                    <strong>1.0</strong>
+                </div>
+                <div>
+                    <span>Klient</span>
+                    <strong>Lucie Morawiecová</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Section 1: Úvod -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    Úvod a cíle projektu
+                </h2>
+                <p>
+                    Předmětem tohoto dokumentu je technická specifikace projektu SEO optimalizace webu
+                    pro klientku Lucii Morawiecovou. Cílem projektu je zvýšení viditelnosti webu
+                    ve vyhledávačích, zlepšení organického provozu a zajištění technické kvality webu
+                    dle aktuálních standardů.
+                </p>
+                <p>
+                    Projekt je rozdělen do tří fází, přičemž první fáze (MVP) zahrnuje kompletní SEO audit
+                    a implementaci on-page optimalizace. Následující fáze jsou volitelné a realizují se
+                    na základě výsledků a potřeb klientky.
+                </p>
+                <div class="info-box">
+                    Projekt využívá AI-asistovanou analýzu klíčových slov a technického stavu webu,
+                    což zajišťuje rychlejší a přesnější výsledky oproti čistě manuálnímu přístupu.
+                </div>
+            </div>
+
+            <!-- Section 2: Fáze projektu -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    Fáze projektu
+                </h2>
+
+                <!-- Fáze 1 -->
+                <div class="phase-card phase-1">
+                    <div class="phase-header">
+                        <span class="phase-label">Fáze 1 - MVP</span>
+                        <span class="phase-timeline">3 týdny od zahájení</span>
+                    </div>
+                    <div class="phase-title">Kompletní SEO audit + On-page optimalizace</div>
+                    <h3>SEO Audit</h3>
+                    <ul class="checklist">
+                        <li>Kompletní crawl webu a identifikace technických problémů</li>
+                        <li>Analýza aktuálních pozic ve vyhledávačích</li>
+                        <li>AI-asistovaná analýza klíčových slov (objem, konkurence, záměr)</li>
+                        <li>Analýza konkurence v organickém vyhledávání</li>
+                        <li>Audit obsahu a jeho relevance pro cílová klíčová slova</li>
+                        <li>Identifikace duplicitního obsahu a kanibalizace klíčových slov</li>
+                    </ul>
+
+                    <h3>On-page optimalizace</h3>
+                    <ul class="checklist">
+                        <li>Optimalizace meta tagů (title, description) pro všechny klíčové stránky</li>
+                        <li>Úprava hierarchie nadpisů (H1-H6) dle SEO best practices</li>
+                        <li>Optimalizace struktury URL adres</li>
+                        <li>Doplnění a optimalizace alt textů u obrázků</li>
+                        <li>Optimalizace interního prolinkování</li>
+                        <li>Implementace strukturovaných dat (Schema.org)</li>
+                    </ul>
+
+                    <h3>Technické SEO</h3>
+                    <ul class="checklist">
+                        <li>Optimalizace rychlosti načítání (PageSpeed Insights)</li>
+                        <li>Kontrola a optimalizace pro mobile-first indexing</li>
+                        <li>Měření a optimalizace Core Web Vitals (LCP, FID, CLS)</li>
+                        <li>Vytvoření/aktualizace sitemap.xml</li>
+                        <li>Konfigurace robots.txt</li>
+                        <li>Kontrola a oprava přesměrování (301/302)</li>
+                        <li>Kontrola HTTPS a smíšeného obsahu</li>
+                        <li>Optimalizace canonical tagů</li>
+                    </ul>
+                </div>
+
+                <!-- Fáze 2 -->
+                <div class="phase-card phase-2">
+                    <div class="phase-header">
+                        <span class="phase-label">Fáze 2 - Volitelná</span>
+                        <span class="phase-timeline">Po dokončení Fáze 1</span>
+                    </div>
+                    <div class="phase-title">Off-page SEO + Linkbuilding strategie</div>
+                    <ul class="checklist">
+                        <li>Analýza zpětných odkazů (backlink audit)</li>
+                        <li>Vypracování linkbuilding strategie</li>
+                        <li>Identifikace příležitostí pro přirozené zpětné odkazy</li>
+                        <li>Registrace do relevantních katalogů a oborových portálů</li>
+                        <li>Strategie pro získání odkazů z autorit v oboru</li>
+                        <li>Disavow škodlivých zpětných odkazů (pokud existují)</li>
+                        <li>Nastavení lokálního SEO (Google Business Profile)</li>
+                    </ul>
+                </div>
+
+                <!-- Fáze 3 -->
+                <div class="phase-card phase-3">
+                    <div class="phase-header">
+                        <span class="phase-label">Fáze 3 - Volitelná</span>
+                        <span class="phase-timeline">Průběžně (měsíční cyklus)</span>
+                    </div>
+                    <div class="phase-title">Obsahová strategie + Měsíční monitoring</div>
+                    <ul class="checklist">
+                        <li>Vypracování obsahové strategie na základě klíčových slov</li>
+                        <li>Redakční plán s tématy a cílovými klíčovými slovy</li>
+                        <li>Měsíční report pozic klíčových slov</li>
+                        <li>Měsíční report organického provozu</li>
+                        <li>Monitoring Core Web Vitals a technického stavu</li>
+                        <li>Průběžná optimalizace na základě dat</li>
+                        <li>Sledování a reakce na změny algoritmů vyhledávačů</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 3: Nástroje -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Použité nástroje a technologie
+                </h2>
+                <div class="tools-grid">
+                    <div class="tool-item">
+                        <div class="tool-icon">&#x1F50D;</div>
+                        <div>
+                            <div class="tool-name">Google Search Console</div>
+                            <div class="tool-desc">Monitoring indexace a výkonu</div>
+                        </div>
+                    </div>
+                    <div class="tool-item">
+                        <div class="tool-icon">&#x1F4CA;</div>
+                        <div>
+                            <div class="tool-name">Google Analytics 4</div>
+                            <div class="tool-desc">Analýza návštěvnosti a chování</div>
+                        </div>
+                    </div>
+                    <div class="tool-item">
+                        <div class="tool-icon">&#x1F916;</div>
+                        <div>
+                            <div class="tool-name">AI analýza klíčových slov</div>
+                            <div class="tool-desc">Pokročilá analýza záměru a relevance</div>
+                        </div>
+                    </div>
+                    <div class="tool-item">
+                        <div class="tool-icon">&#x26A1;</div>
+                        <div>
+                            <div class="tool-name">PageSpeed Insights</div>
+                            <div class="tool-desc">Měření rychlosti a Core Web Vitals</div>
+                        </div>
+                    </div>
+                    <div class="tool-item">
+                        <div class="tool-icon">&#x1F578;</div>
+                        <div>
+                            <div class="tool-name">Screaming Frog / Sitebulb</div>
+                            <div class="tool-desc">Technický crawl a audit webu</div>
+                        </div>
+                    </div>
+                    <div class="tool-item">
+                        <div class="tool-icon">&#x1F4C8;</div>
+                        <div>
+                            <div class="tool-name">Ahrefs / SEMrush</div>
+                            <div class="tool-desc">Analýza klíčových slov a konkurence</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Rozsah -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Rozsah projektu (Scope)
+                </h2>
+                <table class="scope-table">
+                    <thead>
+                        <tr>
+                            <th>Položka</th>
+                            <th>Stav</th>
+                            <th>Poznámka</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SEO audit webu</td>
+                            <td class="included">Součástí</td>
+                            <td>Fáze 1 (MVP)</td>
+                        </tr>
+                        <tr>
+                            <td>Analýza klíčových slov</td>
+                            <td class="included">Součástí</td>
+                            <td>AI-asistovaná, Fáze 1</td>
+                        </tr>
+                        <tr>
+                            <td>On-page optimalizace</td>
+                            <td class="included">Součástí</td>
+                            <td>Meta tagy, nadpisy, URL, alt texty, Fáze 1</td>
+                        </tr>
+                        <tr>
+                            <td>Technické SEO</td>
+                            <td class="included">Součástí</td>
+                            <td>Rychlost, CWV, sitemap, robots.txt, Fáze 1</td>
+                        </tr>
+                        <tr>
+                            <td>Off-page SEO / Linkbuilding</td>
+                            <td class="included">Součástí</td>
+                            <td>Fáze 2 (volitelná)</td>
+                        </tr>
+                        <tr>
+                            <td>Obsahová strategie</td>
+                            <td class="included">Součástí</td>
+                            <td>Fáze 3 (volitelná)</td>
+                        </tr>
+                        <tr>
+                            <td>PPC reklama (Google Ads, Sklik)</td>
+                            <td class="excluded">NENÍ součástí</td>
+                            <td>Placená reklama je mimo rozsah</td>
+                        </tr>
+                        <tr>
+                            <td>Tvorba nového obsahu</td>
+                            <td class="excluded">NENÍ součástí</td>
+                            <td>Copywriting nad rámec meta tagů</td>
+                        </tr>
+                        <tr>
+                            <td>Redesign webu</td>
+                            <td class="excluded">NENÍ součástí</td>
+                            <td>Grafické a UX změny</td>
+                        </tr>
+                        <tr>
+                            <td>Správa sociálních sítí</td>
+                            <td class="excluded">NENÍ součástí</td>
+                            <td>SMM a social media marketing</td>
+                        </tr>
+                        <tr>
+                            <td>E-mail marketing</td>
+                            <td class="excluded">NENÍ součástí</td>
+                            <td>Newslettery, kampaně</td>
+                        </tr>
+                        <tr>
+                            <td>Hosting a doména</td>
+                            <td class="excluded">NENÍ součástí</td>
+                            <td>Správa serveru a domény</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 5: KPIs -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    Klíčové ukazatele výkonu (KPIs)
+                </h2>
+                <p>
+                    Následující metriky budou sledovány pro měření úspěšnosti SEO optimalizace.
+                    Konkrétní cílové hodnoty budou stanoveny po provedení úvodního auditu.
+                </p>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <h4>Pozice klíčových slov</h4>
+                        <div class="kpi-value">TOP 10</div>
+                        <div class="kpi-desc">Cílová pozice pro hlavní klíčová slova</div>
+                    </div>
+                    <div class="kpi-card">
+                        <h4>Organický traffic</h4>
+                        <div class="kpi-value">+30%</div>
+                        <div class="kpi-desc">Nárůst organické návštěvnosti za 3 měsíce</div>
+                    </div>
+                    <div class="kpi-card">
+                        <h4>Core Web Vitals</h4>
+                        <div class="kpi-value">Zelená</div>
+                        <div class="kpi-desc">Splnění prahových hodnot CWV</div>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <strong>Důležité upozornění:</strong> Konkrétní pozice ve vyhledávačích nelze garantovat,
+                    neboť jsou závislé na algoritmech třetích stran (Google, Seznam). Uvedené KPIs představují
+                    realistické cíle na základě zkušeností s podobnými projekty.
+                </div>
+            </div>
+
+            <!-- Section 6: Dodací podmínky -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    Dodací podmínky a součinnost
+                </h2>
+                <h3>Výstupy Fáze 1 (MVP)</h3>
+                <ul class="checklist">
+                    <li>Kompletní SEO audit report (PDF/HTML dokument)</li>
+                    <li>Seznam klíčových slov s analýzou (tabulka)</li>
+                    <li>Implementované on-page změny přímo na webu</li>
+                    <li>Aktualizovaný sitemap.xml a robots.txt</li>
+                    <li>Nastavení Google Search Console a Analytics 4</li>
+                    <li>Doporučení pro další postup</li>
+                </ul>
+
+                <h3>Požadovaná součinnost klientky</h3>
+                <ul class="checklist">
+                    <li>Přístup k administraci webu (CMS)</li>
+                    <li>Přístup ke Google Search Console (nebo jeho nastavení)</li>
+                    <li>Přístup ke Google Analytics (nebo jeho nastavení)</li>
+                    <li>Případné přístupy k hostingu (pro technické úpravy)</li>
+                    <li>Zpětná vazba k návrhu klíčových slov a priorit</li>
+                </ul>
+
+                <h3>Termíny</h3>
+                <p>
+                    Termín realizace Fáze 1 (MVP) je <strong>3 týdny od zaplacení zálohy</strong>.
+                    Přesný harmonogram bude upřesněn po zahájení spolupráce a získání přístupů.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div>PRAUT s.r.o. | IČO: 22545107 | Obrněné brigády 552/33, 350 02 Cheb</div>
+            <div>Verze 1.0 | 30. března 2026</div>
+        </div>
+    </div>
+</body>
+</html>

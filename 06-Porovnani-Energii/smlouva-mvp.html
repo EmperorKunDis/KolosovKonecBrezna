@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smlouva o dilo - Porovnani dodavatelu energii MVP</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2c5282;
+            --accent: #2b6cb0;
+            --accent-light: #ebf4ff;
+            --text: #1a202c;
+            --text-light: #4a5568;
+            --border: #e2e8f0;
+            --bg: #ffffff;
+            --bg-gray: #f7fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            line-height: 1.8;
+            background: var(--bg-gray);
+        }
+
+        .document {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg);
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 50px 60px 40px;
+            text-align: center;
+        }
+
+        .header .doc-label {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-size: 15px;
+            opacity: 0.85;
+        }
+
+        .header .ref-number {
+            font-size: 12px;
+            opacity: 0.6;
+            margin-top: 15px;
+        }
+
+        .content {
+            padding: 50px 60px;
+        }
+
+        .article {
+            margin-bottom: 30px;
+        }
+
+        .article-header {
+            background: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            padding: 10px 20px;
+            margin-bottom: 15px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .article-header h2 {
+            font-size: 16px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .article-body {
+            padding: 0 10px;
+        }
+
+        .article-body p {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .article-body ol, .article-body ul {
+            padding-left: 25px;
+            margin-bottom: 12px;
+        }
+
+        .article-body li {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        .parties-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .party-box {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 22px 25px;
+            background: var(--bg-gray);
+        }
+
+        .party-box .party-role {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .party-box h3 {
+            font-size: 15px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .party-box p {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 3px;
+        }
+
+        .intro-text {
+            font-size: 14px;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            font-style: italic;
+        }
+
+        .highlight-box {
+            background: var(--accent-light);
+            border: 1px solid #bee3f8;
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin: 15px 0;
+        }
+
+        .highlight-box p {
+            font-size: 13px;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .warning-box {
+            background: #fffaf0;
+            border: 1px solid #fbd38d;
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin: 15px 0;
+        }
+
+        .warning-box p {
+            font-size: 13px;
+            color: #744210;
+            margin-bottom: 4px;
+        }
+
+        .dpa-section {
+            background: var(--bg-gray);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 22px 25px;
+            margin: 20px 0;
+        }
+
+        .dpa-section h4 {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .dpa-section p, .dpa-section li {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .signature-section {
+            margin-top: 50px;
+            padding-top: 20px;
+        }
+
+        .signature-text {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+
+        .signatures {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .sig-block {
+            text-align: center;
+        }
+
+        .sig-block .sig-role {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 60px;
+        }
+
+        .sig-block .sig-line {
+            border-top: 1px solid var(--text);
+            padding-top: 10px;
+        }
+
+        .sig-block .sig-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .sig-block .sig-company {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .footer {
+            background: var(--bg-gray);
+            border-top: 1px solid var(--border);
+            padding: 25px 60px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        @media print {
+            body { background: white; }
+            .document { box-shadow: none; }
+            .article { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <div class="header">
+            <div class="doc-label">Smlouva o dílo</div>
+            <h1>Vývoj webového nástroje pro porovnání dodavatelů energií</h1>
+            <div class="subtitle">MVP &mdash; Minimum Viable Product</div>
+            <div class="ref-number">Č. smlouvy: SOD-2026-006 | 30. března 2026</div>
+        </div>
+
+        <div class="content">
+            <p class="intro-text">uzavřená dle ustanovení &sect; 2586 a násl. zákona č. 89/2012 Sb., občanského zákoníku, ve znění pozdějších předpisů (dále jen &bdquo;smlouva&ldquo;)</p>
+
+            <!-- SMLUVNÍ STRANY -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>I. Smluvní strany</h2>
+                </div>
+                <div class="parties-section">
+                    <div class="party-box">
+                        <div class="party-role">Zhotovitel</div>
+                        <h3>PRAUT s.r.o.</h3>
+                        <p>Obrněné brigády 552/33, 350 02 Cheb</p>
+                        <p>IČO: 22545107</p>
+                        <p>Neplátce DPH</p>
+                        <p>Zastoupený: Martinem Švandou, jednatelem</p>
+                        <p>E-mail: svanda@praut.cz</p>
+                    </div>
+                    <div class="party-box">
+                        <div class="party-role">Objednatel</div>
+                        <h3>Energie Výhodněji, s.r.o.</h3>
+                        <p>Chopinova, Brno</p>
+                        <p>IČO: 22508392</p>
+                        <p>DIČ: CZ22508392</p>
+                        <p>Zastoupený: Michalem Helekalem</p>
+                        <p>E-mail: helekal@s-ic.cz</p>
+                        <p>Tel.: +420 770 331 765</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PŘEDMĚT SMLOUVY -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>II. Předmět smlouvy</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Zhotovitel se zavazuje vytvořit pro objednatele webový nástroj pro porovnání dodavatelů energií s využitím AI/OCR technologie (dále jen &bdquo;dílo&ldquo;) v rozsahu MVP (Minimum Viable Product).</li>
+                        <li>Dílo bude zahrnovat následující moduly:
+                            <ul>
+                                <li><strong>Správa ceníků</strong> &mdash; upload PDF ceníků dodavatelů, automatická AI/OCR extrakce dat (dodavatel, tarif, VT/NT sazby, poplatky, platnost), možnost ruční korekce, uložení do databáze</li>
+                                <li><strong>Analýza faktury</strong> &mdash; upload faktury (PDF/obrázek), automatická AI extrakce spotřeby, sazeb a cen, validace extrahovaných dat</li>
+                                <li><strong>Porovnávací engine</strong> &mdash; výpočet ročních nákladů u všech dodavatelů v databázi, zohlednění VT/NT spotřeby, fixních poplatků a stálého platu, seřazení a zvýraznění nejvýhodnější nabídky, výpočet úspory</li>
+                                <li><strong>PDF export</strong> &mdash; generování přehledného reportu pro klienta s tabulkou porovnání a zvýrazněním úspory</li>
+                                <li><strong>Uživatelská správa</strong> &mdash; registrace, přihlášení, role (administrátor, poradce), řízení přístupu</li>
+                            </ul>
+                        </li>
+                        <li>Objednatel dílo přebírá a zavazuje se za něj zaplatit sjednanou cenu.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- TECHNICKÉ ŘEŠENÍ -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>III. Technické řešení</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Dílo bude realizováno s využitím následujících technologií: Python/Django (backend), Angular (frontend), PostgreSQL (databáze), Celery + Redis (asynchronní zpracování), Gemini Vision API (AI/OCR).</li>
+                        <li>Podrobná technická specifikace je uvedena v dokumentu &bdquo;Technická specifikace TS-2026-006&ldquo;, který tvoří nedílnou přílohu této smlouvy.</li>
+                        <li>Dílo bude nasazeno na server zajištěný objednatelem, případně na VPS doporučený zhotovitelem.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- CENA A PLATEBNÍ PODMÍNKY -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>IV. Cena a platební podmínky</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Celková cena díla činí <strong>55 000 Kč</strong> (slovy: padesát pět tisíc korun českých). Zhotovitel není plátcem DPH.</li>
+                        <li>Cena je sjednána jako pevná a zahrnuje veškeré náklady zhotovitele spojené s vytvořením díla.</li>
+                        <li>Platba bude provedena ve dvou částech:
+                            <ul>
+                                <li><strong>Záloha 50 %</strong> ve výši 27 500 Kč &mdash; splatná do 14 dnů od podpisu smlouvy, před zahájením prací</li>
+                                <li><strong>Doplatek 50 %</strong> ve výši 27 500 Kč &mdash; splatný do 14 dnů od předání a akceptace díla</li>
+                            </ul>
+                        </li>
+                        <li>Platba bude provedena bankovním převodem na účet zhotovitele uvedený na faktuře.</li>
+                        <li>V případě prodlení s platbou je objednatel povinen uhradit úrok z prodlení ve výši 0,05 % z dlužné částky za každý den prodlení.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- TERMÍN PLNĚNÍ -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>V. Termín plnění</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Zhotovitel se zavazuje dílo dokončit a předat objednateli do <strong>5 týdnů</strong> od připsání zálohy na účet zhotovitele.</li>
+                        <li>Cílový termín dokončení: <strong>konec května 2026</strong>.</li>
+                        <li>Termín plnění se přiměřeně prodlužuje o dobu, po kterou objednatel neposkytoval požadovanou součinnost dle čl. VI.</li>
+                        <li>Zhotovitel bude objednatele průběžně informovat o postupu prací, minimálně jednou týdně formou emailové zprávy.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- SOUČINNOST OBJEDNATELE -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>VI. Součinnost objednatele</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Objednatel se zavazuje poskytnout zhotoviteli veškerou potřebnou součinnost, zejména:
+                            <ul>
+                                <li>Dodání vzorových faktur dodavatelů energií (minimálně 5 různých dodavatelů) pro nastavení a trénink AI extrakce</li>
+                                <li>Dodání vzorových ceníků dodavatelů (minimálně 5 dodavatelů) pro nastavení AI extrakce</li>
+                                <li>Definici přesných poplatků a položek, které mají být z ceníků a faktur extrahovány</li>
+                                <li>Zpětnou vazbu k funkčnosti a designu v průběhu vývoje</li>
+                                <li>Akceptační testování díla do 5 pracovních dnů od předání</li>
+                            </ul>
+                        </li>
+                        <li>Vzorové dokumenty dle bodu 1 dodá objednatel nejpozději do 5 pracovních dnů od zaplacení zálohy.</li>
+                        <li>V případě neposkytnutí součinnosti ve stanovených lhůtách se termín dokončení díla posouvá o odpovídající dobu prodlení.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- PŘEDÁNÍ A AKCEPTACE -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>VII. Předání a akceptace díla</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Dílo bude předáno formou nasazení na produkční server a předání přístupových údajů objednateli.</li>
+                        <li>Součástí předání je zdrojový kód díla a základní dokumentace (uživatelský manuál).</li>
+                        <li>Objednatel provede akceptační testování do 5 pracovních dnů od předání. Pokud objednatel v této lhůtě neoznámí vady, má se za to, že dílo bylo akceptováno bez výhrad.</li>
+                        <li>Pokud objednatel zjistí vady, oznámí je zhotoviteli písemně (emailem). Zhotovitel vady odstraní v přiměřené lhůtě, nejdéle však do 10 pracovních dnů.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- ODPOVĚDNOST ZA VADY -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>VIII. Odpovědnost za vady a záruka</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Zhotovitel poskytuje záruku za jakost díla po dobu <strong>3 měsíců</strong> od akceptace.</li>
+                        <li>V záruční době zhotovitel bezúplatně odstraní vady díla, které brání jeho řádnému užívání.</li>
+                        <li>Záruka se nevztahuje na vady způsobené:
+                            <ul>
+                                <li>Zásahem objednatele nebo třetí osoby do zdrojového kódu</li>
+                                <li>Provozem díla v prostředí neodpovídajícím technické specifikaci</li>
+                                <li>Změnami v API třetích stran (Gemini Vision API apod.)</li>
+                                <li>Vyšší mocí</li>
+                            </ul>
+                        </li>
+                        <li>Po uplynutí záruční doby může objednatel objednat údržbu a podporu za smluvní cenu.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- AI DISCLAIMER -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>IX. Upozornění k AI/OCR technologii</h2>
+                </div>
+                <div class="article-body">
+                    <div class="warning-box">
+                        <p><strong>Důležité upozornění:</strong></p>
+                        <p>Přesnost automatické AI/OCR extrakce dat z PDF dokumentů není 100%. Výsledky extrakce jsou závislé na kvalitě vstupních dokumentů, formátu ceníků a faktur jednotlivých dodavatelů.</p>
+                    </div>
+                    <ol>
+                        <li>Zhotovitel negarantuje 100% přesnost AI/OCR extrakce dat. Systém poskytuje možnost ruční korekce extrahovaných dat, kterou je poradce povinen využít před finálním porovnáním.</li>
+                        <li><strong>Zhotovitel neodpovídá za finanční rozhodnutí učiněná na základě výstupů nástroje.</strong> Nástroj slouží jako podpůrný kalkulační prostředek a nenahrazuje odborné poradenství.</li>
+                        <li>Objednatel je povinen zajistit, aby jeho poradci vždy ověřili správnost extrahovaných dat před prezentací výsledků klientům.</li>
+                        <li>Zhotovitel poskytne počáteční nastavení AI extrakce na vzorových dokumentech dodaných objednatelem. Přizpůsobení novým formátům ceníků může vyžadovat další úpravy.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- LICENCE -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>X. Licence a duševní vlastnictví</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Po úplném zaplacení ceny díla získává objednatel nevýhradní, časově neomezenou licenci k užívání díla pro vlastní podnikatelské účely.</li>
+                        <li>Zdrojový kód díla bude objednateli předán a objednatel je oprávněn jej upravovat a rozšiřovat.</li>
+                        <li>Zhotovitel si ponechává právo využívat obecné know-how, techniky a postupy vyvinuté při realizaci díla pro jiné projekty. Konkrétní obchodní data objednatele nebudou nikdy použita.</li>
+                        <li>Objednatel není oprávněn dílo nebo jeho části dále prodávat nebo licencovat třetím stranám bez písemného souhlasu zhotovitele.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- MLČENLIVOST -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>XI. Mlčenlivost</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Obě smluvní strany se zavazují zachovávat mlčenlivost o veškerých důvěrných informacích, které se dozví v souvislosti s plněním této smlouvy.</li>
+                        <li>Za důvěrné informace se považují zejména: obchodní strategie, cenové podmínky, technická řešení, klientská data, přístupové údaje a veškeré informace označené jako důvěrné.</li>
+                        <li>Povinnost mlčenlivosti trvá po dobu 2 let od ukončení smlouvy.</li>
+                        <li>Povinnost mlčenlivosti se nevztahuje na informace, které jsou veřejně dostupné nebo které musí být sděleny na základě zákona.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- GDPR / DPA -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>XII. Ochrana osobních údajů (GDPR)</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Smluvní strany berou na vědomí, že dílo bude zpracovávat osobní údaje z faktur klientů objednatele (jméno, adresa, odběrné místo, spotřeba).</li>
+                        <li><strong>Objednatel</strong> vystupuje jako správce osobních údajů ve smyslu nařízení GDPR.</li>
+                        <li><strong>Zhotovitel</strong> vystupuje jako zpracovatel osobních údajů po dobu vývoje a případné údržby díla.</li>
+                        <li>Podmínky zpracování osobních údajů jsou upraveny v Příloze č. 1 &mdash; Smlouva o zpracování osobních údajů (DPA).</li>
+                    </ol>
+
+                    <div class="dpa-section">
+                        <h4>Příloha č. 1 &mdash; Smlouva o zpracování osobních údajů (DPA)</h4>
+                        <ol>
+                            <li><strong>Účel zpracování:</strong> Vývoj, testování a provoz nástroje pro porovnání dodavatelů energií; extrakce dat z faktur klientů.</li>
+                            <li><strong>Kategorie subjektů údajů:</strong> Klienti objednatele (odběratelé energií).</li>
+                            <li><strong>Kategorie osobních údajů:</strong> Jméno, adresa, číslo odběrného místa, údaje o spotřebě energií, fakturační údaje.</li>
+                            <li><strong>Doba zpracování:</strong> Po dobu trvání smlouvy a 30 dnů po jejím ukončení (pro zálohy a migraci dat).</li>
+                            <li><strong>Technická a organizační opatření:</strong>
+                                <ul>
+                                    <li>Šifrování osobních údajů při přenosu (TLS) i v klidu (AES-256)</li>
+                                    <li>Přístup k údajům pouze na základě autentizace a autorizace</li>
+                                    <li>Pravidelné zálohování databáze</li>
+                                    <li>Záznam přístupů k osobním údajům (audit log)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Sub-zpracovatelé:</strong> Google (Gemini Vision API) &mdash; zpracování obrázků faktur pro OCR. Objednatel s tímto sub-zpracovatelem souhlasí.</li>
+                            <li><strong>Práva subjektů údajů:</strong> Zhotovitel bude objednateli nápomocen při vyřizování žádostí subjektů údajů (právo na přístup, výmaz, přenositelnost apod.).</li>
+                            <li><strong>Ukončení zpracování:</strong> Po ukončení smlouvy zhotovitel vymaže veškeré osobní údaje, které má v držení, s výjimkou těch, jejichž uchování vyžaduje zákon.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VYŠŠÍ MOC -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>XIII. Vyšší moc</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Žádná smluvní strana neodpovídá za nesplnění svých povinností, pokud k němu došlo v důsledku okolností vyšší moci (přírodní katastrofy, válečný stav, pandemie, legislativní změny znemožňující plnění, výpadky infrastruktury třetích stran).</li>
+                        <li>Strana dotčená vyšší mocí je povinna druhou stranu neprodleně informovat a vyvinout přiměřené úsilí k minimalizaci dopadů.</li>
+                        <li>Pokud okolnosti vyšší moci trvají déle než 60 dnů, je kterákoli strana oprávněna od smlouvy odstoupit.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- ODSTOUPENÍ -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>XIV. Odstoupení od smlouvy</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Objednatel je oprávněn od smlouvy odstoupit v případě, že zhotovitel je v prodlení s dodáním díla o více než 30 dnů oproti sjednanému termínu.</li>
+                        <li>Zhotovitel je oprávněn od smlouvy odstoupit v případě, že:
+                            <ul>
+                                <li>Objednatel je v prodlení s platbou zálohy o více než 30 dnů</li>
+                                <li>Objednatel neposkytuje potřebnou součinnost ani po písemné výzvě s lhůtou 15 dnů</li>
+                            </ul>
+                        </li>
+                        <li>V případě odstoupení objednatele bez zavinění zhotovitele má zhotovitel nárok na úhradu prokazatelně vynaložených nákladů a práce provedené do dne odstoupení.</li>
+                        <li>V případě odstoupení zhotovitele z důvodu neposkytnutí součinnosti objednatelem si zhotovitel ponechává přijatou zálohu jako kompenzaci.</li>
+                        <li>Odstoupení musí být učiněno písemně a je účinné dnem doručení druhé smluvní straně.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- SANKCE -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>XV. Sankce</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>V případě prodlení zhotovitele s dodáním díla (nezpůsobeného objednatelem) je objednatel oprávněn požadovat smluvní pokutu ve výši 0,1 % z celkové ceny díla za každý pracovní den prodlení, maximálně však 10 % z celkové ceny díla.</li>
+                        <li>V případě porušení povinnosti mlčenlivosti je poškozená strana oprávněna požadovat smluvní pokutu ve výši 50 000 Kč za každý případ porušení.</li>
+                        <li>Uplatnění smluvní pokuty nemá vliv na právo na náhradu škody přesahující smluvní pokutu.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- OMEZENÍ ODPOVĚDNOSTI -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>XVI. Omezení odpovědnosti</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Celková odpovědnost zhotovitele za škody vzniklé v souvislosti s touto smlouvou je omezena na celkovou cenu díla (55 000 Kč).</li>
+                        <li>Zhotovitel neodpovídá za nepřímé škody, ušlý zisk, ztrátu dat způsobenou objednatelem nebo třetí osobou, ani za škody vzniklé v důsledku nesprávných finančních rozhodnutí učiněných na základě výstupů nástroje.</li>
+                        <li>Zhotovitel neodpovídá za výpadky nebo změny v API třetích stran (zejména Gemini Vision API), které mohou ovlivnit funkčnost díla.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- ŘEŠENÍ SPORŮ -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>XVII. Řešení sporů</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Smluvní strany se zavazují řešit veškeré spory vznikající z této smlouvy přednostně smírnou cestou.</li>
+                        <li>Nedojde-li k smírnému vyřešení sporu do 30 dnů, bude spor rozhodnut příslušným soudem České republiky.</li>
+                        <li>Smlouva se řídí právním řádem České republiky.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- ZÁVĚREČNÁ USTANOVENÍ -->
+            <div class="article">
+                <div class="article-header">
+                    <h2>XVIII. Závěrečná ustanovení</h2>
+                </div>
+                <div class="article-body">
+                    <ol>
+                        <li>Smlouva nabývá platnosti a účinnosti dnem podpisu oběma smluvními stranami.</li>
+                        <li>Smlouva je vyhotovena ve dvou stejnopisech, z nichž každá strana obdrží jeden.</li>
+                        <li>Změny a doplňky smlouvy jsou platné pouze ve formě písemných dodatků podepsaných oběma stranami.</li>
+                        <li>Nedílnou součástí smlouvy jsou:
+                            <ul>
+                                <li>Příloha č. 1 &mdash; Smlouva o zpracování osobních údajů (DPA) &mdash; uvedená v čl. XII</li>
+                                <li>Příloha č. 2 &mdash; Technická specifikace (TS-2026-006)</li>
+                                <li>Příloha č. 3 &mdash; Cenová nabídka (CN-2026-006)</li>
+                            </ul>
+                        </li>
+                        <li>V otázkách neupravených touto smlouvou se vztahy smluvních stran řídí příslušnými ustanoveními občanského zákoníku.</li>
+                        <li>Smluvní strany prohlašují, že si smlouvu přečetly, porozuměly jejímu obsahu a na důkaz své svobodné vůle ji podepisují.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- PODPISY -->
+            <div class="signature-section">
+                <p class="signature-text">V Chebu dne 30. března 2026</p>
+                <div class="signatures">
+                    <div class="sig-block">
+                        <div class="sig-role">Za zhotovitele</div>
+                        <div class="sig-line">
+                            <div class="sig-name">Martin Švanda</div>
+                            <div class="sig-company">PRAUT s.r.o., jednatel</div>
+                        </div>
+                    </div>
+                    <div class="sig-block">
+                        <div class="sig-role">Za objednatele</div>
+                        <div class="sig-line">
+                            <div class="sig-name">Michal Helekal</div>
+                            <div class="sig-company">Energie Výhodněji, s.r.o.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div>PRAUT s.r.o. | IČO: 22545107 | svanda@praut.cz</div>
+            <div>Smlouva SOD-2026-006 | 30. 3. 2026</div>
+        </div>
+    </div>
+</body>
+</html>

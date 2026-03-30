@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cenova nabidka - Porovnani dodavatelu energii</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2c5282;
+            --accent: #2b6cb0;
+            --accent-light: #ebf4ff;
+            --text: #1a202c;
+            --text-light: #4a5568;
+            --border: #e2e8f0;
+            --bg: #ffffff;
+            --bg-gray: #f7fafc;
+            --green: #276749;
+            --green-bg: #f0fff4;
+            --green-border: #9ae6b4;
+            --orange: #c05621;
+            --orange-bg: #fffaf0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            background: var(--bg-gray);
+        }
+
+        .document {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg);
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 50px 60px 40px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .doc-number {
+            font-size: 13px;
+            opacity: 0.7;
+            text-align: right;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.85;
+        }
+
+        .content {
+            padding: 50px 60px;
+        }
+
+        .parties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .party-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 22px 25px;
+            background: var(--bg-gray);
+        }
+
+        .party-card .party-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .party-card h3 {
+            font-size: 16px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .party-card p {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 3px;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: var(--primary);
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-light);
+        }
+
+        h2:first-of-type {
+            margin-top: 0;
+        }
+
+        p {
+            margin-bottom: 12px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .price-table th {
+            background: var(--primary);
+            color: white;
+            padding: 14px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .price-table th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .price-table th:last-child {
+            border-radius: 0 8px 0 0;
+            text-align: right;
+        }
+
+        .price-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .price-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .price-table tr:nth-child(even) {
+            background: var(--bg-gray);
+        }
+
+        .price-table .total-row {
+            background: var(--primary) !important;
+            color: white;
+        }
+
+        .price-table .total-row td {
+            font-weight: 700;
+            font-size: 16px;
+            border: none;
+            padding: 16px 20px;
+        }
+
+        .price-table .total-row td:first-child {
+            border-radius: 0 0 0 8px;
+        }
+
+        .price-table .total-row td:last-child {
+            border-radius: 0 0 8px 0;
+        }
+
+        .savings-box {
+            background: var(--green-bg);
+            border: 2px solid var(--green-border);
+            border-radius: 10px;
+            padding: 25px 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .savings-box .savings-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--green);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .savings-box .savings-value {
+            font-size: 14px;
+            color: var(--green);
+            line-height: 1.6;
+        }
+
+        .savings-box .savings-highlight {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--green);
+            display: block;
+            margin: 8px 0;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .detail-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px 22px;
+        }
+
+        .detail-card .detail-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .detail-card .detail-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .detail-card .detail-note {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .operating-costs {
+            background: var(--bg-gray);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 22px 25px;
+            margin: 20px 0;
+        }
+
+        .operating-costs h4 {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .cost-items {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px 20px;
+        }
+
+        .cost-item-label {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .cost-item-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            text-align: right;
+        }
+
+        .phase2-box {
+            background: var(--orange-bg);
+            border: 1px solid #fbd38d;
+            border-radius: 8px;
+            padding: 22px 25px;
+            margin: 20px 0;
+        }
+
+        .phase2-box h4 {
+            color: var(--orange);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .phase2-box ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .phase2-box li {
+            font-size: 13px;
+            color: #744210;
+            margin-bottom: 4px;
+        }
+
+        .phase2-box .phase2-price {
+            margin-top: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        .payment-timeline {
+            display: flex;
+            gap: 0;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .payment-step {
+            flex: 1;
+            padding: 20px 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .payment-step:first-child {
+            background: var(--accent-light);
+            border-right: 1px solid var(--border);
+        }
+
+        .payment-step:last-child {
+            background: var(--green-bg);
+        }
+
+        .payment-step .step-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .payment-step:first-child .step-label {
+            color: var(--accent);
+        }
+
+        .payment-step:last-child .step-label {
+            color: var(--green);
+        }
+
+        .payment-step .step-amount {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .payment-step:first-child .step-amount {
+            color: var(--accent);
+        }
+
+        .payment-step:last-child .step-amount {
+            color: var(--green);
+        }
+
+        .payment-step .step-when {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .validity-box {
+            background: var(--bg-gray);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 22px 25px;
+            margin: 30px 0;
+        }
+
+        .validity-box p {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .signature-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 50px;
+            padding-top: 30px;
+        }
+
+        .signature-block {
+            text-align: center;
+        }
+
+        .signature-block .sig-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 50px;
+        }
+
+        .signature-block .sig-line {
+            border-top: 1px solid var(--text-light);
+            padding-top: 8px;
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .signature-block .sig-role {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .footer {
+            background: var(--bg-gray);
+            border-top: 1px solid var(--border);
+            padding: 25px 60px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        @media print {
+            body { background: white; }
+            .document { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">PRAUT s.r.o.</div>
+                <div class="doc-number">CN-2026-006<br>30. března 2026</div>
+            </div>
+            <h1>Cenová nabídka</h1>
+            <div class="subtitle">Webový nástroj pro porovnání dodavatelů energií &mdash; MVP</div>
+        </div>
+
+        <div class="content">
+            <div class="parties">
+                <div class="party-card">
+                    <div class="party-label">Dodavatel</div>
+                    <h3>PRAUT s.r.o.</h3>
+                    <p>Obrněné brigády 552/33</p>
+                    <p>350 02 Cheb</p>
+                    <p>IČO: 22545107</p>
+                    <p>Neplátce DPH</p>
+                    <p>Martin Švanda</p>
+                    <p>svanda@praut.cz</p>
+                </div>
+                <div class="party-card">
+                    <div class="party-label">Odběratel</div>
+                    <h3>Energie Výhodněji, s.r.o.</h3>
+                    <p>Chopinova, Brno</p>
+                    <p>IČO: 22508392</p>
+                    <p>DIČ: CZ22508392</p>
+                    <p>Michal Helekal</p>
+                    <p>helekal@s-ic.cz</p>
+                    <p>+420 770 331 765</p>
+                </div>
+            </div>
+
+            <h2>Předmět nabídky</h2>
+            <p>Návrh, vývoj a nasazení webového nástroje pro automatické porovnání dodavatelů energií s využitím AI/OCR technologie pro extrakci dat z ceníků a faktur. Nástroj umožní poradcům rychle a přesně porovnat nabídky dodavatelů a připravit přehledný výstup pro klienta.</p>
+
+            <h2>Cenová kalkulace MVP</h2>
+            <table class="price-table">
+                <tr>
+                    <th>Položka</th>
+                    <th>Cena</th>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Backend + REST API</strong><br>
+                        <span style="font-size: 12px; color: var(--text-light);">Django, PostgreSQL, datový model, business logika, autentizace, RBAC</span>
+                    </td>
+                    <td>20 000 Kč</td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>AI/OCR pipeline</strong><br>
+                        <span style="font-size: 12px; color: var(--text-light);">Gemini Vision API integrace, Tesseract fallback, extrakce dat z ceníků a faktur, Celery async zpracování</span>
+                    </td>
+                    <td>15 000 Kč</td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Frontend</strong><br>
+                        <span style="font-size: 12px; color: var(--text-light);">Angular SPA, dashboard, upload rozhraní, porovnávací tabulky, správa ceníků, uživatelská správa</span>
+                    </td>
+                    <td>12 000 Kč</td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>PDF export + deploy</strong><br>
+                        <span style="font-size: 12px; color: var(--text-light);">Generování PDF reportů pro klienty, nasazení na server, konfigurace HTTPS, základní monitoring</span>
+                    </td>
+                    <td>8 000 Kč</td>
+                </tr>
+                <tr class="total-row">
+                    <td>Celkem za MVP</td>
+                    <td>55 000 Kč</td>
+                </tr>
+            </table>
+
+            <p style="font-size: 13px;"><em>Ceny jsou konečné. PRAUT s.r.o. není plátcem DPH.</em></p>
+
+            <div class="savings-box">
+                <div class="savings-label">AI-driven development = výrazná úspora</div>
+                <div class="savings-value">
+                    Tradiční vývoj srovnatelného nástroje by stál přibližně
+                    <span class="savings-highlight">~120 000 Kč</span>
+                    Díky využití AI-asistovaného vývoje nabízíme řešení za
+                    <strong>55 000 Kč</strong> &mdash; úspora více než <strong>54 %</strong>
+                </div>
+            </div>
+
+            <h2>Provozní náklady</h2>
+            <div class="operating-costs">
+                <h4>Odhadované měsíční náklady po nasazení</h4>
+                <div class="cost-items">
+                    <div class="cost-item-label">Hosting (VPS / cloud server)</div>
+                    <div class="cost-item-value">~500 Kč/měs.</div>
+                    <div class="cost-item-label">Gemini Vision API (AI zpracování)</div>
+                    <div class="cost-item-value">~800 Kč/měs.</div>
+                    <div class="cost-item-label">Doména + SSL certifikát</div>
+                    <div class="cost-item-value">~200 Kč/měs.</div>
+                    <div style="grid-column: 1 / -1; border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px; display: grid; grid-template-columns: 1fr auto; gap: 20px;">
+                        <div class="cost-item-label" style="font-weight: 700;">Celkem odhadované provozní náklady</div>
+                        <div class="cost-item-value" style="font-size: 15px;">~1 500 Kč/měs.</div>
+                    </div>
+                </div>
+            </div>
+            <p style="font-size: 12px;"><em>Provozní náklady jsou orientační a závisí na objemu zpracovaných dokumentů. Při vyšším využití (100+ faktur/měsíc) se mohou náklady na AI API zvýšit.</em></p>
+
+            <h2>Fáze 2 &mdash; rozšíření (odhad)</h2>
+            <div class="phase2-box">
+                <h4>Možná budoucí rozšíření</h4>
+                <ul>
+                    <li>Historické trendy a vývoj cen v čase (grafy, statistiky)</li>
+                    <li>Automatický import ceníků z webů dodavatelů</li>
+                    <li>Mobilní aplikace (PWA nebo nativní)</li>
+                    <li>Notifikace o změnách ceníků</li>
+                    <li>Multi-tenant podpora pro více poradenských firem</li>
+                </ul>
+                <div class="phase2-price">Odhadovaná cena Fáze 2: ~40 000 Kč</div>
+            </div>
+            <p style="font-size: 12px;"><em>Rozsah a cena Fáze 2 budou upřesněny po úspěšném nasazení MVP na základě reálných potřeb.</em></p>
+
+            <h2>Platební podmínky</h2>
+            <div class="payment-timeline">
+                <div class="payment-step">
+                    <div class="step-label">1. záloha (50 %)</div>
+                    <div class="step-amount">27 500 Kč</div>
+                    <div class="step-when">Před zahájením prací</div>
+                </div>
+                <div class="payment-step">
+                    <div class="step-label">2. doplatek (50 %)</div>
+                    <div class="step-amount">27 500 Kč</div>
+                    <div class="step-when">Po předání a akceptaci MVP</div>
+                </div>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-card">
+                    <div class="detail-label">Termín dodání MVP</div>
+                    <div class="detail-value">5 týdnů</div>
+                    <div class="detail-note">Od zaplacení zálohy. Cíl: konec května 2026.</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-label">Splatnost faktur</div>
+                    <div class="detail-value">14 dní</div>
+                    <div class="detail-note">Bankovní převod na účet zhotovitele.</div>
+                </div>
+            </div>
+
+            <h2>Co je zahrnuto</h2>
+            <table class="price-table" style="font-size: 13px;">
+                <tr>
+                    <th>Položka</th>
+                    <th style="text-align: center;">Zahrnuto</th>
+                </tr>
+                <tr><td>Kompletní zdrojový kód (Django + Angular)</td><td style="text-align: center; color: var(--green); font-size: 18px;">&#10003;</td></tr>
+                <tr><td>Nasazení na server klienta / VPS</td><td style="text-align: center; color: var(--green); font-size: 18px;">&#10003;</td></tr>
+                <tr><td>Základní dokumentace a manuál</td><td style="text-align: center; color: var(--green); font-size: 18px;">&#10003;</td></tr>
+                <tr><td>Podpora po nasazení (30 dní)</td><td style="text-align: center; color: var(--green); font-size: 18px;">&#10003;</td></tr>
+                <tr><td>Opravy chyb v záruční době (3 měsíce)</td><td style="text-align: center; color: var(--green); font-size: 18px;">&#10003;</td></tr>
+                <tr><td>Trénink AI modelu na vzorových ceníkách</td><td style="text-align: center; color: var(--green); font-size: 18px;">&#10003;</td></tr>
+            </table>
+
+            <div class="validity-box">
+                <p><strong>Platnost nabídky:</strong> Tato cenová nabídka je platná do 30. dubna 2026.</p>
+                <p><strong>Podmínka:</strong> Ceny jsou fixní po dobu platnosti nabídky. Po uplynutí platnosti si vyhrazujeme právo na úpravu.</p>
+                <p><strong>Součinnost:</strong> Klient dodá vzorové faktury a ceníky dodavatelů pro nastavení AI extrakce.</p>
+            </div>
+
+            <div class="signature-area">
+                <div class="signature-block">
+                    <div class="sig-label">Za dodavatele</div>
+                    <div class="sig-line">Martin Švanda</div>
+                    <div class="sig-role">PRAUT s.r.o., jednatel</div>
+                </div>
+                <div class="signature-block">
+                    <div class="sig-label">Za odběratele</div>
+                    <div class="sig-line">Michal Helekal</div>
+                    <div class="sig-role">Energie Výhodněji, s.r.o.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div>PRAUT s.r.o. | IČO: 22545107 | svanda@praut.cz</div>
+            <div>Cenová nabídka CN-2026-006 | 30. 3. 2026</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technicka specifikace - AI-asistovana digitalizace technickych vykresu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2b6cb0;
+            --accent: #ed8936;
+            --text: #2d3748;
+            --text-light: #718096;
+            --bg: #ffffff;
+            --bg-light: #f7fafc;
+            --border: #e2e8f0;
+            --success: #38a169;
+            --warning: #d69e2e;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            background: var(--bg);
+            font-size: 14px;
+        }
+
+        .document {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 40px 50px;
+        }
+
+        /* Header */
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .doc-header-left h1 {
+            font-size: 24px;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .doc-header-left .subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .doc-header-right {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .doc-header-right .doc-number {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 13px;
+        }
+
+        /* Meta info */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .meta-card {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px 20px;
+        }
+
+        .meta-card h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .meta-card p {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .meta-card strong {
+            color: var(--primary);
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            color: var(--primary);
+            border-left: 4px solid var(--accent);
+            padding-left: 14px;
+            margin-bottom: 16px;
+        }
+
+        .section h3 {
+            font-size: 15px;
+            color: var(--primary-light);
+            margin-top: 18px;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            margin-bottom: 10px;
+        }
+
+        /* Phase blocks */
+        .phase {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .phase::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .phase-1::before { background: var(--accent); }
+        .phase-2::before { background: var(--primary-light); }
+        .phase-3::before { background: var(--success); }
+
+        .phase-label {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 10px;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+
+        .phase-1 .phase-label { background: #feebc8; color: #c05621; }
+        .phase-2 .phase-label { background: #bee3f8; color: #2b6cb0; }
+        .phase-3 .phase-label { background: #c6f6d5; color: #276749; }
+
+        .phase h3 {
+            font-size: 16px;
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* Pipeline diagram */
+        .pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+
+        .pipeline-step {
+            background: var(--primary);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .pipeline-arrow {
+            font-size: 20px;
+            color: var(--accent);
+            padding: 0 8px;
+            font-weight: 700;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-light);
+        }
+
+        /* Scope boxes */
+        .scope-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .scope-box {
+            border-radius: 8px;
+            padding: 16px 20px;
+        }
+
+        .scope-included {
+            background: #f0fff4;
+            border: 1px solid #c6f6d5;
+        }
+
+        .scope-excluded {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+        }
+
+        .scope-box h4 {
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .scope-included h4 { color: #276749; }
+        .scope-excluded h4 { color: #c53030; }
+
+        .scope-box ul {
+            margin-left: 16px;
+            font-size: 13px;
+        }
+
+        /* Footer */
+        .doc-footer {
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        /* Print */
+        @media print {
+            body { font-size: 12px; }
+            .document { padding: 0; max-width: none; }
+            .phase, .meta-card { break-inside: avoid; }
+            .pipeline { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <!-- Header -->
+        <div class="doc-header">
+            <div class="doc-header-left">
+                <h1>Technicka specifikace</h1>
+                <div class="subtitle">AI-asistovana digitalizace technickych vykresu do CAD</div>
+            </div>
+            <div class="doc-header-right">
+                <div class="doc-number">PRAUT-2026-CAD-TS-001</div>
+                <div>Verze: 1.0</div>
+                <div>Datum: 30. března 2026</div>
+                <div>Stran: 1</div>
+            </div>
+        </div>
+
+        <!-- Meta -->
+        <div class="meta-grid">
+            <div class="meta-card">
+                <h3>Zhotovitel</h3>
+                <p>
+                    <strong>PRAUT s.r.o.</strong><br>
+                    Obrnene brigady 552/33, 350 02 Cheb<br>
+                    ICO: 22545107 | Neplatce DPH<br>
+                    Zastoupeny: Martin Svanda<br>
+                    E-mail: svanda@praut.cz
+                </p>
+            </div>
+            <div class="meta-card">
+                <h3>Objednatel</h3>
+                <p>
+                    <strong>FUTURE PRODUCT DESIGN a.s.</strong><br>
+                    Trojicka 1910/7, 128 00 Praha<br>
+                    IC: 00553646 | DIC: CZ00553646<br>
+                    Kontakt: Ladislav Sula<br>
+                    E-mail: sula@fpdco.com | Tel: +420 601 344 692
+                </p>
+            </div>
+        </div>
+
+        <!-- 1. Uvod -->
+        <div class="section">
+            <h2>1. Uvod a cil projektu</h2>
+            <p>
+                Predmetem tohoto dokumentu je technicka specifikace reseni pro automatizovanou digitalizaci
+                rucne kreslenych technickych vykresu do formatu CAD (DWG/DXF). Reseni vyuziva moderni
+                metody pocitacoveho videni a umele inteligence k vyraznemu zrychleni a zlevneni procesu
+                prekreslovani technickych vykresu.
+            </p>
+            <p>
+                Cilem je vytvorit webovy nastroj, ktery umozni nahrat sken nebo fotografii rucniho vykresu
+                a automaticky vygenerovat vektorovy vystup ve formatu DXF/DWG, ktery nasledne konstrukter
+                pouze zkontroluje a dopravi.
+            </p>
+        </div>
+
+        <!-- 2. Architektura reseni -->
+        <div class="section">
+            <h2>2. Architektura reseni</h2>
+            <p>Reseni je navrzeno jako triffazovy pipeline s postupnym zvysovanim kvality vystupu:</p>
+
+            <div class="pipeline">
+                <div class="pipeline-step">Nahrani<br>skenu/fotky</div>
+                <div class="pipeline-arrow">&rarr;</div>
+                <div class="pipeline-step">AI preprocesing<br>a filtrace</div>
+                <div class="pipeline-arrow">&rarr;</div>
+                <div class="pipeline-step">Rozpoznani<br>car a kot</div>
+                <div class="pipeline-arrow">&rarr;</div>
+                <div class="pipeline-step">Generovani<br>DXF vystupu</div>
+                <div class="pipeline-arrow">&rarr;</div>
+                <div class="pipeline-step">Manualni<br>korekce</div>
+            </div>
+        </div>
+
+        <!-- 3. Faze projektu -->
+        <div class="section">
+            <h2>3. Faze projektu</h2>
+
+            <div class="phase phase-1">
+                <div class="phase-label">Faze 1 - MVP</div>
+                <h3>AI konverzni pipeline + webove rozhrani</h3>
+                <p><strong>Termin:</strong> 5 tydnu od zahajeni</p>
+                <ul>
+                    <li><strong>Upload modul:</strong> Drag &amp; drop nahravani souboru (JPG, PNG, PDF) s automatickou detekci kvality skenu</li>
+                    <li><strong>Preprocesing:</strong> Automaticka korekce perspektivy, kontrastu, odstraneni sumu a pozadi</li>
+                    <li><strong>AI rozpoznani:</strong> Detekce primych car, oblouku, kruhu, krizeni a prusecikovych bodu pomoci konvolucnich neuronovych siti</li>
+                    <li><strong>OCR modul:</strong> Rozpoznani kotovacich cisel, popisku a technickych znacek</li>
+                    <li><strong>DXF export:</strong> Generovani validniho DXF souboru s vrstvami (obrysy, koty, popisky, osy)</li>
+                    <li><strong>Webove rozhrani:</strong> Prehledny dashboard s historii konverzi, nahledem pred/po a moznosti stazeni vystupu</li>
+                </ul>
+            </div>
+
+            <div class="phase phase-2">
+                <div class="phase-label">Faze 2 - Rozsireni</div>
+                <h3>Manualni korekce a pokrocile funkce</h3>
+                <p><strong>Termin:</strong> Prubezne, dle dohody</p>
+                <ul>
+                    <li><strong>Webovy editor:</strong> Integrovany vektorovy editor pro rucni upravu rozpoznanych entit primo v prohlizeci</li>
+                    <li><strong>Anotacni nastroje:</strong> Moznost manualne doplnit chybejici koty, znacky a popisky</li>
+                    <li><strong>Zpetna vazba AI:</strong> Korekce konstruktera se pouziji pro zlepsovani AI modelu</li>
+                    <li><strong>DWG export:</strong> Plna podpora DWG formatu vedle DXF</li>
+                    <li><strong>Davkove zpracovani:</strong> Hromadny upload a konverze vice vykresu najednou</li>
+                </ul>
+            </div>
+
+            <div class="phase phase-3">
+                <div class="phase-label">Faze 3 - Optimalizace</div>
+                <h3>Databaze sablon a automatizace</h3>
+                <p><strong>Termin:</strong> Dle dohody a rozsahu spoluprace</p>
+                <ul>
+                    <li><strong>Knihovna sablon:</strong> Databaze opakujicich se prvku (srouby, matice, profily, standardni dily)</li>
+                    <li><strong>Automaticke rozpoznavani:</strong> AI identifikuje standardni dily a vlozi je jako bloky/referencni elementy</li>
+                    <li><strong>Podpora norem:</strong> Automaticke pridavani ramecku, razitka a popisovych poli dle CSN/ISO norem</li>
+                    <li><strong>API integrace:</strong> REST API pro napojeni na externi systemy (ERP, PLM)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 4. Technicke prostredi -->
+        <div class="section">
+            <h2>4. Technicke prostredi</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Komponenta</th>
+                        <th>Technologie</th>
+                        <th>Poznamka</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Frontend</td>
+                        <td>Webova aplikace (SPA)</td>
+                        <td>Responsive, funguje na PC i tabletu</td>
+                    </tr>
+                    <tr>
+                        <td>Backend</td>
+                        <td>Python / Django REST Framework</td>
+                        <td>API pro zpracovani a spravu konverzi</td>
+                    </tr>
+                    <tr>
+                        <td>AI Engine</td>
+                        <td>PyTorch / OpenCV / Tesseract OCR</td>
+                        <td>Detekce car, OCR, preprocesing</td>
+                    </tr>
+                    <tr>
+                        <td>CAD Export</td>
+                        <td>ezdxf (Python knihovna)</td>
+                        <td>Generovani validnich DXF souboru</td>
+                    </tr>
+                    <tr>
+                        <td>Databaze</td>
+                        <td>PostgreSQL</td>
+                        <td>Metadata konverzi, uzivatele, historie</td>
+                    </tr>
+                    <tr>
+                        <td>Ukladani souboru</td>
+                        <td>Cloudflare R2 / S3</td>
+                        <td>Vstupni obrazky a vystupni DXF/DWG</td>
+                    </tr>
+                    <tr>
+                        <td>Hosting</td>
+                        <td>Cloudflare Workers / VPS</td>
+                        <td>Dle ocekavane zateze</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 5. Vstupni a vystupni formaty -->
+        <div class="section">
+            <h2>5. Podporovane formaty</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Smer</th>
+                        <th>Format</th>
+                        <th>Poznamka</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Vstup</td>
+                        <td>JPG, PNG</td>
+                        <td>Fotografie a skeny, min. 300 DPI doporuceno</td>
+                    </tr>
+                    <tr>
+                        <td>Vstup</td>
+                        <td>PDF</td>
+                        <td>Vicestrankove dokumenty, automaticke rozdeleni na stranky</td>
+                    </tr>
+                    <tr>
+                        <td>Vystup (Faze 1)</td>
+                        <td>DXF</td>
+                        <td>AutoCAD DXF R2018, kompatibilni se vsemi CAD systemy</td>
+                    </tr>
+                    <tr>
+                        <td>Vystup (Faze 2+)</td>
+                        <td>DWG</td>
+                        <td>Nativni AutoCAD format</td>
+                    </tr>
+                    <tr>
+                        <td>Nahled</td>
+                        <td>SVG, PNG</td>
+                        <td>Vizualizace v prohlizeci, overlay pres original</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 6. Rozsah dodavky -->
+        <div class="section">
+            <h2>6. Rozsah dodavky</h2>
+
+            <div class="scope-grid">
+                <div class="scope-box scope-included">
+                    <h4>Zahrnuto v dodavce</h4>
+                    <ul>
+                        <li>Webova aplikace s uploadem a konverzi</li>
+                        <li>AI pipeline pro rozpoznani car a kotovani</li>
+                        <li>Export do DXF formatu</li>
+                        <li>Uzivatelsky dashboard</li>
+                        <li>Zakladni autentizace a sprava uctu</li>
+                        <li>Dokumentace a skoleni</li>
+                        <li>14 dni testovaci lhuta</li>
+                        <li>Podpora po dobu 30 dni od predani</li>
+                    </ul>
+                </div>
+                <div class="scope-box scope-excluded">
+                    <h4>Neni soucast dodavky</h4>
+                    <ul>
+                        <li>Licence AutoCAD nebo jineho CAD softwaru</li>
+                        <li>Manualni prekreslovani vykresu</li>
+                        <li>3D modelovani</li>
+                        <li>Tisk a distribuce technickych vykresu</li>
+                        <li>Skoleni obsluhy AutoCADu</li>
+                        <li>Hardwarove vybaveni (skenery, PC)</li>
+                        <li>Integrace s ERP/PLM systemy (az Faze 3)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Pozadavky na soucinnost -->
+        <div class="section">
+            <h2>7. Pozadavky na soucinnost objednatele</h2>
+            <ul>
+                <li>Dodani <strong>minimalne 20 vzorovych vykresu</strong> ruzne slozitosti pro trenink AI modelu (v ramci prvnich 5 pracovnich dni od zahajeni)</li>
+                <li>Poskytovani zpetne vazby k vysledkum konverzi v prubehu testovaci faze</li>
+                <li>Urceni kontaktni osoby s technickou zpusobilosti pro komunikaci a akceptaci</li>
+                <li>Specifikace preferovaneho CAD softwaru pro overeni kompatibility vystupu</li>
+                <li>Pristup k existujicim digitalizovanym vykresm (pokud existuji) pro benchmarking kvality</li>
+            </ul>
+        </div>
+
+        <!-- 8. Kvalitativni kriteria -->
+        <div class="section">
+            <h2>8. Kvalitativni kriteria akceptace (MVP)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Kriterium</th>
+                        <th>Pozadovana hodnota</th>
+                        <th>Metoda overeni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Presnost rozpoznani primych car</td>
+                        <td>&ge; 85 %</td>
+                        <td>Porovnani s referencnim DXF</td>
+                    </tr>
+                    <tr>
+                        <td>Presnost rozpoznani kotovani (OCR)</td>
+                        <td>&ge; 80 %</td>
+                        <td>Manualni kontrola vzorku</td>
+                    </tr>
+                    <tr>
+                        <td>Doba zpracovani jednoho vykresu (A3)</td>
+                        <td>&le; 60 sekund</td>
+                        <td>Meren cas od uploadu do hotoveho DXF</td>
+                    </tr>
+                    <tr>
+                        <td>Validita DXF vystupu</td>
+                        <td>100 % otevritelnych v AutoCAD</td>
+                        <td>Test otevreni v AutoCAD LT</td>
+                    </tr>
+                    <tr>
+                        <td>Dostupnost webove aplikace</td>
+                        <td>&ge; 99 % (v pracovni dobe)</td>
+                        <td>Monitoring uptime</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 9. Bezpecnost -->
+        <div class="section">
+            <h2>9. Bezpecnost a ochrana dat</h2>
+            <ul>
+                <li>Veskera komunikace sifrovana pomoci HTTPS/TLS 1.3</li>
+                <li>Nahrane vykresy uchovany pouze po dobu zpracovani + 30 dni, pote automaticky smazany</li>
+                <li>Pristup do aplikace chraneny uzivatelskym jmenem a heslem</li>
+                <li>Zpracovani dat v souladu s GDPR a zakony CR</li>
+                <li>Moznost on-premise nasazeni v ramci Faze 3 (za priplatek)</li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="doc-footer">
+            <div>PRAUT s.r.o. | Obrnene brigady 552/33, 350 02 Cheb | ICO: 22545107</div>
+            <div>Dokument: PRAUT-2026-CAD-TS-001 | 30. brezna 2026</div>
+        </div>
+    </div>
+</body>
+</html>

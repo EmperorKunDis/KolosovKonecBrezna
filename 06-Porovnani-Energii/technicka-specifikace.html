@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technicka specifikace - Porovnani dodavatelu energii</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2c5282;
+            --accent: #2b6cb0;
+            --accent-light: #ebf4ff;
+            --text: #1a202c;
+            --text-light: #4a5568;
+            --border: #e2e8f0;
+            --bg: #ffffff;
+            --bg-gray: #f7fafc;
+            --success: #276749;
+            --success-bg: #f0fff4;
+            --warning: #c05621;
+            --warning-bg: #fffaf0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            background: var(--bg-gray);
+        }
+
+        .document {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg);
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 50px 60px 40px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .doc-number {
+            font-size: 13px;
+            opacity: 0.7;
+            text-align: right;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .content {
+            padding: 50px 60px;
+        }
+
+        .meta-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            padding: 25px 30px;
+            background: var(--bg-gray);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+
+        .meta-item {
+            font-size: 13px;
+        }
+
+        .meta-item .label {
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .meta-item .value {
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: var(--primary);
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-light);
+            font-weight: 700;
+        }
+
+        h2:first-child {
+            margin-top: 0;
+        }
+
+        h3 {
+            font-size: 16px;
+            color: var(--primary-light);
+            margin: 25px 0 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .architecture-diagram {
+            background: var(--bg-gray);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .arch-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .arch-box {
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .arch-frontend {
+            background: #ebf8ff;
+            border: 2px solid #2b6cb0;
+            color: #2b6cb0;
+        }
+
+        .arch-backend {
+            background: #faf5ff;
+            border: 2px solid #6b46c1;
+            color: #6b46c1;
+        }
+
+        .arch-service {
+            background: #f0fff4;
+            border: 2px solid #276749;
+            color: #276749;
+        }
+
+        .arch-db {
+            background: #fffaf0;
+            border: 2px solid #c05621;
+            color: #c05621;
+        }
+
+        .arch-arrow {
+            color: var(--text-light);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 25px;
+            font-size: 13px;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        th:first-child {
+            border-radius: 6px 0 0 0;
+        }
+
+        th:last-child {
+            border-radius: 0 6px 0 0;
+        }
+
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-light);
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-gray);
+        }
+
+        .model-card {
+            background: var(--bg-gray);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent);
+        }
+
+        .model-card h4 {
+            font-size: 15px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .model-card .fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .model-card .field {
+            font-size: 13px;
+            color: var(--text-light);
+            padding: 3px 0;
+        }
+
+        .model-card .field code {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: var(--accent);
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .module-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            background: var(--bg);
+        }
+
+        .module-card .module-num {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .module-card h4 {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .module-card p {
+            font-size: 12px;
+            margin-bottom: 0;
+        }
+
+        .module-card ul {
+            padding-left: 18px;
+            margin: 0;
+        }
+
+        .module-card li {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 3px;
+        }
+
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pipeline-step {
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            background: var(--accent-light);
+            color: var(--accent);
+            border: 1px solid #bee3f8;
+        }
+
+        .pipeline-arrow {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        .exclusion-box {
+            background: var(--warning-bg);
+            border: 1px solid #fbd38d;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .exclusion-box h4 {
+            color: var(--warning);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .exclusion-box ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .exclusion-box li {
+            font-size: 13px;
+            color: #744210;
+            margin-bottom: 4px;
+        }
+
+        .security-box {
+            background: var(--success-bg);
+            border: 1px solid #9ae6b4;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .security-box h4 {
+            color: var(--success);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .security-box ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .security-box li {
+            font-size: 13px;
+            color: #22543d;
+            margin-bottom: 4px;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            background: var(--bg-gray);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .tech-item .tech-label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .tech-item .tech-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .footer {
+            background: var(--bg-gray);
+            border-top: 1px solid var(--border);
+            padding: 25px 60px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .toc {
+            background: var(--bg-gray);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin-bottom: 30px;
+        }
+
+        .toc h4 {
+            font-size: 13px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .toc li {
+            font-size: 13px;
+            color: var(--accent);
+            padding: 3px 0;
+        }
+
+        @media print {
+            body { background: white; }
+            .document { box-shadow: none; }
+            .content { padding: 30px 40px; }
+            .header { padding: 30px 40px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">PRAUT s.r.o.</div>
+                <div class="doc-number">TS-2026-006<br>Verze 1.0</div>
+            </div>
+            <h1>Technicka specifikace</h1>
+            <div class="subtitle">Porovnani dodavatelu energii &mdash; MVP</div>
+        </div>
+
+        <div class="content">
+            <div class="meta-bar">
+                <div class="meta-item">
+                    <div class="label">Klient</div>
+                    <div class="value">Energie Vyhodneji, s.r.o.</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Datum</div>
+                    <div class="value">30. brezna 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">Autor</div>
+                    <div class="value">Martin Svanda, PRAUT s.r.o.</div>
+                </div>
+            </div>
+
+            <div class="toc">
+                <h4>Obsah</h4>
+                <ol>
+                    <li>Prehled projektu</li>
+                    <li>Technologicky stack</li>
+                    <li>Architektura systemu</li>
+                    <li>AI/OCR pipeline</li>
+                    <li>Datovy model</li>
+                    <li>Moduly MVP</li>
+                    <li>Bezpecnost</li>
+                    <li>Omezeni MVP</li>
+                </ol>
+            </div>
+
+            <h2>1. Prehled projektu</h2>
+            <p>Cílem projektu je vytvořit webový nástroj pro porovnání dodavatelů energií. Nástroj umožní poradcům načítat ceníky dodavatelů, analyzovat klientské faktury pomocí AI/OCR a automaticky porovnat nabídky všech dodavatelů s výpočtem potenciální úspory.</p>
+            <p>Nástroj bude provozován jako interní webová aplikace se sdíleným přístupem pro více uživatelů (poradců). Primární workflow: upload faktury/ceníku &rarr; AI extrakce dat &rarr; automatické porovnání &rarr; export výsledku pro klienta.</p>
+
+            <h2>2. Technologický stack</h2>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <div>
+                        <div class="tech-label">Backend</div>
+                        <div class="tech-value">Python 3.12 + Django 5.x</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div>
+                        <div class="tech-label">Frontend</div>
+                        <div class="tech-value">Angular 17+</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div>
+                        <div class="tech-label">Databáze</div>
+                        <div class="tech-value">PostgreSQL 16</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div>
+                        <div class="tech-label">Task queue</div>
+                        <div class="tech-value">Celery + Redis</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div>
+                        <div class="tech-label">AI/OCR</div>
+                        <div class="tech-value">Gemini Vision API</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div>
+                        <div class="tech-label">Fallback OCR</div>
+                        <div class="tech-value">Tesseract OCR</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div>
+                        <div class="tech-label">API</div>
+                        <div class="tech-value">Django REST Framework</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div>
+                        <div class="tech-label">PDF export</div>
+                        <div class="tech-value">WeasyPrint / ReportLab</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>3. Architektura systému</h2>
+            <div class="architecture-diagram">
+                <div class="arch-row">
+                    <div class="arch-box arch-frontend">Angular SPA<br><small>UI pro poradce</small></div>
+                </div>
+                <div class="arch-arrow">&darr; HTTP/REST API &darr;</div>
+                <div class="arch-row">
+                    <div class="arch-box arch-backend">Django REST API<br><small>Business logika</small></div>
+                    <div class="arch-box arch-service">Celery Worker<br><small>Async zpracování</small></div>
+                </div>
+                <div class="arch-arrow">&darr;&darr;</div>
+                <div class="arch-row">
+                    <div class="arch-box arch-db">PostgreSQL<br><small>Data, ceníky, faktury</small></div>
+                    <div class="arch-box arch-service">Redis<br><small>Message broker</small></div>
+                    <div class="arch-box arch-service">Gemini Vision API<br><small>OCR + extrakce</small></div>
+                </div>
+            </div>
+            <p>Systém je navržen jako klasická třívrstvá architektura. Angular SPA komunikuje s Django backendem přes REST API. Časově náročné operace (OCR analýza, PDF generování) jsou delegovány na Celery workery, které využívají Redis jako message broker.</p>
+
+            <h2>4. AI/OCR pipeline</h2>
+            <p>Klíčová součást systému zajišťující automatickou extrakci dat z PDF ceníků a faktur.</p>
+
+            <div class="pipeline-flow">
+                <div class="pipeline-step">Upload PDF</div>
+                <div class="pipeline-arrow">&rarr;</div>
+                <div class="pipeline-step">Celery task</div>
+                <div class="pipeline-arrow">&rarr;</div>
+                <div class="pipeline-step">Gemini Vision API</div>
+                <div class="pipeline-arrow">&rarr;</div>
+                <div class="pipeline-step">Strukturovaná data</div>
+                <div class="pipeline-arrow">&rarr;</div>
+                <div class="pipeline-step">Validace</div>
+                <div class="pipeline-arrow">&rarr;</div>
+                <div class="pipeline-step">Uložení do DB</div>
+            </div>
+
+            <h3>Postup zpracování</h3>
+            <table>
+                <tr>
+                    <th>Krok</th>
+                    <th>Popis</th>
+                    <th>Technologie</th>
+                </tr>
+                <tr>
+                    <td>1. Upload</td>
+                    <td>Uživatel nahraje PDF ceník nebo fakturu přes webové rozhraní</td>
+                    <td>Angular + DRF FileUpload</td>
+                </tr>
+                <tr>
+                    <td>2. Předzpracování</td>
+                    <td>Kontrola formátu, velikosti, konverze stránek na obrázky</td>
+                    <td>pdf2image, Pillow</td>
+                </tr>
+                <tr>
+                    <td>3. AI extrakce</td>
+                    <td>Odeslání na Gemini Vision API s promptem pro extrakci strukturovaných dat</td>
+                    <td>Gemini Vision API</td>
+                </tr>
+                <tr>
+                    <td>4. Fallback</td>
+                    <td>Pokud Gemini selže, použije se Tesseract OCR + NLP parsování</td>
+                    <td>Tesseract, regex</td>
+                </tr>
+                <tr>
+                    <td>5. Validace</td>
+                    <td>Kontrola úplnosti dat, formátů, rozsahů hodnot</td>
+                    <td>Django validators</td>
+                </tr>
+                <tr>
+                    <td>6. Ruční korekce</td>
+                    <td>Poradce zkontroluje a případně opraví extrahovaná data</td>
+                    <td>Angular formulář</td>
+                </tr>
+            </table>
+
+            <h3>Extrahovaná data z ceníku</h3>
+            <p>Název dodavatele, název tarifu, sazba za VT (Kč/kWh), sazba za NT (Kč/kWh), měsíční fixní poplatek, stálý plat za příkon, daně a regulované složky, platnost ceníku od/do.</p>
+
+            <h3>Extrahovaná data z faktury</h3>
+            <p>Dodavatel, odběrné místo, spotřeba VT (kWh), spotřeba NT (kWh), aktuální cena celkem, fakturační období, distribuční sazba.</p>
+
+            <h2>5. Datový model</h2>
+
+            <div class="model-card">
+                <h4>Dodavatel (Supplier)</h4>
+                <div class="fields">
+                    <div class="field"><code>id</code> UUID, PK</div>
+                    <div class="field"><code>name</code> VARCHAR(200)</div>
+                    <div class="field"><code>contact_email</code> VARCHAR(254)</div>
+                    <div class="field"><code>contact_phone</code> VARCHAR(20)</div>
+                    <div class="field"><code>website</code> URLField</div>
+                    <div class="field"><code>is_active</code> BOOLEAN</div>
+                    <div class="field"><code>created_at</code> TIMESTAMP</div>
+                    <div class="field"><code>updated_at</code> TIMESTAMP</div>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <h4>Ceník (PriceList)</h4>
+                <div class="fields">
+                    <div class="field"><code>id</code> UUID, PK</div>
+                    <div class="field"><code>supplier</code> FK &rarr; Supplier</div>
+                    <div class="field"><code>tariff_name</code> VARCHAR(200)</div>
+                    <div class="field"><code>energy_type</code> ENUM (elektřina, plyn)</div>
+                    <div class="field"><code>vt_rate</code> DECIMAL(10,4) Kč/kWh</div>
+                    <div class="field"><code>nt_rate</code> DECIMAL(10,4) Kč/kWh</div>
+                    <div class="field"><code>monthly_fixed_fee</code> DECIMAL(10,2)</div>
+                    <div class="field"><code>capacity_fee</code> DECIMAL(10,2)</div>
+                    <div class="field"><code>valid_from</code> DATE</div>
+                    <div class="field"><code>valid_to</code> DATE</div>
+                    <div class="field"><code>source_pdf</code> FileField</div>
+                    <div class="field"><code>is_verified</code> BOOLEAN</div>
+                    <div class="field"><code>created_at</code> TIMESTAMP</div>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <h4>Faktura (Invoice)</h4>
+                <div class="fields">
+                    <div class="field"><code>id</code> UUID, PK</div>
+                    <div class="field"><code>uploaded_by</code> FK &rarr; User</div>
+                    <div class="field"><code>client_name</code> VARCHAR(200)</div>
+                    <div class="field"><code>supplier_name</code> VARCHAR(200)</div>
+                    <div class="field"><code>energy_type</code> ENUM</div>
+                    <div class="field"><code>consumption_vt</code> DECIMAL (kWh)</div>
+                    <div class="field"><code>consumption_nt</code> DECIMAL (kWh)</div>
+                    <div class="field"><code>total_price</code> DECIMAL (Kč)</div>
+                    <div class="field"><code>billing_period_from</code> DATE</div>
+                    <div class="field"><code>billing_period_to</code> DATE</div>
+                    <div class="field"><code>distribution_rate</code> VARCHAR(10)</div>
+                    <div class="field"><code>source_file</code> FileField</div>
+                    <div class="field"><code>raw_ocr_data</code> JSONField</div>
+                    <div class="field"><code>created_at</code> TIMESTAMP</div>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <h4>Porovnání (Comparison)</h4>
+                <div class="fields">
+                    <div class="field"><code>id</code> UUID, PK</div>
+                    <div class="field"><code>invoice</code> FK &rarr; Invoice</div>
+                    <div class="field"><code>created_by</code> FK &rarr; User</div>
+                    <div class="field"><code>results</code> JSONField</div>
+                    <div class="field"><code>best_supplier</code> FK &rarr; Supplier</div>
+                    <div class="field"><code>best_price</code> DECIMAL</div>
+                    <div class="field"><code>savings</code> DECIMAL</div>
+                    <div class="field"><code>savings_percent</code> DECIMAL</div>
+                    <div class="field"><code>pdf_export</code> FileField</div>
+                    <div class="field"><code>created_at</code> TIMESTAMP</div>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <h4>Uživatel (User)</h4>
+                <div class="fields">
+                    <div class="field"><code>id</code> UUID, PK</div>
+                    <div class="field"><code>email</code> EmailField, unique</div>
+                    <div class="field"><code>first_name</code> VARCHAR(150)</div>
+                    <div class="field"><code>last_name</code> VARCHAR(150)</div>
+                    <div class="field"><code>role</code> ENUM (admin, poradce)</div>
+                    <div class="field"><code>is_active</code> BOOLEAN</div>
+                    <div class="field"><code>created_at</code> TIMESTAMP</div>
+                    <div class="field"><code>last_login</code> TIMESTAMP</div>
+                </div>
+            </div>
+
+            <h2>6. Moduly MVP</h2>
+            <div class="module-grid">
+                <div class="module-card">
+                    <div class="module-num">1</div>
+                    <h4>Správa ceníků</h4>
+                    <ul>
+                        <li>Upload PDF ceníků dodavatelů</li>
+                        <li>AI/OCR automatická extrakce dat</li>
+                        <li>Formulář pro ruční korekci</li>
+                        <li>Přehled a filtrování ceníků v DB</li>
+                        <li>Správa dodavatelů (CRUD)</li>
+                        <li>Indikace platnosti ceníku</li>
+                    </ul>
+                </div>
+                <div class="module-card">
+                    <div class="module-num">2</div>
+                    <h4>Analýza faktury</h4>
+                    <ul>
+                        <li>Upload faktury (PDF, obrázek)</li>
+                        <li>AI extrakce spotřeby a ceny</li>
+                        <li>Validace extrahovaných dat</li>
+                        <li>Ruční korekce poradcem</li>
+                        <li>Historie nahraných faktur</li>
+                        <li>Podpora VT/NT sazeb</li>
+                    </ul>
+                </div>
+                <div class="module-card">
+                    <div class="module-num">3</div>
+                    <h4>Porovnávací engine</h4>
+                    <ul>
+                        <li>Výpočet ročních nákladů u všech dodavatelů</li>
+                        <li>Zohlednění VT/NT spotřeby</li>
+                        <li>Fixní poplatky a stálý plat</li>
+                        <li>Řazení od nejlevnějšího</li>
+                        <li>Zvýraznění nejlepší nabídky</li>
+                        <li>Výpočet absolutní i procentuální úspory</li>
+                    </ul>
+                </div>
+                <div class="module-card">
+                    <div class="module-num">4</div>
+                    <h4>PDF export</h4>
+                    <ul>
+                        <li>Generování přehledu pro klienta</li>
+                        <li>Profesionální vzhled s logem</li>
+                        <li>Tabulka porovnání dodavatelů</li>
+                        <li>Zvýraznění úspory</li>
+                        <li>Datum a podpis poradce</li>
+                    </ul>
+                </div>
+                <div class="module-card" style="grid-column: 1 / -1;">
+                    <div class="module-num">5</div>
+                    <h4>Uživatelská správa</h4>
+                    <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                        <li>Registrace a přihlášení (email + heslo)</li>
+                        <li>Role: administrátor a poradce</li>
+                        <li>Admin: správa uživatelů, ceníků, nastavení</li>
+                        <li>Poradce: upload faktur, porovnání, export</li>
+                        <li>JWT autentizace</li>
+                        <li>Reset hesla</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>7. Bezpečnost</h2>
+            <div class="security-box">
+                <h4>Bezpečnostní opatření</h4>
+                <ul>
+                    <li><strong>HTTPS</strong> &mdash; veškerá komunikace šifrována pomocí TLS 1.3</li>
+                    <li><strong>Autentizace</strong> &mdash; JWT tokeny s expirací, refresh tokeny</li>
+                    <li><strong>RBAC</strong> &mdash; role-based access control (admin / poradce)</li>
+                    <li><strong>CSRF ochrana</strong> &mdash; Django CSRF middleware</li>
+                    <li><strong>Rate limiting</strong> &mdash; omezení počtu API požadavků</li>
+                    <li><strong>Šifrování</strong> &mdash; citlivé údaje z faktur šifrovány v DB</li>
+                    <li><strong>File validation</strong> &mdash; kontrola typu a velikosti nahrávaných souborů</li>
+                    <li><strong>SQL injection</strong> &mdash; Django ORM jako ochrana</li>
+                    <li><strong>CORS</strong> &mdash; omezení na povolené domény</li>
+                    <li><strong>Audit log</strong> &mdash; záznam přístupů a operací</li>
+                </ul>
+            </div>
+
+            <h2>8. Omezení MVP</h2>
+            <div class="exclusion-box">
+                <h4>Co NENÍ součástí MVP</h4>
+                <ul>
+                    <li>Mobilní aplikace (iOS/Android) &mdash; pouze responsivní web</li>
+                    <li>Automatický import ceníků z webů dodavatelů (scraping)</li>
+                    <li>Integrace s bankovními systémy (ČSOB, FIO apod.)</li>
+                    <li>Historické trendy a vývoj cen v čase</li>
+                    <li>Notifikace o změně ceníků</li>
+                    <li>Vícenásobné odběrné místo v jedné analýze</li>
+                    <li>Porovnání plynových a elektřinových dodavatelů v jednom reportu</li>
+                    <li>Multi-tenant oddělení dat mezi různými poradenskými firmami</li>
+                </ul>
+            </div>
+            <p>Výše uvedené funkce mohou být realizovány v rámci Fáze 2 rozšíření systému, po úspěšném nasazení a validaci MVP.</p>
+
+        </div>
+
+        <div class="footer">
+            <div>PRAUT s.r.o. | IČO: 22545107 | svanda@praut.cz</div>
+            <div>Technicka specifikace TS-2026-006 | 30. 3. 2026</div>
+        </div>
+    </div>
+</body>
+</html>

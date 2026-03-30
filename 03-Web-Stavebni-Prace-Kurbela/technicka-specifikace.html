@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technická specifikace - Web pro stavební práce | PRAUT s.r.o.</title>
+    <style>
+        :root {
+            --primary: #1a2a3a;
+            --accent: #c0392b;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #6c757d;
+            --border: #dee2e6;
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Header */
+        .doc-header {
+            background: var(--primary);
+            color: #fff;
+            padding: 48px 0;
+            margin-bottom: 40px;
+        }
+
+        .doc-header .container {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .doc-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .doc-header .subtitle {
+            font-size: 16px;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .doc-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 14px;
+        }
+
+        .doc-meta div {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .doc-meta .label {
+            opacity: 0.6;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Sections */
+        .section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2 .num {
+            background: var(--accent);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .section ul {
+            margin-bottom: 12px;
+            padding-left: 24px;
+        }
+
+        .section ul li {
+            margin-bottom: 6px;
+        }
+
+        /* Feature table */
+        .feature-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        .feature-table th,
+        .feature-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .feature-table th {
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .feature-table tr:nth-child(even) td {
+            background: #f8f9fa;
+        }
+
+        .feature-table tr:hover td {
+            background: #eef2f7;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-yes {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+
+        .badge-no {
+            background: #fce4ec;
+            color: var(--accent);
+        }
+
+        .badge-optional {
+            background: #fff3e0;
+            color: var(--warning);
+        }
+
+        /* Tech stack */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .tech-card {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .tech-card .tech-name {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .tech-card .tech-desc {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        .doc-footer {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--text-light);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .doc-footer strong {
+            color: var(--text);
+        }
+
+        /* Exclusions */
+        .exclusion-list {
+            background: #fff5f5;
+            border: 1px solid #ffcccc;
+            border-radius: 8px;
+            padding: 16px 16px 16px 24px;
+            margin: 16px 0;
+        }
+
+        .exclusion-list li {
+            color: #c0392b;
+        }
+
+        /* Print styles */
+        @media print {
+            body { background: #fff; }
+            .doc-header { background: #1a2a3a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+        }
+
+        @media (max-width: 600px) {
+            .doc-header h1 { font-size: 22px; }
+            .section { padding: 20px; }
+            .doc-meta { flex-direction: column; gap: 12px; }
+            .tech-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="doc-header">
+        <div class="container">
+            <h1>Technická specifikace</h1>
+            <p class="subtitle">Webová prezentace pro stavební firmu - Mykhaylo Kurbela</p>
+            <div class="doc-meta">
+                <div>
+                    <span class="label">Dokument</span>
+                    <span>TS-2026-003</span>
+                </div>
+                <div>
+                    <span class="label">Datum</span>
+                    <span>30. března 2026</span>
+                </div>
+                <div>
+                    <span class="label">Verze</span>
+                    <span>1.0</span>
+                </div>
+                <div>
+                    <span class="label">Zpracoval</span>
+                    <span>PRAUT s.r.o.</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 1. Přehled projektu -->
+        <div class="section">
+            <h2><span class="num">1</span> Přehled projektu</h2>
+            <p>Předmětem projektu je vytvoření jednoduchého, moderního one-page webu pro stavební firmu <strong>Mykhaylo Kurbela</strong> (OSVČ). Web bude sloužit jako hlavní online prezentace firmy s cílem získávat nové klienty a prezentovat dosavadní realizace.</p>
+
+            <h3>Základní parametry</h3>
+            <table class="feature-table">
+                <tr>
+                    <th>Parametr</th>
+                    <th>Hodnota</th>
+                </tr>
+                <tr>
+                    <td>Typ webu</td>
+                    <td>One-page webová prezentace</td>
+                </tr>
+                <tr>
+                    <td>Jazyk webu</td>
+                    <td>Čeština</td>
+                </tr>
+                <tr>
+                    <td>Cílová skupina</td>
+                    <td>Fyzické osoby a firmy v Praze a okolí hledající stavební práce</td>
+                </tr>
+                <tr>
+                    <td>Responzivní design</td>
+                    <td><span class="badge badge-yes">Ano</span></td>
+                </tr>
+                <tr>
+                    <td>Cílová rychlost načtení</td>
+                    <td>&lt; 3 sekundy</td>
+                </tr>
+                <tr>
+                    <td>Termín dodání</td>
+                    <td>2 týdny od zaplacení zálohy a dodání podkladů</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 2. Struktura webu -->
+        <div class="section">
+            <h2><span class="num">2</span> Struktura webu - sekce</h2>
+            <p>Web bude obsahovat následující sekce řazené vertikálně na jedné stránce se smooth scrollem:</p>
+
+            <h3>2.1 Hero sekce</h3>
+            <ul>
+                <li>Velký vizuální prvek (fotografie realizace / profesionální obrázek stavby)</li>
+                <li>Hlavní nadpis s klíčovým sdělením firmy</li>
+                <li>CTA tlačítko "Nezávazná poptávka" s odkazem na kontaktní formulář</li>
+                <li>Případně doplňkový text (slogan, krátký popis)</li>
+            </ul>
+
+            <h3>2.2 O nás</h3>
+            <ul>
+                <li>Krátký text představující firmu, zkušenosti a hodnoty</li>
+                <li>Případně fotografie týmu nebo majitele</li>
+                <li>Klíčové USP (unikátní prodejní argumenty)</li>
+            </ul>
+
+            <h3>2.3 Služby</h3>
+            <ul>
+                <li>Přehledný výpis stavebních prací formou karet s ikonami</li>
+                <li>Minimální rozsah: rekonstrukce, novostavby, zateplení, podlahy, elektroinstalace, malířské práce</li>
+                <li>Každá služba: ikona, název, krátký popis</li>
+            </ul>
+
+            <h3>2.4 Reference / Galerie</h3>
+            <ul>
+                <li>Grid s fotografiemi realizací</li>
+                <li>Každá reference: fotografie, název projektu, krátký popis</li>
+                <li>Lightbox pro zvětšení fotografií (vanilla JS)</li>
+            </ul>
+
+            <h3>2.5 Kontakt</h3>
+            <ul>
+                <li>Kontaktní formulář (jméno, e-mail, telefon, zpráva)</li>
+                <li>Odesílání dat na e-mail objednatele</li>
+                <li>Kontaktní údaje firmy (adresa, telefon, e-mail)</li>
+                <li>Napojení na Google Maps s vyznačením adresy firmy</li>
+            </ul>
+        </div>
+
+        <!-- 3. Technologie -->
+        <div class="section">
+            <h2><span class="num">3</span> Technologie</h2>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-name">HTML5</div>
+                    <div class="tech-desc">Sémantická struktura stránky</div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-name">CSS3</div>
+                    <div class="tech-desc">Moderní stylování, flexbox, grid, animace</div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-name">Vanilla JavaScript</div>
+                    <div class="tech-desc">Interaktivita bez závislostí na knihovnách</div>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-name">Responsive Design</div>
+                    <div class="tech-desc">Mobile-first přístup, media queries</div>
+                </div>
+            </div>
+
+            <h3>Bez externích závislostí</h3>
+            <p>Web nebude záviset na žádných externích knihovnách ani frameworcích (bez jQuery, Bootstrap, React apod.). To zajišťuje maximální rychlost načítání a minimální údržbu do budoucna.</p>
+        </div>
+
+        <!-- 4. Hosting a doména -->
+        <div class="section">
+            <h2><span class="num">4</span> Hosting a doména</h2>
+
+            <table class="feature-table">
+                <tr>
+                    <th>Varianta</th>
+                    <th>Popis</th>
+                    <th>Cena</th>
+                </tr>
+                <tr>
+                    <td>Cloudflare Pages</td>
+                    <td>Bezplatný hosting pro statické weby, globální CDN, SSL zdarma</td>
+                    <td>Zdarma</td>
+                </tr>
+                <tr>
+                    <td>Shared hosting</td>
+                    <td>Klasický webhosting s podporou PHP (pro kontaktní formulář)</td>
+                    <td>Cca 500-1 000 Kč/rok</td>
+                </tr>
+                <tr>
+                    <td>Doména .cz</td>
+                    <td>Registrace a správa domény</td>
+                    <td>Cca 200-300 Kč/rok</td>
+                </tr>
+            </table>
+
+            <p>Doporučená varianta: <strong>Cloudflare Pages</strong> + vlastní doména. Nejnižší provozní náklady při vynikajícím výkonu a zabezpečení.</p>
+        </div>
+
+        <!-- 5. SEO -->
+        <div class="section">
+            <h2><span class="num">5</span> SEO a viditelnost</h2>
+
+            <h3>Základní SEO optimalizace</h3>
+            <ul>
+                <li><strong>Meta tagy</strong> - title, description, keywords pro každou sekci</li>
+                <li><strong>Structured Data</strong> - JSON-LD schema LocalBusiness (název firmy, adresa, telefon, otevírací doba, služby)</li>
+                <li><strong>Sitemap.xml</strong> - pro indexaci vyhledávači</li>
+                <li><strong>robots.txt</strong> - správné nastavení přístupu crawlerů</li>
+                <li><strong>Open Graph tagy</strong> - pro správné zobrazení při sdílení na sociálních sítích</li>
+                <li><strong>Sémantické HTML</strong> - správné použití heading hierarchie (h1-h3)</li>
+            </ul>
+
+            <h3>Výkon</h3>
+            <ul>
+                <li>Optimalizované obrázky (WebP formát, lazy loading)</li>
+                <li>Minifikovaný CSS a JS</li>
+                <li>Cílové skóre Google PageSpeed Insights: 90+</li>
+                <li>Celková velikost stránky: pod 1 MB</li>
+            </ul>
+        </div>
+
+        <!-- 6. Kontaktní formulář -->
+        <div class="section">
+            <h2><span class="num">6</span> Kontaktní formulář</h2>
+
+            <h3>Pole formuláře</h3>
+            <table class="feature-table">
+                <tr>
+                    <th>Pole</th>
+                    <th>Typ</th>
+                    <th>Povinné</th>
+                </tr>
+                <tr>
+                    <td>Jméno a příjmení</td>
+                    <td>Text</td>
+                    <td><span class="badge badge-yes">Ano</span></td>
+                </tr>
+                <tr>
+                    <td>E-mail</td>
+                    <td>Email</td>
+                    <td><span class="badge badge-yes">Ano</span></td>
+                </tr>
+                <tr>
+                    <td>Telefon</td>
+                    <td>Tel</td>
+                    <td><span class="badge badge-optional">Nepovinné</span></td>
+                </tr>
+                <tr>
+                    <td>Zpráva</td>
+                    <td>Textarea</td>
+                    <td><span class="badge badge-yes">Ano</span></td>
+                </tr>
+                <tr>
+                    <td>Souhlas s GDPR</td>
+                    <td>Checkbox</td>
+                    <td><span class="badge badge-yes">Ano</span></td>
+                </tr>
+            </table>
+
+            <h3>Způsob odesílání</h3>
+            <p>Formulář bude odesílat data na e-mail objednatele. Technické řešení dle zvoleného hostingu:</p>
+            <ul>
+                <li><strong>Cloudflare Pages:</strong> Cloudflare Workers (serverless funkce) pro zpracování a odeslání e-mailu</li>
+                <li><strong>Shared hosting:</strong> PHP skript pro odeslání e-mailu přes mail()</li>
+            </ul>
+            <p>Formulář bude obsahovat validaci na straně klienta (HTML5 + JS) i na straně serveru.</p>
+        </div>
+
+        <!-- 7. Google Maps -->
+        <div class="section">
+            <h2><span class="num">7</span> Google Maps integrace</h2>
+            <ul>
+                <li>Embed Google Maps iframe s vyznačenou adresou firmy</li>
+                <li>Adresa: Nevanova 1047/5, Praha 6 - Řepy</li>
+                <li>Bez nutnosti Google Maps API klíče (embed verze)</li>
+                <li>Responzivní zobrazení na všech zařízeních</li>
+            </ul>
+        </div>
+
+        <!-- 8. Podklady od objednatele -->
+        <div class="section">
+            <h2><span class="num">8</span> Požadované podklady od objednatele</h2>
+
+            <table class="feature-table">
+                <tr>
+                    <th>Podklad</th>
+                    <th>Formát</th>
+                    <th>Stav</th>
+                </tr>
+                <tr>
+                    <td>Logo firmy</td>
+                    <td>SVG, PNG (min. 500px)</td>
+                    <td><span class="badge badge-optional">Volitelné (lze vytvořit za příplatek)</span></td>
+                </tr>
+                <tr>
+                    <td>Texty o firmě</td>
+                    <td>DOC, TXT, e-mail</td>
+                    <td><span class="badge badge-yes">Nutné</span></td>
+                </tr>
+                <tr>
+                    <td>Fotografie realizací</td>
+                    <td>JPG, PNG (min. 1200px šířka)</td>
+                    <td><span class="badge badge-yes">Nutné (min. 6 ks)</span></td>
+                </tr>
+                <tr>
+                    <td>Popis služeb</td>
+                    <td>DOC, TXT, e-mail</td>
+                    <td><span class="badge badge-yes">Nutné</span></td>
+                </tr>
+                <tr>
+                    <td>Kontaktní údaje</td>
+                    <td>Jakýkoli formát</td>
+                    <td><span class="badge badge-yes">Nutné</span></td>
+                </tr>
+            </table>
+
+            <p><em>Poznámka: AI asistent pomůže s copywritingem a optimalizací dodaných textů. Finální texty podléhají schválení objednatelem.</em></p>
+        </div>
+
+        <!-- 9. Co není součástí -->
+        <div class="section">
+            <h2><span class="num">9</span> Rozsah - co NENÍ součástí dodávky</h2>
+
+            <div class="exclusion-list">
+                <ul>
+                    <li>Redakční systém (CMS) - web je statický, úpravy provádí zhotovitel</li>
+                    <li>E-shop ani objednávkový systém</li>
+                    <li>Blog ani sekce s články</li>
+                    <li>Vícejjazyčná mutace</li>
+                    <li>Ongoing údržba a aktualizace (lze doobjednat separátně)</li>
+                    <li>Tvorba obsahu (texty a fotografie dodává objednatel)</li>
+                    <li>PPC kampaně a správa reklam</li>
+                    <li>Tvorba loga (lze doobjednat za příplatek)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 10. Harmonogram -->
+        <div class="section">
+            <h2><span class="num">10</span> Harmonogram realizace</h2>
+
+            <table class="feature-table">
+                <tr>
+                    <th>Fáze</th>
+                    <th>Popis</th>
+                    <th>Doba trvání</th>
+                </tr>
+                <tr>
+                    <td>1. Příprava</td>
+                    <td>Sběr podkladů, schválení grafického návrhu</td>
+                    <td>1-3 dny</td>
+                </tr>
+                <tr>
+                    <td>2. Vývoj</td>
+                    <td>Kódování webu, integrace obsahu, SEO</td>
+                    <td>5-7 dní</td>
+                </tr>
+                <tr>
+                    <td>3. Testování</td>
+                    <td>Cross-browser testing, responsivita, výkon</td>
+                    <td>1-2 dny</td>
+                </tr>
+                <tr>
+                    <td>4. Nasazení</td>
+                    <td>Deploy na hosting, napojení domény, SSL</td>
+                    <td>1 den</td>
+                </tr>
+                <tr>
+                    <td>5. Předání</td>
+                    <td>Předání dokumentace, testovací lhůta 14 dní</td>
+                    <td>14 dní</td>
+                </tr>
+            </table>
+
+            <p><strong>Celková doba realizace: 2 týdny</strong> od zaplacení zálohy a dodání kompletních podkladů.</p>
+        </div>
+    </main>
+
+    <footer class="doc-footer">
+        <p><strong>PRAUT s.r.o.</strong> | Obrněné brigády 552/33, 350 02 Cheb | IČO: 22545107</p>
+        <p>Dokument vytvořen dne 30. března 2026 | Tento dokument je důvěrný</p>
+    </footer>
+</body>
+</html>

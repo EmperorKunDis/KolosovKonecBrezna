@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smlouva o dílo — Obsahový portál o bydlení (MVP)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Georgia','Times New Roman',serif;color:#1a1a1a;line-height:1.7;max-width:210mm;margin:0 auto;padding:2cm;background:#fff}
+@media screen{body{box-shadow:0 0 20px rgba(0,0,0,.1);margin:2rem auto}}
+@media print{body{padding:1.5cm;box-shadow:none;margin:0 auto}}
+h1{text-align:center;font-size:1.5rem;margin-bottom:.3rem;letter-spacing:1px}
+h2{font-size:1.1rem;margin:1.8rem 0 .8rem;padding-bottom:.4rem;border-bottom:2px solid #1a365d;color:#1a365d}
+p{margin-bottom:.7rem;text-align:justify;font-size:.9rem}
+.center{text-align:center}
+.subtitle{text-align:center;font-size:.85rem;color:#555;margin-bottom:2rem;font-style:italic}
+.parties{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:1.5rem 0;font-size:.85rem}
+@media(max-width:600px){.parties{grid-template-columns:1fr}}
+.party{padding:1rem;border:1px solid #e2e8f0;border-radius:8px;background:#f7fafc}
+.party h3{margin-top:0;color:#1a365d;font-size:.95rem}
+.party p{margin-bottom:.3rem;font-size:.85rem;text-align:left}
+ol{margin:.5rem 0 .5rem 1.5rem;font-size:.9rem}
+ol li{margin-bottom:.5rem;text-align:justify}
+ol ol{margin-top:.3rem;list-style-type:lower-alpha}
+ul{margin:.3rem 0 .3rem 1.5rem;font-size:.9rem}
+ul li{margin-bottom:.3rem}
+.highlight{background:#fffbeb;border-left:4px solid #d97706;padding:.8rem 1rem;margin:1rem 0;font-size:.85rem;border-radius:0 6px 6px 0}
+.highlight-blue{background:#eff6ff;border-left:4px solid #2563eb;padding:.8rem 1rem;margin:1rem 0;font-size:.85rem;border-radius:0 6px 6px 0}
+.signatures{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem;font-size:.85rem}
+.sig-box{border-top:2px solid #1a365d;padding-top:1rem}
+.sig-box p{text-align:left;margin-bottom:.2rem}
+.footer-note{margin-top:2rem;padding-top:1rem;border-top:1px solid #e2e8f0;font-size:.75rem;color:#888;text-align:center}
+.milestones{border-collapse:collapse;width:100%;font-size:.85rem;margin:1rem 0}
+.milestones th,.milestones td{padding:.5rem .8rem;border:1px solid #e2e8f0;text-align:left}
+.milestones th{background:#f7fafc;font-weight:600;color:#1a365d}
+</style>
+</head>
+<body>
+
+<h1>SMLOUVA O DÍLO A LICENČNÍ UJEDNÁNÍ</h1>
+<p class="subtitle">uzavřená ve smyslu § 2586 a násl. a § 2358 a násl. zákona č. 89/2012 Sb., občanský zákoník,<br>a zákona č. 121/2000 Sb., autorský zákon<br>(dále jen „Smlouva")</p>
+
+<div class="parties">
+<div class="party">
+<h3>Zhotovitel</h3>
+<p><strong>PRAUT s.r.o.</strong></p>
+<p>Sídlo: Obrněné brigády 552/33, 350 02 Cheb</p>
+<p>IČO: 22545107</p>
+<p>Neplátce DPH</p>
+<p>Zastoupený: Martin Švanda, jednatel</p>
+<p>E-mail: svanda@praut.cz</p>
+<p>(dále jen „Zhotovitel")</p>
+</div>
+<div class="party">
+<h3>Objednatel</h3>
+<p><strong>Bonafide Production, s.r.o.</strong></p>
+<p>Sídlo: Wolkerova 965/15, Bubeneč, Praha 6</p>
+<p>IČO: 29021332</p>
+<p>Zastoupený: René Hradecký</p>
+<p>E-mail: hradecky@bonafide.cz</p>
+<p>Telefon: +420 733 101 467</p>
+<p>(dále jen „Objednatel")</p>
+</div>
+</div>
+
+<h2>Článek I. — Předmět smlouvy</h2>
+<ol>
+<li>Předmětem této Smlouvy je závazek Zhotovitele vytvořit a dodat Objednateli <strong>obsahový webový portál zaměřený na bydlení, reality a architekturu</strong> s integrací umělé inteligence (AI) v rozsahu prvního milníku (MVP), jak je specifikováno v Příloze č. 1 (dále jen „Dílo").</li>
+<li>Dílo v rozsahu MVP zahrnuje:
+<ol>
+<li><strong>Redakční systém (CMS)</strong> — WYSIWYG editor, správa článků (draft/review/published), kategorie, tagy, správa médií;</li>
+<li><strong>AI asistent pro redaktory</strong> — integrace Gemini API pro návrhy titulků, sumarizaci článků a SEO optimalizaci textů;</li>
+<li><strong>Veřejný frontend</strong> — listing článků, detail článku, fulltextové vyhledávání, filtrování podle kategorií, responzivní design;</li>
+<li><strong>Uživatelské účty</strong> — registrace, přihlášení, uživatelský profil, oblíbené články;</li>
+<li><strong>Administrační panel</strong> — správa uživatelů, statistiky čtenosti, správa kategorií a tagů.</li>
+</ol></li>
+<li>Technologický stack: Django (backend) + Angular (frontend SPA) + PostgreSQL (databáze).</li>
+<li>Objednatel se zavazuje Dílo převzít, poskytnout nezbytnou součinnost a zaplatit sjednanou cenu.</li>
+</ol>
+
+<h2>Článek II. — Cena díla a platební podmínky</h2>
+<ol>
+<li>Smluvní strany se dohodly na celkové ceně za Dílo ve výši <strong>85 000 Kč</strong> (slovy: osmdesát pět tisíc korun českých). Zhotovitel není plátcem DPH.</li>
+<li>Úhrada bude provedena ve třech milnících:
+<table class="milestones">
+<thead><tr><th>Milník</th><th>Částka</th><th>Splatnost</th></tr></thead>
+<tbody>
+<tr><td>1. Záloha</td><td><strong>42 500 Kč</strong> (50 %)</td><td>Do 7 dnů od podpisu Smlouvy</td></tr>
+<tr><td>2. Beta verze</td><td><strong>21 250 Kč</strong> (25 %)</td><td>Po předání beta verze k testování</td></tr>
+<tr><td>3. Finální předání</td><td><strong>21 250 Kč</strong> (25 %)</td><td>Do 14 dnů od akceptace Díla</td></tr>
+</tbody>
+</table></li>
+<li>Zhotovitel nezahájí práce před připsáním zálohy. Termín dodání se posouvá o dobu prodlení s úhradou.</li>
+</ol>
+
+<h2>Článek III. — Termín a způsob plnění</h2>
+<ol>
+<li>Zhotovitel se zavazuje dokončit a předat Dílo nejpozději do <strong>6 týdnů</strong> od splnění podmínek: (a) připsání zálohy a (b) dodání podkladů dle článku V.</li>
+<li>Orientační cíl dokončení: <strong>15. května 2026</strong>.</li>
+<li>Beta verze bude předána nejpozději do 4 týdnů od zahájení prací.</li>
+<li>Předání proběhne nasazením na produkční hosting a zpřístupněním administračního rozhraní Objednateli.</li>
+</ol>
+
+<h2>Článek IV. — Předání díla a odpovědnost za vady</h2>
+<ol>
+<li>Dílo je předáno okamžikem nasazení na produkční prostředí a zpřístupnění Objednateli. Objednatel má <strong>14 dnů</strong> na akceptační testování.</li>
+<li>Pokud Objednatel v akceptační lhůtě písemně nenahlásí vady bránící běžnému užívání, považuje se Dílo za akceptované.</li>
+<li>Vadou se rozumí nesoulad s technickou specifikací v Příloze č. 1. Za vadu se nepovažují:
+<ol>
+<li>požadavky neuvedené v Příloze č. 1;</li>
+<li>problémy způsobené nekompatibilním prostředím Objednatele;</li>
+<li>výpadky služeb třetích stran (Gemini API, hosting);</li>
+<li>kvalita AI-generovaného obsahu (viz článek VI.).</li>
+</ol></li>
+<li>Zhotovitel bezplatně opraví uznané vady do 10 pracovních dnů od nahlášení v akceptační lhůtě.</li>
+</ol>
+
+<h2>Článek V. — Součinnost objednatele</h2>
+<ol>
+<li>Objednatel se zavazuje poskytnout:
+<ol>
+<li><strong>Grafický manuál / branding</strong> — logo, barvy, fonty (pokud existují);</li>
+<li><strong>Vzorový obsah</strong> — minimálně 5 článků pro naplnění portálu při spuštění;</li>
+<li><strong>Přístup k Gemini API</strong> — vlastní API klíč, nebo pověření Zhotovitele k jeho zřízení na náklady Objednatele;</li>
+<li><strong>Zpětnou vazbu</strong> na beta verzi do 5 pracovních dnů od jejího předání.</li>
+</ol></li>
+<li>V případě prodlení Objednatele s dodáním součinnosti delším než 14 dnů je Zhotovitel oprávněn od Smlouvy odstoupit.</li>
+</ol>
+
+<div class="highlight">
+<strong>UPOZORNĚNÍ — AI generovaný obsah:</strong><br>
+Zhotovitel implementuje integraci s Gemini API dle specifikace, avšak výslovně neodpovídá za kvalitu, přesnost, úplnost ani právní bezúhonnost obsahu generovaného umělou inteligencí. Objednatel bere na vědomí, že veškerý AI-generovaný obsah musí projít redakční kontrolou před publikací. Objednatel nese plnou odpovědnost za obsah publikovaný na portálu.
+</div>
+
+<div class="highlight-blue">
+<strong>EU AI Act (Nařízení (EU) 2024/1689):</strong><br>
+Objednatel bere na vědomí, že AI komponenta portálu podléhá regulaci dle EU AI Act. Objednatel jakožto provozovatel AI systému je odpovědný za zajištění souladu s příslušnými ustanoveními, včetně transparentnosti vůči uživatelům portálu o využívání AI.
+</div>
+
+<h2>Článek VI. — Licenční ujednání a zdrojový kód</h2>
+<ol>
+<li>Zhotovitel uděluje Objednateli <strong>výhradní licenci</strong> k užití Díla bez územního a časového omezení. Licence je účinná po úplném zaplacení celkové ceny Díla.</li>
+<li>Licence zahrnuje právo Dílo používat, kopírovat, upravovat a nasazovat na vlastní infrastrukturu.</li>
+<li>Zdrojový kód Díla bude Objednateli předán prostřednictvím Git repozitáře po úplném zaplacení celkové ceny. Do té doby zůstává zdrojový kód majetkem Zhotovitele.</li>
+<li>Licence se nevztahuje na komponenty třetích stran (Django, Angular, knihovny), které podléhají vlastním licenčním podmínkám (MIT, BSD, Apache 2.0).</li>
+</ol>
+
+<h2>Článek VII. — Mlčenlivost</h2>
+<ol>
+<li>Obě strany se zavazují zachovávat mlčenlivost o všech důvěrných informacích druhé strany získaných v souvislosti s plněním Smlouvy.</li>
+<li>Za důvěrné informace se považují zejména: obchodní strategie, finanční údaje, technické know-how, API klíče a přístupové údaje.</li>
+<li>Povinnost mlčenlivosti trvá po dobu 3 let od ukončení Smlouvy.</li>
+<li>Zhotovitel je oprávněn uvést Dílo jako referenční projekt ve svém portfoliu, pokud Objednatel písemně nevyjádří nesouhlas.</li>
+</ol>
+
+<h2>Článek VIII. — Ochrana osobních údajů (GDPR)</h2>
+<ol>
+<li>Portál bude zpracovávat osobní údaje registrovaných uživatelů. Objednatel je v pozici <strong>správce osobních údajů</strong>.</li>
+<li>Zhotovitel vystupuje jako <strong>zpracovatel osobních údajů</strong> po dobu vývoje a případné údržby.</li>
+<li>Zhotovitel implementuje přiměřená technická opatření pro ochranu dat (šifrování hesel, HTTPS, přístupové logy).</li>
+<li>Objednatel je odpovědný za vytvoření a zveřejnění Zásad ochrany osobních údajů na portálu.</li>
+</ol>
+
+<h2>Článek IX. — Smluvní sankce</h2>
+<ol>
+<li>Při prodlení Zhotovitele s předáním Díla: smluvní pokuta <strong>0,05 %</strong> z celkové ceny za každý pracovní den prodlení, max. 10 % celkové ceny.</li>
+<li>Při prodlení Objednatele s úhradou: úrok z prodlení 0,05 % z dlužné částky za každý den prodlení.</li>
+<li>Uplatnění smluvní pokuty nevylučuje nárok na náhradu škody.</li>
+</ol>
+
+<h2>Článek X. — Odstoupení od smlouvy</h2>
+<ol>
+<li>Obě strany mohou odstoupit při podstatném porušení povinností (prodlení > 30 dnů, opakované neposkytnutí součinnosti, porušení mlčenlivosti).</li>
+<li>Odstoupení musí být písemné a je účinné dnem doručení.</li>
+<li>Při odstoupení Objednatelem bez zavinění Zhotovitele: Zhotovitel má nárok na úhradu prokazatelně vykonaných prací.</li>
+<li>Při odstoupení Zhotovitelem: Zhotovitel vrátí poměrnou část zálohy za nedodané části a předá rozpracované Dílo.</li>
+</ol>
+
+<h2>Článek XI. — Vyšší moc</h2>
+<ol>
+<li>Žádná strana neodpovídá za nesplnění povinností způsobené vyšší mocí (přírodní katastrofy, pandemie, válečné konflikty, výpadky infrastruktury, zásahy státní moci).</li>
+<li>Za vyšší moc se považuje též dlouhodobý výpadek API služeb třetích stran (Gemini API), pokud trvá déle než 14 dnů.</li>
+<li>Dotčená strana je povinna druhou stranu neprodleně informovat.</li>
+</ol>
+
+<h2>Článek XII. — Omezení odpovědnosti</h2>
+<ol>
+<li>Celková odpovědnost Zhotovitele je omezena na celkovou cenu Díla.</li>
+<li>Zhotovitel neodpovídá za nepřímé škody, ušlý zisk ani následné škody.</li>
+<li>Zhotovitel neodpovídá za obsah publikovaný na portálu Objednatelem ani za obsah generovaný AI.</li>
+<li>Zhotovitel neodpovídá za výpadky služeb třetích stran (hosting, Gemini API).</li>
+</ol>
+
+<h2>Článek XIII. — Řešení sporů</h2>
+<ol>
+<li>Smlouva se řídí právním řádem České republiky.</li>
+<li>Spory budou řešeny smírně. Pokud nedojde k dohodě do 30 dnů, bude spor předložen příslušnému soudu ČR.</li>
+</ol>
+
+<h2>Článek XIV. — Závěrečná ustanovení</h2>
+<ol>
+<li>Smlouva nabývá platnosti a účinnosti dnem podpisu oběma stranami.</li>
+<li>Změny Smlouvy pouze písemnými dodatky.</li>
+<li>Nedílnou součástí je Příloha č. 1 — Technická specifikace.</li>
+<li>Smlouva ve dvou stejnopisech.</li>
+<li>Smluvní strany prohlašují, že si Smlouvu přečetly, souhlasí s obsahem a na důkaz připojují podpisy.</li>
+</ol>
+
+<div class="signatures">
+<div class="sig-box">
+<p><strong>Za Zhotovitele:</strong></p>
+<p>V Chebu dne .....................</p>
+<br><br><br>
+<p>_________________________________</p>
+<p>Martin Švanda, jednatel</p>
+<p>PRAUT s.r.o.</p>
+</div>
+<div class="sig-box">
+<p><strong>Za Objednatele:</strong></p>
+<p>V Praze dne .....................</p>
+<br><br><br>
+<p>_________________________________</p>
+<p>René Hradecký</p>
+<p>Bonafide Production, s.r.o.</p>
+</div>
+</div>
+
+<div class="footer-note">
+<p>Příloha č. 1: Technická specifikace — viz samostatný dokument technicka-specifikace.html</p>
+<p>Dokument vytvořen: 30. března 2026 | PRAUT s.r.o.</p>
+</div>
+
+</body>
+</html>

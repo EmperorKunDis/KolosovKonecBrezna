@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smlouva o dílo - SEO Optimalizace webu</title>
+    <style>
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e3a8a;
+            --primary-light: #dbeafe;
+            --accent: #059669;
+            --accent-light: #d1fae5;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--gray-800);
+            line-height: 1.8;
+            background: var(--gray-50);
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: #fff;
+            padding: 48px 60px 40px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .company-name {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .doc-badge {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 15px;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 32px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 13px;
+        }
+
+        .header-meta span { opacity: 0.8; }
+        .header-meta strong { display: block; opacity: 1; font-size: 14px; margin-top: 2px; }
+
+        /* Content */
+        .content {
+            padding: 48px 60px;
+        }
+
+        /* Parties */
+        .parties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .party-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px;
+            background: var(--gray-50);
+        }
+
+        .party-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .party-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .party-detail {
+            font-size: 13px;
+            color: var(--gray-500);
+            line-height: 1.8;
+        }
+
+        /* Articles */
+        .article {
+            margin-bottom: 32px;
+            page-break-inside: avoid;
+        }
+
+        .article-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .article-number {
+            background: var(--primary);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .article-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .clause {
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+
+        .clause-num {
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+            color: var(--gray-500);
+            font-size: 13px;
+        }
+
+        .clause-content {
+            display: block;
+        }
+
+        .sub-clause {
+            margin: 6px 0 6px 20px;
+            padding-left: 16px;
+            position: relative;
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+
+        .sub-clause::before {
+            content: '\2013';
+            position: absolute;
+            left: 0;
+            color: var(--gray-400);
+        }
+
+        /* Highlight box */
+        .highlight-box {
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-size: 14px;
+            color: var(--primary-dark);
+        }
+
+        .highlight-box strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Signature section */
+        .signature-section {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 2px solid var(--gray-200);
+        }
+
+        .signature-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .signatures {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .sig-block {
+            text-align: center;
+        }
+
+        .sig-line {
+            border-top: 1px solid var(--gray-300);
+            padding-top: 12px;
+            margin-top: 80px;
+        }
+
+        .sig-name {
+            font-weight: 700;
+            color: var(--gray-800);
+            font-size: 14px;
+        }
+
+        .sig-role {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .sig-date {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-100);
+            padding: 32px 60px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        @media print {
+            .page { max-width: 100%; }
+            .header { padding: 32px 40px 28px; }
+            .content { padding: 32px 40px; }
+            .footer { padding: 24px 40px; }
+            .article { page-break-inside: avoid; }
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 32px 24px 28px; }
+            .content { padding: 32px 24px; }
+            .footer { padding: 24px; flex-direction: column; gap: 8px; }
+            .header-meta { flex-direction: column; gap: 12px; }
+            .parties { grid-template-columns: 1fr; }
+            .signatures { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="header-top">
+                <div class="company-name">PRAUT s.r.o.</div>
+                <div class="doc-badge">Smlouva o dílo</div>
+            </div>
+            <h1>Smlouva o dílo</h1>
+            <p class="header-subtitle">SEO Audit a On-page optimalizace webu (MVP)</p>
+            <div class="header-meta">
+                <div>
+                    <span>Číslo smlouvy</span>
+                    <strong>SOD-2026-003</strong>
+                </div>
+                <div>
+                    <span>Datum</span>
+                    <strong>30. března 2026</strong>
+                </div>
+                <div>
+                    <span>Milník</span>
+                    <strong>MVP (Fáze 1)</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Smluvní strany -->
+            <div class="parties">
+                <div class="party-card">
+                    <div class="party-label">Zhotovitel</div>
+                    <div class="party-name">PRAUT s.r.o.</div>
+                    <div class="party-detail">
+                        se sídlem Obrněné brigády 552/33, 350 02 Cheb<br>
+                        IČO: 22545107<br>
+                        neplátce DPH<br>
+                        zastoupená Martinem Švandou, jednatelem<br>
+                        e-mail: svanda@praut.cz<br><br>
+                        (dále jen <strong>„Zhotovitel"</strong>)
+                    </div>
+                </div>
+                <div class="party-card">
+                    <div class="party-label">Objednatel</div>
+                    <div class="party-name">Lucie Morawiecová</div>
+                    <div class="party-detail">
+                        bytem K Osnici 1278, Jesenice u Prahy<br>
+                        e-mail: l.morawiecova@gmail.com<br>
+                        tel.: +420 601 386 396<br><br>
+                        (dále jen <strong>„Objednatel"</strong>)
+                    </div>
+                </div>
+            </div>
+
+            <p style="text-align: center; font-size: 14px; color: var(--gray-500); margin-bottom: 32px;">
+                (Zhotovitel a Objednatel společně dále jen „Smluvní strany")
+            </p>
+
+            <div class="highlight-box">
+                Smluvní strany uzavírají níže uvedeného dne, měsíce a roku tuto smlouvu o dílo
+                dle ustanovení § 2586 a násl. zákona č. 89/2012 Sb., občanského zákoníku,
+                v platném znění (dále jen „Smlouva").
+            </div>
+
+            <!-- Článek I -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">I</span>
+                    <span class="article-title">Předmět smlouvy</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">1.1</span>
+                    <span class="clause-content">
+                        Zhotovitel se zavazuje provést pro Objednatele dílo spočívající v provedení
+                        kompletního SEO auditu webu Objednatele a implementaci on-page optimalizace
+                        (dále jen „Dílo") v rozsahu dle Přílohy č. 1 - Technická specifikace.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">1.2</span>
+                    <span class="clause-content">
+                        Dílo zahrnuje zejména:
+                    </span>
+                    <div class="sub-clause">kompletní technický a obsahový SEO audit webu</div>
+                    <div class="sub-clause">AI-asistovanou analýzu klíčových slov</div>
+                    <div class="sub-clause">optimalizaci meta tagů, nadpisové hierarchie a URL struktury</div>
+                    <div class="sub-clause">optimalizaci alt textů obrázků a interního prolinkování</div>
+                    <div class="sub-clause">technické SEO (rychlost načítání, Core Web Vitals, sitemap.xml, robots.txt)</div>
+                    <div class="sub-clause">nastavení Google Search Console a Google Analytics 4</div>
+                    <div class="sub-clause">vypracování závěrečného reportu s doporučeními</div>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">1.3</span>
+                    <span class="clause-content">
+                        Objednatel se zavazuje Dílo převzít a zaplatit za něj sjednanou cenu.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek II -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">II</span>
+                    <span class="article-title">Cena díla a platební podmínky</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">2.1</span>
+                    <span class="clause-content">
+                        Celková cena Díla činí <strong>15 000 Kč</strong> (slovy: patnáct tisíc korun českých).
+                        Zhotovitel není plátcem DPH, cena je konečná.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">2.2</span>
+                    <span class="clause-content">
+                        Cena bude uhrazena ve dvou splátkách:
+                    </span>
+                    <div class="sub-clause"><strong>Záloha ve výši 7 500 Kč</strong> (50 % ceny Díla), splatná do 7 dnů od podpisu této Smlouvy, a to na základě zálohové faktury vystavené Zhotovitelem</div>
+                    <div class="sub-clause"><strong>Doplatek ve výši 7 500 Kč</strong> (50 % ceny Díla), splatný do 14 dnů od předání Díla, a to na základě konečné faktury vystavené Zhotovitelem</div>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">2.3</span>
+                    <span class="clause-content">
+                        Platba bude provedena bezhotovostním převodem na bankovní účet Zhotovitele
+                        uvedený na příslušné faktuře.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">2.4</span>
+                    <span class="clause-content">
+                        V případě prodlení Objednatele s úhradou jakékoliv platby dle této Smlouvy
+                        je Zhotovitel oprávněn požadovat úrok z prodlení ve výši 0,05 % z dlužné
+                        částky za každý den prodlení.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek III -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">III</span>
+                    <span class="article-title">Termín plnění</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">3.1</span>
+                    <span class="clause-content">
+                        Zhotovitel se zavazuje dokončit a předat Dílo nejpozději do <strong>3 týdnů</strong>
+                        od připsání zálohy dle čl. 2.2 na účet Zhotovitele a současného splnění
+                        podmínek součinnosti dle čl. 5 této Smlouvy.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">3.2</span>
+                    <span class="clause-content">
+                        Termín dokončení se přiměřeně prodlužuje o dobu, po kterou Objednatel
+                        neposkytoval potřebnou součinnost dle čl. 5.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek IV -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">IV</span>
+                    <span class="article-title">Předání a převzetí díla</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">4.1</span>
+                    <span class="clause-content">
+                        Dílo bude předáno elektronicky formou:
+                    </span>
+                    <div class="sub-clause">kompletního SEO audit reportu (ve formátu PDF nebo HTML)</div>
+                    <div class="sub-clause">tabulky analyzovaných klíčových slov</div>
+                    <div class="sub-clause">implementovaných změn přímo na webu Objednatele</div>
+                    <div class="sub-clause">nastavených nástrojů (Google Search Console, Google Analytics 4)</div>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">4.2</span>
+                    <span class="clause-content">
+                        Objednatel je povinen Dílo převzít nebo uplatnit připomínky do <strong>14 dnů</strong>
+                        od oznámení o dokončení Díla (dále jen „Testovací lhůta"). Neučiní-li tak,
+                        považuje se Dílo za převzaté bez výhrad.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">4.3</span>
+                    <span class="clause-content">
+                        V případě oprávněných připomínek je Zhotovitel povinen tyto odstranit
+                        v přiměřené lhůtě, nejpozději však do 7 pracovních dnů.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek V -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">V</span>
+                    <span class="article-title">Součinnost objednatele</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">5.1</span>
+                    <span class="clause-content">
+                        Objednatel se zavazuje poskytnout Zhotoviteli veškerou nezbytnou součinnost
+                        pro řádné provedení Díla, zejména:
+                    </span>
+                    <div class="sub-clause">přístup k administraci webu (CMS přihlašovací údaje)</div>
+                    <div class="sub-clause">přístup ke Google Search Console (přidání Zhotovitele jako uživatele)</div>
+                    <div class="sub-clause">přístup ke Google Analytics (přidání Zhotovitele jako uživatele)</div>
+                    <div class="sub-clause">případný přístup k hostingu webu pro technické úpravy</div>
+                    <div class="sub-clause">zpětnou vazbu k návrhu klíčových slov a priorit optimalizace</div>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">5.2</span>
+                    <span class="clause-content">
+                        Objednatel poskytne přístupy dle bodu 5.1 nejpozději do 3 pracovních dnů
+                        od zaplacení zálohy. Neposkytnutí součinnosti nemá vliv na povinnost
+                        Objednatele uhradit cenu Díla, avšak termín dodání se přiměřeně posouvá.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek VI -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">VI</span>
+                    <span class="article-title">Omezení záruky</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">6.1</span>
+                    <span class="clause-content">
+                        Objednatel bere na vědomí, že <strong>Zhotovitel negarantuje dosažení konkrétních pozic
+                        ve výsledcích vyhledávačů</strong> (Google, Seznam apod.), neboť tyto pozice jsou závislé
+                        na algoritmech třetích stran, které Zhotovitel nemůže ovlivnit.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">6.2</span>
+                    <span class="clause-content">
+                        Zhotovitel garantuje provedení všech činností uvedených v čl. 1.2 v souladu
+                        s aktuálními SEO best practices a doporučeními vyhledávačů.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">6.3</span>
+                    <span class="clause-content">
+                        Zhotovitel neodpovídá za pokles pozic nebo organického provozu způsobený
+                        změnami algoritmů vyhledávačů, zásahy třetích stran, nebo změnami provedenými
+                        Objednatelem bez vědomí Zhotovitele po předání Díla.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek VII -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">VII</span>
+                    <span class="article-title">Odpovědnost za vady</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">7.1</span>
+                    <span class="clause-content">
+                        Zhotovitel odpovídá za to, že Dílo bude provedeno v souladu s touto Smlouvou,
+                        Technickou specifikací a obecně uznávanými postupy SEO optimalizace.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">7.2</span>
+                    <span class="clause-content">
+                        Vady Díla je Objednatel povinen reklamovat písemně (e-mailem) bez zbytečného
+                        odkladu po jejich zjištění, nejpozději však do konce Testovací lhůty dle čl. 4.2.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">7.3</span>
+                    <span class="clause-content">
+                        V případě uznané vady je Zhotovitel povinen ji bezplatně odstranit v přiměřené lhůtě.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek VIII -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">VIII</span>
+                    <span class="article-title">Mlčenlivost a ochrana informací</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">8.1</span>
+                    <span class="clause-content">
+                        Obě Smluvní strany se zavazují zachovávat mlčenlivost o všech skutečnostech,
+                        které se dozvěděly v souvislosti s plněním této Smlouvy, zejména o obchodních
+                        a technických informacích druhé strany.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">8.2</span>
+                    <span class="clause-content">
+                        Zhotovitel se zavazuje nakládat s přístupovými údaji poskytnutými Objednatelem
+                        výhradně za účelem plnění této Smlouvy a po dokončení Díla je bezodkladně smazat
+                        nebo vrátit Objednateli.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">8.3</span>
+                    <span class="clause-content">
+                        Povinnost mlčenlivosti trvá i po skončení platnosti této Smlouvy, a to po dobu 2 let.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek IX -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">IX</span>
+                    <span class="article-title">Ochrana osobních údajů (GDPR)</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">9.1</span>
+                    <span class="clause-content">
+                        Zhotovitel se zavazuje zpracovávat osobní údaje Objednatele v souladu
+                        s Nařízením Evropského parlamentu a Rady (EU) 2016/679 (GDPR) a zákonem
+                        č. 110/2019 Sb., o zpracování osobních údajů.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">9.2</span>
+                    <span class="clause-content">
+                        Osobní údaje Objednatele budou zpracovávány výhradně za účelem plnění
+                        této Smlouvy a po dobu nezbytně nutnou pro splnění zákonných povinností
+                        (zejména daňových a účetních).
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">9.3</span>
+                    <span class="clause-content">
+                        Pokud Zhotovitel při plnění Díla přichází do styku s osobními údaji třetích
+                        osob (např. návštěvníků webu prostřednictvím analytických nástrojů),
+                        zavazuje se s nimi nakládat v souladu s GDPR a pokyny Objednatele.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek X -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">X</span>
+                    <span class="article-title">Vyšší moc</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">10.1</span>
+                    <span class="clause-content">
+                        Žádná ze Smluvních stran neodpovídá za nesplnění povinností dle této
+                        Smlouvy, pokud k němu došlo v důsledku okolností vyšší moci, tj. okolností,
+                        které nemohla předvídat ani ovlivnit (např. živelné pohromy, válečné konflikty,
+                        pandemie, výpadky internetového připojení na straně poskytovatelů infrastruktury apod.).
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">10.2</span>
+                    <span class="clause-content">
+                        Dotčená strana je povinna druhou stranu o okolnostech vyšší moci bezodkladně
+                        informovat a vyvinout přiměřené úsilí k minimalizaci jejich dopadů.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek XI -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">XI</span>
+                    <span class="article-title">Odstoupení od smlouvy</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">11.1</span>
+                    <span class="clause-content">
+                        Objednatel je oprávněn od této Smlouvy odstoupit kdykoliv do okamžiku
+                        dokončení Díla. V takovém případě je povinen uhradit Zhotoviteli cenu
+                        za práce prokazatelně provedené do okamžiku doručení odstoupení.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">11.2</span>
+                    <span class="clause-content">
+                        Zhotovitel je oprávněn od Smlouvy odstoupit v případě, že Objednatel
+                        neposkytne součinnost dle čl. 5 ani po písemné výzvě s dodatečnou lhůtou
+                        alespoň 14 dnů.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">11.3</span>
+                    <span class="clause-content">
+                        Každá ze Smluvních stran je oprávněna od Smlouvy odstoupit v případě
+                        podstatného porušení Smlouvy druhou stranou. Za podstatné porušení se považuje
+                        zejména prodlení s plněním delší než 30 dnů.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">11.4</span>
+                    <span class="clause-content">
+                        Objednatel jako spotřebitel má v souladu s § 1829 občanského zákoníku
+                        právo odstoupit od Smlouvy uzavřené distančním způsobem bez udání důvodu
+                        ve lhůtě 14 dnů od uzavření Smlouvy. Toto právo nelze uplatnit, bylo-li
+                        s plněním Díla započato před uplynutím této lhůty s výslovným souhlasem Objednatele.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek XII -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">XII</span>
+                    <span class="article-title">Sankce</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">12.1</span>
+                    <span class="clause-content">
+                        V případě prodlení Zhotovitele s dokončením Díla oproti termínu dle čl. 3.1
+                        (za podmínky řádné součinnosti Objednatele) je Objednatel oprávněn požadovat
+                        smluvní pokutu ve výši 0,05 % z ceny Díla za každý den prodlení, maximálně
+                        však do výše 10 % celkové ceny Díla.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">12.2</span>
+                    <span class="clause-content">
+                        Uplatněním smluvní pokuty není dotčeno právo na náhradu škody.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek XIII -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">XIII</span>
+                    <span class="article-title">Řešení sporů</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">13.1</span>
+                    <span class="clause-content">
+                        Smluvní strany se zavazují řešit veškeré spory vyplývající z této Smlouvy
+                        přednostně smírnou cestou a vzájemným jednáním.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">13.2</span>
+                    <span class="clause-content">
+                        Nedojde-li k dohodě ve lhůtě 30 dnů od písemného oznámení sporu druhé
+                        straně, bude spor rozhodnut příslušným soudem České republiky.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">13.3</span>
+                    <span class="clause-content">
+                        Objednatel jako spotřebitel má právo na mimosoudní řešení spotřebitelských
+                        sporů. Subjektem mimosoudního řešení je Česká obchodní inspekce
+                        (www.coi.cz).
+                    </span>
+                </div>
+            </div>
+
+            <!-- Článek XIV -->
+            <div class="article">
+                <div class="article-header">
+                    <span class="article-number">XIV</span>
+                    <span class="article-title">Závěrečná ustanovení</span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">14.1</span>
+                    <span class="clause-content">
+                        Tato Smlouva nabývá platnosti a účinnosti dnem podpisu oběma Smluvními stranami.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">14.2</span>
+                    <span class="clause-content">
+                        Smlouvu lze měnit nebo doplňovat pouze písemnými, vzájemně odsouhlasekými
+                        dodatky, a to i formou e-mailové komunikace, pokud obě strany projeví
+                        výslovný souhlas.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">14.3</span>
+                    <span class="clause-content">
+                        Tato Smlouva se řídí právním řádem České republiky, zejména zákonem
+                        č. 89/2012 Sb., občanský zákoník, v platném znění.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">14.4</span>
+                    <span class="clause-content">
+                        Nedílnou součástí této Smlouvy je Příloha č. 1 - Technická specifikace.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">14.5</span>
+                    <span class="clause-content">
+                        Smlouva je vyhotovena v elektronické podobě. Za písemnou formu se považuje
+                        i e-mailová komunikace na adresy uvedené v záhlaví této Smlouvy, potvrzená
+                        oběma stranami.
+                    </span>
+                </div>
+                <div class="clause">
+                    <span class="clause-num">14.6</span>
+                    <span class="clause-content">
+                        Je-li některé ustanovení této Smlouvy neplatné nebo nevymahatelné,
+                        nemá to vliv na platnost ostatních ustanovení. Smluvní strany se zavazují
+                        neplatné ustanovení nahradit ustanovením, které se svým účelem co nejvíce
+                        blíží původnímu záměru.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Podpisy -->
+            <div class="signature-section">
+                <div class="signature-title">Podpisy smluvních stran</div>
+                <div class="signatures">
+                    <div class="sig-block">
+                        <div class="sig-line">
+                            <div class="sig-name">Martin Švanda</div>
+                            <div class="sig-role">PRAUT s.r.o. - jednatel</div>
+                            <div class="sig-date">V Chebu dne ..........................</div>
+                        </div>
+                    </div>
+                    <div class="sig-block">
+                        <div class="sig-line">
+                            <div class="sig-name">Lucie Morawiecová</div>
+                            <div class="sig-role">Objednatel</div>
+                            <div class="sig-date">V .......................... dne ..........................</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div>PRAUT s.r.o. | IČO: 22545107 | Obrněné brigády 552/33, 350 02 Cheb</div>
+            <div>SOD-2026-003 | 30. března 2026</div>
+        </div>
+    </div>
+</body>
+</html>

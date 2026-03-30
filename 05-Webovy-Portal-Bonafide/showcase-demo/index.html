@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BydlímeKvalitně.cz — Portál o bydlení, realitách a architektuře</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#1e40af;--primary-light:#3b82f6;--bg:#fafafa;--card:#fff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--accent:#d946ef;--warm:#f8fafc}
+body{font-family:'Georgia','Palatino',serif;color:var(--text);background:var(--bg);line-height:1.7}
+a{color:var(--primary);text-decoration:none}
+
+/* NAV */
+nav{background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1100px;margin:0 auto;padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:1.4rem;font-weight:700;color:var(--text);font-family:-apple-system,sans-serif}
+.logo span{color:var(--primary-light)}
+nav ul{list-style:none;display:flex;gap:1.5rem;font-family:-apple-system,sans-serif}
+nav ul li a{color:var(--muted);font-size:.85rem;font-weight:500;transition:color .2s}
+nav ul li a:hover{color:var(--primary)}
+.nav-search{display:flex;align-items:center;gap:.5rem}
+.nav-search input{padding:.4rem .8rem;border:1px solid var(--border);border-radius:20px;font-size:.8rem;width:180px;outline:none;transition:border .2s;font-family:inherit}
+.nav-search input:focus{border-color:var(--primary-light);width:220px}
+@media(max-width:768px){nav ul{display:none}.nav-search input{width:120px}}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1e3a5f 0%,#1e40af 40%,#7c3aed 100%);color:#fff;padding:4rem 2rem;text-align:center}
+.hero h1{font-size:2.4rem;margin-bottom:.8rem;font-weight:700}
+.hero p{font-size:1.1rem;opacity:.85;max-width:600px;margin:0 auto 1.5rem}
+.hero-tags{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.hero-tag{background:rgba(255,255,255,.15);padding:.4rem 1rem;border-radius:20px;font-size:.8rem;font-family:-apple-system,sans-serif;cursor:pointer;transition:background .2s}
+.hero-tag:hover{background:rgba(255,255,255,.25)}
+
+/* LAYOUT */
+.container{max-width:1100px;margin:0 auto;padding:2rem}
+.main-grid{display:grid;grid-template-columns:1fr 320px;gap:2rem}
+@media(max-width:900px){.main-grid{grid-template-columns:1fr}}
+
+/* ARTICLES */
+.section-title{font-size:1.3rem;font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between}
+.section-title .more{font-size:.8rem;color:var(--primary-light);font-family:-apple-system,sans-serif;font-weight:500}
+.articles{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+.article-card{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:all .3s;cursor:pointer}
+.article-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.article-img{height:180px;position:relative}
+.article-card:nth-child(1) .article-img{background:linear-gradient(135deg,#bfdbfe,#93c5fd)}
+.article-card:nth-child(2) .article-img{background:linear-gradient(135deg,#fde68a,#fbbf24)}
+.article-card:nth-child(3) .article-img{background:linear-gradient(135deg,#bbf7d0,#86efac)}
+.article-card:nth-child(4) .article-img{background:linear-gradient(135deg,#fecaca,#fca5a5)}
+.article-card:nth-child(5) .article-img{background:linear-gradient(135deg,#e9d5ff,#c4b5fd)}
+.article-card:nth-child(6) .article-img{background:linear-gradient(135deg,#fed7aa,#fdba74)}
+.article-img .cat{position:absolute;top:.8rem;left:.8rem;background:var(--primary);color:#fff;padding:.2rem .6rem;border-radius:6px;font-size:.7rem;font-family:-apple-system,sans-serif;font-weight:600}
+.ai-badge{position:absolute;top:.8rem;right:.8rem;background:var(--accent);color:#fff;padding:.2rem .5rem;border-radius:6px;font-size:.65rem;font-family:-apple-system,sans-serif;font-weight:600;display:flex;align-items:center;gap:.3rem}
+.article-body{padding:1.2rem}
+.article-body h3{font-size:1.05rem;margin-bottom:.4rem;line-height:1.3}
+.article-body p{color:var(--muted);font-size:.82rem;line-height:1.5;font-family:-apple-system,sans-serif}
+.article-meta{display:flex;justify-content:space-between;align-items:center;margin-top:.8rem;font-size:.75rem;color:var(--muted);font-family:-apple-system,sans-serif}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:1.5rem}
+.sidebar-box{background:var(--card);border-radius:12px;padding:1.2rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.sidebar-box h3{font-size:.95rem;margin-bottom:1rem;font-family:-apple-system,sans-serif;padding-bottom:.5rem;border-bottom:2px solid var(--primary-light)}
+.cat-list{list-style:none}
+.cat-list li{padding:.4rem 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:.85rem;font-family:-apple-system,sans-serif}
+.cat-list li:last-child{border:none}
+.cat-count{background:var(--bg);padding:.1rem .5rem;border-radius:10px;font-size:.75rem;color:var(--muted)}
+.popular-item{display:flex;gap:.8rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.popular-item:last-child{border:none}
+.popular-thumb{width:60px;height:60px;border-radius:8px;flex-shrink:0}
+.popular-item:nth-child(1) .popular-thumb{background:linear-gradient(135deg,#c7d2fe,#a5b4fc)}
+.popular-item:nth-child(2) .popular-thumb{background:linear-gradient(135deg,#fef08a,#fde047)}
+.popular-item:nth-child(3) .popular-thumb{background:linear-gradient(135deg,#a7f3d0,#6ee7b7)}
+.popular-item:nth-child(4) .popular-thumb{background:linear-gradient(135deg,#fecdd3,#fda4af)}
+.popular-text h4{font-size:.82rem;line-height:1.3;margin-bottom:.2rem}
+.popular-text span{font-size:.7rem;color:var(--muted);font-family:-apple-system,sans-serif}
+
+/* AI CHAT */
+.ai-fab{position:fixed;bottom:1.5rem;right:1.5rem;width:56px;height:56px;background:linear-gradient(135deg,var(--primary-light),var(--accent));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.4);z-index:200;transition:transform .2s;border:none}
+.ai-fab:hover{transform:scale(1.1)}
+.ai-panel{position:fixed;bottom:5rem;right:1.5rem;width:360px;max-height:480px;background:var(--card);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);z-index:200;display:none;flex-direction:column;overflow:hidden}
+.ai-panel.open{display:flex}
+.ai-panel-header{background:linear-gradient(135deg,var(--primary-light),var(--accent));color:#fff;padding:1rem;display:flex;justify-content:space-between;align-items:center}
+.ai-panel-header h4{font-size:.95rem;font-family:-apple-system,sans-serif}
+.ai-close{background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer}
+.ai-messages{flex:1;padding:1rem;overflow-y:auto;font-family:-apple-system,sans-serif;font-size:.85rem;max-height:320px}
+.ai-msg{margin-bottom:.8rem;padding:.6rem .8rem;border-radius:10px;max-width:85%;line-height:1.4}
+.ai-msg.bot{background:#eff6ff;align-self:flex-start;border-bottom-left-radius:2px}
+.ai-msg.user{background:var(--primary-light);color:#fff;margin-left:auto;border-bottom-right-radius:2px}
+.ai-input{display:flex;padding:.8rem;border-top:1px solid var(--border);gap:.5rem}
+.ai-input input{flex:1;padding:.5rem .8rem;border:1px solid var(--border);border-radius:8px;font-size:.85rem;outline:none;font-family:inherit}
+.ai-input button{background:var(--primary-light);color:#fff;border:none;padding:.5rem .8rem;border-radius:8px;cursor:pointer;font-size:.85rem}
+
+/* DETAIL OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:center;justify-content:center;padding:2rem}
+.overlay.open{display:flex}
+.overlay-content{background:var(--card);border-radius:16px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;padding:0}
+.overlay-hero{height:220px;background:linear-gradient(135deg,#bfdbfe,#93c5fd);position:relative}
+.overlay-close{position:absolute;top:1rem;right:1rem;background:rgba(0,0,0,.3);color:#fff;border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.2rem}
+.overlay-body{padding:2rem}
+.overlay-body .cat-tag{display:inline-block;background:#dbeafe;color:var(--primary);padding:.2rem .6rem;border-radius:6px;font-size:.75rem;font-family:-apple-system,sans-serif;font-weight:600;margin-bottom:.8rem}
+.overlay-body h2{font-size:1.5rem;margin-bottom:.5rem;line-height:1.3}
+.overlay-body .meta{color:var(--muted);font-size:.8rem;margin-bottom:1.5rem;font-family:-apple-system,sans-serif}
+.ai-summary{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:1px solid #c7d2fe;border-radius:10px;padding:1rem;margin-bottom:1.5rem;font-family:-apple-system,sans-serif;font-size:.85rem}
+.ai-summary .tag{display:inline-flex;align-items:center;gap:.3rem;background:var(--accent);color:#fff;padding:.15rem .5rem;border-radius:6px;font-size:.7rem;font-weight:600;margin-bottom:.5rem}
+.overlay-body .content p{margin-bottom:1rem;font-size:.95rem;text-align:justify}
+.demo-badge{position:fixed;top:.8rem;right:.8rem;background:var(--accent);color:#fff;padding:.3rem .7rem;border-radius:6px;font-size:.7rem;font-weight:600;z-index:400;font-family:-apple-system,sans-serif}
+footer{background:#1e293b;color:#94a3b8;padding:2rem;text-align:center;font-size:.8rem;font-family:-apple-system,sans-serif}
+footer a{color:var(--primary-light)}
+</style>
+</head>
+<body>
+
+<div class="demo-badge">DEMO — PRAUT s.r.o.</div>
+
+<nav>
+<div class="nav-inner">
+<div class="logo">Bydlíme<span>Kvalitně</span>.cz</div>
+<ul>
+<li><a href="#">Bydlení</a></li>
+<li><a href="#">Reality</a></li>
+<li><a href="#">Architektura</a></li>
+<li><a href="#">Interiéry</a></li>
+<li><a href="#">Zahrada</a></li>
+</ul>
+<div class="nav-search">
+<input type="text" placeholder="Hledat články...">
+</div>
+</div>
+</nav>
+
+<div class="hero">
+<h1>Váš průvodce světem bydlení</h1>
+<p>Inspirace, rady a trendy pro váš domov — od rekonstrukce po interiérový design</p>
+<div class="hero-tags">
+<span class="hero-tag">Rekonstrukce</span>
+<span class="hero-tag">Interiéry 2026</span>
+<span class="hero-tag">Hypotéky</span>
+<span class="hero-tag">Smart Home</span>
+<span class="hero-tag">Udržitelné bydlení</span>
+</div>
+</div>
+
+<div class="container">
+<div class="main-grid">
+<div>
+<div class="section-title">Nejnovější články <a href="#" class="more">Zobrazit vše →</a></div>
+<div class="articles">
+<div class="article-card" onclick="openArticle()">
+<div class="article-img"><span class="cat">Bydlení</span><span class="ai-badge">✦ AI shrnutí</span></div>
+<div class="article-body">
+<h3>Jak vybrat ideální byt v Praze: Kompletní průvodce 2026</h3>
+<p>Ceny bytů v Praze mírně klesají. Přinášíme přehled lokalit, cenových hladin a tipů pro úspěšný nákup nemovitosti.</p>
+<div class="article-meta"><span>28. 3. 2026 • 8 min čtení</span><span>1 247 zobrazení</span></div>
+</div>
+</div>
+<div class="article-card">
+<div class="article-img"><span class="cat">Interiéry</span></div>
+<div class="article-body">
+<h3>Trendy v interiérovém designu 2026: Návrat k přírodě</h3>
+<p>Letošní rok je ve znamení přírodních materiálů, teplých tónů a minimalismu s duší. Jaké barvy a materiály zvolit?</p>
+<div class="article-meta"><span>26. 3. 2026 • 6 min čtení</span><span>983 zobrazení</span></div>
+</div>
+</div>
+<div class="article-card">
+<div class="article-img"><span class="cat">Rekonstrukce</span><span class="ai-badge">✦ AI shrnutí</span></div>
+<div class="article-body">
+<h3>Rekonstrukce krok za krokem: Od plánu po kolaudaci</h3>
+<p>Plánujete rekonstrukci? Připravili jsme kompletní checklist, který vás provede celým procesem bez stresu.</p>
+<div class="article-meta"><span>24. 3. 2026 • 12 min čtení</span><span>2 105 zobrazení</span></div>
+</div>
+</div>
+<div class="article-card">
+<div class="article-img"><span class="cat">Architektura</span></div>
+<div class="article-body">
+<h3>Pasivní domy: Vyplatí se investice v roce 2026?</h3>
+<p>Analýza nákladů a úspor pasivních domů. Porovnání s klasickou výstavbou a návratnost investice.</p>
+<div class="article-meta"><span>22. 3. 2026 • 10 min čtení</span><span>756 zobrazení</span></div>
+</div>
+</div>
+<div class="article-card">
+<div class="article-img"><span class="cat">Smart Home</span><span class="ai-badge">✦ AI shrnutí</span></div>
+<div class="article-body">
+<h3>Chytrá domácnost pod 50 000 Kč: Co pořídit nejdřív</h3>
+<p>Průvodce základním vybavením smart home — od osvětlení přes termostat po zabezpečení.</p>
+<div class="article-meta"><span>20. 3. 2026 • 7 min čtení</span><span>1 891 zobrazení</span></div>
+</div>
+</div>
+<div class="article-card">
+<div class="article-img"><span class="cat">Zahrada</span></div>
+<div class="article-body">
+<h3>Vertikální zahrady: Zeleň i v malém bytě</h3>
+<p>Jak si vytvořit vertikální zahradu na balkóně nebo v interiéru. Nejlepší rostliny a systémy pro začátečníky.</p>
+<div class="article-meta"><span>18. 3. 2026 • 5 min čtení</span><span>624 zobrazení</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="sidebar">
+<div class="sidebar-box">
+<h3>Kategorie</h3>
+<ul class="cat-list">
+<li><span>Bydlení</span><span class="cat-count">45</span></li>
+<li><span>Reality</span><span class="cat-count">32</span></li>
+<li><span>Architektura</span><span class="cat-count">28</span></li>
+<li><span>Interiéry</span><span class="cat-count">51</span></li>
+<li><span>Rekonstrukce</span><span class="cat-count">37</span></li>
+<li><span>Smart Home</span><span class="cat-count">19</span></li>
+<li><span>Zahrada</span><span class="cat-count">24</span></li>
+</ul>
+</div>
+<div class="sidebar-box">
+<h3>Populární články</h3>
+<div class="popular-item"><div class="popular-thumb"></div><div class="popular-text"><h4>10 chyb při výběru hypotéky</h4><span>3 420 zobrazení</span></div></div>
+<div class="popular-item"><div class="popular-thumb"></div><div class="popular-text"><h4>Kuchyň snů pod 200 000 Kč</h4><span>2 890 zobrazení</span></div></div>
+<div class="popular-item"><div class="popular-thumb"></div><div class="popular-text"><h4>Nejlepší čtvrti pro rodiny</h4><span>2 345 zobrazení</span></div></div>
+<div class="popular-item"><div class="popular-thumb"></div><div class="popular-text"><h4>DIY: Obývák za víkend</h4><span>1 987 zobrazení</span></div></div>
+</div>
+<div class="sidebar-box" style="background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:1px solid #c7d2fe">
+<h3 style="border-bottom-color:var(--accent)">✦ AI doporučuje</h3>
+<p style="font-size:.82rem;color:var(--muted);font-family:-apple-system,sans-serif">Na základě čtenosti doporučujeme:</p>
+<div class="popular-item" style="border:none;padding-top:.3rem">
+<div class="popular-text"><h4>Jak ušetřit na energiích: Kompletní guide</h4><span style="color:var(--accent)">AI curated • 4 510 zobrazení</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ARTICLE DETAIL OVERLAY -->
+<div class="overlay" id="articleOverlay">
+<div class="overlay-content">
+<div class="overlay-hero">
+<button class="overlay-close" onclick="closeArticle()">✕</button>
+</div>
+<div class="overlay-body">
+<span class="cat-tag">Bydlení</span>
+<h2>Jak vybrat ideální byt v Praze: Kompletní průvodce 2026</h2>
+<div class="meta">Autor: Redakce BydlímeKvalitně • 28. března 2026 • 8 min čtení</div>
+<div class="ai-summary">
+<span class="tag">✦ AI shrnutí</span>
+<p>Článek analyzuje aktuální situaci na pražském trhu s byty. Průměrná cena klesla o 3 % oproti Q4 2025. Nejvýhodnější lokality pro koupi: Praha 9 (Vysočany), Praha 5 (Stodůlky), Praha 4 (Chodov). Klíčové faktory: občanská vybavenost, dopravní dostupnost a potenciál zhodnocení.</p>
+</div>
+<div class="content">
+<p>Praha zůstává nejdražším městem v České republice pro nákup nemovitostí, ale poslední data z prvního čtvrtletí 2026 naznačují mírné ochlazení trhu. To otevírá příležitosti pro kupující, kteří dosud vyčkávali.</p>
+<p>V tomto průvodci se podíváme na klíčové faktory, které byste měli zvážit při výběru bytu — od lokality a dispozice přes stav nemovitosti až po financování a právní aspekty transakce.</p>
+<p style="color:var(--muted);font-style:italic;text-align:center;padding:2rem 0">[Pokračování článku v produkční verzi...]</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- AI CHAT -->
+<button class="ai-fab" onclick="toggleAI()">✦</button>
+<div class="ai-panel" id="aiPanel">
+<div class="ai-panel-header">
+<h4>✦ AI Redakční asistent</h4>
+<button class="ai-close" onclick="toggleAI()">✕</button>
+</div>
+<div class="ai-messages">
+<div class="ai-msg bot">Dobrý den! Jsem AI asistent portálu. Mohu vám pomoci s návrhem titulků, sumarizací článků nebo SEO optimalizací. Co potřebujete?</div>
+<div class="ai-msg user">Navrhni titulek pro článek o renovaci koupelny</div>
+<div class="ai-msg bot">Zde jsou návrhy titulků:<br><br>1. <strong>Renovace koupelny 2026: Od demolice po první sprchu za 3 týdny</strong><br>2. <strong>Kompletní průvodce renovací koupelny — rozpočet, materiály, tipy</strong><br>3. <strong>Koupelna snů pod 150 000 Kč: Návod krok za krokem</strong><br><br>Doporučuji variantu 1 — obsahuje rok (SEO), konkrétní timeframe a je emocionálně přitažlivá.</div>
+</div>
+<div class="ai-input">
+<input type="text" placeholder="Napište zprávu..." onkeydown="if(event.key==='Enter')sendAI(this)">
+<button onclick="sendAI(this.previousElementSibling)">→</button>
+</div>
+</div>
+
+<footer>
+<p><strong>BydlímeKvalitně.cz</strong> — Portál o bydlení, realitách a architektuře</p>
+<p>Provozovatel: Bonafide Production, s.r.o. | Vytvořil: <a href="#">PRAUT s.r.o.</a></p>
+<p style="margin-top:.5rem;font-size:.7rem">Demonstrační verze © 2026</p>
+</footer>
+
+<script>
+function openArticle(){document.getElementById('articleOverlay').classList.add('open')}
+function closeArticle(){document.getElementById('articleOverlay').classList.remove('open')}
+function toggleAI(){document.getElementById('aiPanel').classList.toggle('open')}
+function sendAI(input){
+if(!input.value.trim())return;
+var msgs=document.querySelector('.ai-messages');
+var userMsg=document.createElement('div');
+userMsg.className='ai-msg user';
+userMsg.textContent=input.value;
+msgs.appendChild(userMsg);
+input.value='';
+setTimeout(function(){
+var botMsg=document.createElement('div');
+botMsg.className='ai-msg bot';
+botMsg.innerHTML='Díky za dotaz! Toto je demo verze — v produkčním prostředí bych odpověděl pomocí Gemini AI na základě kontextu vašeho portálu a redakčních pravidel.';
+msgs.appendChild(botMsg);
+msgs.scrollTop=msgs.scrollHeight;
+},800);
+msgs.scrollTop=msgs.scrollHeight;
+}
+document.getElementById('articleOverlay').addEventListener('click',function(e){if(e.target===this)closeArticle()});
+</script>
+</body>
+</html>

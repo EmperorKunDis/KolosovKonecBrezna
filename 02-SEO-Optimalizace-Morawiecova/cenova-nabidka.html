@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cenová nabídka - SEO Optimalizace webu</title>
+    <style>
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e3a8a;
+            --primary-light: #dbeafe;
+            --accent: #059669;
+            --accent-light: #d1fae5;
+            --accent-dark: #065f46;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--gray-800);
+            line-height: 1.7;
+            background: var(--gray-50);
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: #fff;
+            padding: 48px 60px 40px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .company-name {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .doc-badge {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 32px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 13px;
+        }
+
+        .header-meta span {
+            opacity: 0.8;
+        }
+
+        .header-meta strong {
+            display: block;
+            opacity: 1;
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        /* Content */
+        .content {
+            padding: 48px 60px;
+        }
+
+        /* Client info */
+        .parties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .party-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px;
+            background: var(--gray-50);
+        }
+
+        .party-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .party-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .party-detail {
+            font-size: 13px;
+            color: var(--gray-500);
+            line-height: 1.8;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        p {
+            margin-bottom: 12px;
+            color: var(--gray-700);
+            font-size: 14px;
+        }
+
+        /* Main pricing card */
+        .pricing-hero {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            border-radius: 16px;
+            padding: 40px;
+            color: #fff;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-hero::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .pricing-hero-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .pricing-hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .pricing-hero h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .pricing-hero-price {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 4px;
+        }
+
+        .pricing-hero-price small {
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0.8;
+            letter-spacing: 0;
+        }
+
+        .pricing-hero-note {
+            font-size: 14px;
+            opacity: 0.75;
+        }
+
+        .pricing-hero-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .pricing-hero-features li {
+            list-style: none;
+            padding-left: 24px;
+            position: relative;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .pricing-hero-features li::before {
+            content: '\2713';
+            position: absolute;
+            left: 0;
+            color: #34d399;
+            font-weight: 700;
+        }
+
+        /* Optional addon */
+        .addon-card {
+            border: 2px dashed var(--gray-300);
+            border-radius: 16px;
+            padding: 32px 40px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .addon-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 4px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .addon-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .addon-desc {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        .addon-price {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .addon-price-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--gray-900);
+            letter-spacing: -1px;
+        }
+
+        .addon-price-period {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        /* AI advantage */
+        .ai-badge {
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            border-radius: 12px;
+            padding: 24px 28px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .ai-badge-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .ai-badge h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .ai-badge p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.85);
+            margin: 0;
+        }
+
+        /* Price breakdown */
+        .breakdown {
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .breakdown-header {
+            background: var(--gray-100);
+            padding: 14px 24px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gray-700);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 14px;
+        }
+
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-row.total {
+            background: var(--primary-light);
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary-dark);
+        }
+
+        .breakdown-item {
+            color: var(--gray-700);
+        }
+
+        .breakdown-value {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        /* Payment terms */
+        .payment-timeline {
+            display: flex;
+            gap: 0;
+            margin: 24px 0;
+            position: relative;
+        }
+
+        .payment-step {
+            flex: 1;
+            text-align: center;
+            padding: 20px 16px;
+            position: relative;
+        }
+
+        .payment-step::before {
+            content: '';
+            position: absolute;
+            top: 32px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gray-200);
+        }
+
+        .payment-step:first-child::before {
+            left: 50%;
+        }
+
+        .payment-step:last-child::before {
+            right: 50%;
+        }
+
+        .payment-dot {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            margin: 0 auto 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .payment-amount {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .payment-label {
+            font-size: 12px;
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        /* Validity */
+        .validity-bar {
+            background: var(--warning-light);
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #92400e;
+            font-weight: 500;
+        }
+
+        .validity-icon {
+            font-size: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-100);
+            padding: 32px 60px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        /* Signature */
+        .signature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .signature-block {
+            padding-top: 60px;
+            border-top: 1px solid var(--gray-300);
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .signature-name {
+            font-weight: 700;
+            color: var(--gray-800);
+            font-size: 14px;
+        }
+
+        @media print {
+            .page { max-width: 100%; }
+            .header { padding: 32px 40px 28px; }
+            .content { padding: 32px 40px; }
+            .footer { padding: 24px 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 32px 24px 28px; }
+            .content { padding: 32px 24px; }
+            .footer { padding: 24px; flex-direction: column; gap: 8px; }
+            .header-meta { flex-direction: column; gap: 12px; }
+            .parties { grid-template-columns: 1fr; }
+            .pricing-hero { padding: 28px; }
+            .pricing-hero-features { grid-template-columns: 1fr; }
+            .addon-card { flex-direction: column; text-align: center; }
+            .addon-price { text-align: center; }
+            .payment-timeline { flex-direction: column; }
+            .payment-step::before { display: none; }
+            .signature-section { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="header-top">
+                <div class="company-name">PRAUT s.r.o.</div>
+                <div class="doc-badge">Cenová nabídka</div>
+            </div>
+            <h1>SEO Optimalizace webu</h1>
+            <p class="header-subtitle">Cenová nabídka pro kompletní optimalizaci webu pro vyhledávače</p>
+            <div class="header-meta">
+                <div>
+                    <span>Nabídka č.</span>
+                    <strong>CN-2026-003</strong>
+                </div>
+                <div>
+                    <span>Datum</span>
+                    <strong>30. března 2026</strong>
+                </div>
+                <div>
+                    <span>Platnost</span>
+                    <strong>30 dní</strong>
+                </div>
+                <div>
+                    <span>Klient</span>
+                    <strong>Lucie Morawiecová</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Strany -->
+            <div class="parties">
+                <div class="party-card">
+                    <div class="party-label">Dodavatel</div>
+                    <div class="party-name">PRAUT s.r.o.</div>
+                    <div class="party-detail">
+                        Obrněné brigády 552/33<br>
+                        350 02 Cheb<br>
+                        IČO: 22545107<br>
+                        Neplátce DPH<br><br>
+                        Zastoupený: Martin Švanda<br>
+                        E-mail: svanda@praut.cz
+                    </div>
+                </div>
+                <div class="party-card">
+                    <div class="party-label">Klient</div>
+                    <div class="party-name">Lucie Morawiecová</div>
+                    <div class="party-detail">
+                        K Osnici 1278<br>
+                        Jesenice u Prahy<br>
+                        Středočeský kraj<br><br>
+                        E-mail: l.morawiecova@gmail.com<br>
+                        Tel: +420 601 386 396
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI advantage -->
+            <div class="ai-badge">
+                <div class="ai-badge-icon">&#x1F916;</div>
+                <div>
+                    <h4>AI-asistovaná analýza</h4>
+                    <p>
+                        Využíváme pokročilou AI analýzu klíčových slov a technického stavu webu.
+                        Výsledek: rychlejší zpracování, přesnější data, lepší doporučení.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Hlavní nabídka -->
+            <div class="section">
+                <h2 class="section-title">Cenová nabídka</h2>
+
+                <div class="pricing-hero">
+                    <div class="pricing-hero-badge">Doporučeno</div>
+                    <div class="pricing-hero-label">Fáze 1 - MVP</div>
+                    <h3>SEO Audit + On-page optimalizace</h3>
+                    <div class="pricing-hero-price">15 000 Kč <small>jednorázově</small></div>
+                    <div class="pricing-hero-note">Kompletní audit a implementace optimalizací do 3 týdnů</div>
+                    <ul class="pricing-hero-features">
+                        <li>Kompletní SEO audit webu</li>
+                        <li>AI analýza klíčových slov</li>
+                        <li>Optimalizace meta tagů</li>
+                        <li>Úprava nadpisové hierarchie</li>
+                        <li>Optimalizace URL struktury</li>
+                        <li>Alt texty u obrázků</li>
+                        <li>Interní prolinkování</li>
+                        <li>Technické SEO (Core Web Vitals)</li>
+                        <li>Sitemap.xml + robots.txt</li>
+                        <li>Nastavení GSC + GA4</li>
+                        <li>Strukturovaná data (Schema.org)</li>
+                        <li>Závěrečný report + doporučení</li>
+                    </ul>
+                </div>
+
+                <div class="addon-card">
+                    <div>
+                        <div class="addon-label">Volitelné</div>
+                        <div class="addon-title">Měsíční SEO péče</div>
+                        <div class="addon-desc">
+                            Průběžný monitoring pozic, měsíční reporty, optimalizace na základě dat,
+                            off-page SEO aktivity, obsahová doporučení
+                        </div>
+                    </div>
+                    <div class="addon-price">
+                        <div class="addon-price-value">5 000 Kč</div>
+                        <div class="addon-price-period">/ měsíc</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rozpis ceny -->
+            <div class="section">
+                <h2 class="section-title">Cenový rozpis MVP</h2>
+                <div class="breakdown">
+                    <div class="breakdown-header">Položka</div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-item">Kompletní SEO audit (technický + obsahový)</span>
+                        <span class="breakdown-value">5 000 Kč</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-item">AI analýza klíčových slov a konkurence</span>
+                        <span class="breakdown-value">2 500 Kč</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-item">On-page optimalizace (meta tagy, nadpisy, URL, alt texty)</span>
+                        <span class="breakdown-value">4 000 Kč</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-item">Technické SEO (rychlost, CWV, sitemap, robots.txt)</span>
+                        <span class="breakdown-value">2 500 Kč</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-item">Nastavení nástrojů (GSC, GA4) + závěrečný report</span>
+                        <span class="breakdown-value">1 000 Kč</span>
+                    </div>
+                    <div class="breakdown-row total">
+                        <span>Celkem (neplátce DPH)</span>
+                        <span>15 000 Kč</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Platební podmínky -->
+            <div class="section">
+                <h2 class="section-title">Platební podmínky</h2>
+                <div class="payment-timeline">
+                    <div class="payment-step">
+                        <div class="payment-dot">1</div>
+                        <div class="payment-amount">7 500 Kč</div>
+                        <div class="payment-label">Záloha 50%<br>Před zahájením prací</div>
+                    </div>
+                    <div class="payment-step">
+                        <div class="payment-dot">2</div>
+                        <div class="payment-amount">7 500 Kč</div>
+                        <div class="payment-label">Doplatek 50%<br>Po dodání auditu a implementaci</div>
+                    </div>
+                </div>
+                <p>
+                    Platba probíhá na základě vystavené faktury se splatností 14 dní.
+                    Záloha je splatná před zahájením prací, doplatek po předání kompletního auditu
+                    a implementaci on-page optimalizací.
+                </p>
+                <p>
+                    Společnost PRAUT s.r.o. není plátcem DPH. Uvedené ceny jsou konečné.
+                </p>
+            </div>
+
+            <!-- Platnost nabídky -->
+            <div class="section">
+                <div class="validity-bar">
+                    <span class="validity-icon">&#x23F0;</span>
+                    <span>Tato cenová nabídka je platná do <strong>29. dubna 2026</strong> (30 dní od vystavení).</span>
+                </div>
+            </div>
+
+            <!-- Podpisy -->
+            <div class="signature-section">
+                <div class="signature-block">
+                    <div class="signature-name">Martin Švanda</div>
+                    PRAUT s.r.o.<br>
+                    V Chebu dne ......................
+                </div>
+                <div class="signature-block">
+                    <div class="signature-name">Lucie Morawiecová</div>
+                    Objednatel<br>
+                    V ...................... dne ......................
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div>PRAUT s.r.o. | IČO: 22545107 | Obrněné brigády 552/33, 350 02 Cheb</div>
+            <div>CN-2026-003 | 30. března 2026</div>
+        </div>
+    </div>
+</body>
+</html>

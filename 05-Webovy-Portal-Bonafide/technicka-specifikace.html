@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technická specifikace — Webový portál o bydlení</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2a4a7f;
+            --accent: #e67e22;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --success: #38a169;
+            --info: #3182ce;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 50px 60px 40px;
+        }
+
+        header .doc-type {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.7;
+            margin-bottom: 12px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        header .subtitle {
+            font-size: 16px;
+            opacity: 0.85;
+            font-weight: 300;
+        }
+
+        .meta-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 60px;
+            background: #f1f5f9;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .meta-bar span { display: flex; align-items: center; gap: 6px; }
+
+        .content { padding: 40px 60px 60px; }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 24px;
+        }
+
+        .info-card h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .info-card p {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .info-card .name {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: var(--primary);
+            margin: 36px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        .section { margin-bottom: 32px; }
+
+        .section h2 { display: block; }
+
+        h3 {
+            font-size: 16px;
+            color: var(--primary-light);
+            margin: 20px 0 10px;
+        }
+
+        p { margin-bottom: 12px; }
+
+        ul, ol {
+            margin: 8px 0 16px 24px;
+        }
+
+        li { margin-bottom: 6px; }
+
+        .arch-diagram {
+            background: #f7fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 32px;
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        .arch-layers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .arch-layer {
+            padding: 14px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .arch-layer.frontend { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+        .arch-layer.api { background: #fefcbf; color: #975a16; border: 1px solid #f6e05e; }
+        .arch-layer.backend { background: #fed7e2; color: #97266d; border: 1px solid #fbb6ce; }
+        .arch-layer.db { background: #c6f6d5; color: #276749; border: 1px solid #9ae6b4; }
+        .arch-layer.ai { background: #e9d8fd; color: #553c9a; border: 1px solid #d6bcfa; }
+
+        .arch-layer small {
+            display: block;
+            font-weight: 400;
+            font-size: 12px;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+
+        .arch-arrow {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .module-card {
+            background: #f7fafc;
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            margin: 12px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .module-card h4 {
+            font-size: 15px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .module-card ul {
+            margin: 4px 0 0 20px;
+            font-size: 14px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .tag.tech { background: #ebf8ff; color: #2b6cb0; }
+        .tag.ai { background: #e9d8fd; color: #553c9a; }
+        .tag.security { background: #fed7e2; color: #97266d; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        table th {
+            background: var(--primary);
+            color: white;
+            text-align: left;
+            padding: 10px 14px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        table tr:nth-child(even) td { background: #f7fafc; }
+
+        .exclusion-box {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+
+        .exclusion-box h3 {
+            color: #c53030;
+            margin-top: 0;
+        }
+
+        .exclusion-box ul { font-size: 14px; }
+
+        footer {
+            background: #f1f5f9;
+            padding: 24px 60px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+        }
+
+        @media print {
+            .page-wrapper { box-shadow: none; }
+            header { padding: 30px 40px; }
+            .content { padding: 20px 40px 40px; }
+            .meta-bar { padding: 12px 40px; }
+        }
+
+        @media (max-width: 700px) {
+            header { padding: 30px 24px; }
+            .content { padding: 24px; }
+            .meta-bar { padding: 12px 24px; flex-direction: column; gap: 8px; }
+            .info-grid { grid-template-columns: 1fr; }
+            footer { padding: 20px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <header>
+            <div class="doc-type">Technická specifikace</div>
+            <h1>Webový portál o bydlení</h1>
+            <div class="subtitle">Obsahový portál s AI integrací — MVP</div>
+        </header>
+
+        <div class="meta-bar">
+            <span>Verze: 1.0</span>
+            <span>Datum: 30. března 2026</span>
+            <span>Klasifikace: Důvěrné</span>
+        </div>
+
+        <div class="content">
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Objednatel</h3>
+                    <p class="name">Bonafide Production, s.r.o.</p>
+                    <p>Wolkerova 965/15, Bubeneč</p>
+                    <p>160 00 Praha 6</p>
+                    <p>IČO: 29021332</p>
+                    <p>Kontakt: René Hradecký</p>
+                    <p>hradecky@bonafide.cz</p>
+                </div>
+                <div class="info-card">
+                    <h3>Zhotovitel</h3>
+                    <p class="name">PRAUT s.r.o.</p>
+                    <p>Obrněné brigády 552/33</p>
+                    <p>350 02 Cheb</p>
+                    <p>IČO: 22545107</p>
+                    <p>Kontakt: Martin Švanda</p>
+                    <p>svanda@praut.cz</p>
+                </div>
+            </div>
+
+            <!-- 1. PŘEHLED PROJEKTU -->
+            <div class="section">
+                <h2>1. Přehled projektu</h2>
+                <p>
+                    Předmětem je vývoj obsahového webového portálu zaměřeného na bydlení, reality a architekturu.
+                    Portál bude sloužit jako moderní redakční platforma s integrací umělé inteligence (Google Gemini)
+                    pro asistenci při tvorbě a správě obsahu.
+                </p>
+                <p>
+                    Cílem MVP je funkční portál s redakčním systémem, AI asistentem pro redaktory,
+                    veřejným frontendem pro čtenáře, uživatelskými účty a administračním panelem.
+                </p>
+            </div>
+
+            <!-- 2. ARCHITEKTURA -->
+            <div class="section">
+                <h2>2. Architektura systému</h2>
+
+                <div class="arch-diagram">
+                    <div class="arch-layers">
+                        <div class="arch-layer frontend">
+                            Angular 17+ (SPA)
+                            <small>Server-Side Rendering, lazy loading, standalone components</small>
+                        </div>
+                        <div class="arch-arrow">&#8595;</div>
+                        <div class="arch-layer api">
+                            REST API (Django REST Framework)
+                            <small>JWT autentizace, API versioning, rate limiting</small>
+                        </div>
+                        <div class="arch-arrow">&#8595;</div>
+                        <div class="arch-layer backend">
+                            Django 5.x Backend
+                            <small>Business logika, ORM, Celery task queue, signály</small>
+                        </div>
+                        <div class="arch-arrow">&#8595; &#8593;</div>
+                        <div class="arch-layer ai">
+                            Google Gemini API
+                            <small>Generování obsahu, sumarizace, SEO optimalizace</small>
+                        </div>
+                        <div class="arch-arrow">&#8595;</div>
+                        <div class="arch-layer db">
+                            PostgreSQL 16
+                            <small>Full-text search, JSONField, indexy, migrace</small>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>2.1 Technologický stack</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Vrstva</th>
+                            <th>Technologie</th>
+                            <th>Verze</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Frontend</td>
+                            <td>Angular (SPA, standalone components)</td>
+                            <td>17+</td>
+                        </tr>
+                        <tr>
+                            <td>Backend</td>
+                            <td>Django + Django REST Framework</td>
+                            <td>5.x / 3.15+</td>
+                        </tr>
+                        <tr>
+                            <td>Databáze</td>
+                            <td>PostgreSQL</td>
+                            <td>16</td>
+                        </tr>
+                        <tr>
+                            <td>AI integrace</td>
+                            <td>Google Gemini API</td>
+                            <td>1.5 Pro</td>
+                        </tr>
+                        <tr>
+                            <td>Task queue</td>
+                            <td>Celery + Redis</td>
+                            <td>5.x</td>
+                        </tr>
+                        <tr>
+                            <td>Hosting</td>
+                            <td>Cloudflare Workers + managed PostgreSQL</td>
+                            <td>---</td>
+                        </tr>
+                        <tr>
+                            <td>CDN</td>
+                            <td>Cloudflare</td>
+                            <td>---</td>
+                        </tr>
+                        <tr>
+                            <td>CI/CD</td>
+                            <td>GitHub Actions</td>
+                            <td>---</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 3. MODULY MVP -->
+            <div class="section">
+                <h2>3. Moduly MVP</h2>
+
+                <div class="module-card">
+                    <h4>3.1 Redakční systém <span class="tag tech">Backend</span></h4>
+                    <ul>
+                        <li>WYSIWYG editor s podporou obrázků, videí a formátovaného textu</li>
+                        <li>Workflow správy článků: <strong>Draft</strong> &rarr; <strong>Review</strong> &rarr; <strong>Published</strong></li>
+                        <li>Kategorie: Bydlení, Reality, Architektura, Interiéry (rozšiřitelné)</li>
+                        <li>Tagovací systém s autocomplete</li>
+                        <li>Verzování obsahu (historie změn)</li>
+                        <li>Plánované publikování (scheduled publish)</li>
+                        <li>Náhledové URL pro nepublikované články</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h4>3.2 AI asistent pro redaktory <span class="tag ai">Gemini</span></h4>
+                    <ul>
+                        <li>Automatický návrh titulků (3-5 variant) na základě obsahu článku</li>
+                        <li>Sumarizace dlouhých článků (perex / abstrakt)</li>
+                        <li>SEO optimalizace textu — návrh meta title, meta description, klíčových slov</li>
+                        <li>Kontrola čitelnosti a doporučení pro zlepšení</li>
+                        <li>Doporučování souvisejících článků na základě obsahu</li>
+                        <li>AI-generovaný obsah vždy označen a vyžaduje schválení redaktorem</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h4>3.3 Veřejný frontend <span class="tag tech">Angular</span></h4>
+                    <ul>
+                        <li>Homepage s featured články a kategoriemi</li>
+                        <li>Listing článků s paginací a filtrováním</li>
+                        <li>Detail článku s AI-generovaným shrnutím</li>
+                        <li>Full-text vyhledávání s filtrováním podle kategorií</li>
+                        <li>Responsivní design (mobile-first)</li>
+                        <li>Lazy loading obrázků, skeleton loading</li>
+                        <li>Open Graph meta tagy pro sdílení na sociálních sítích</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h4>3.4 Uživatelské účty</h4>
+                    <ul>
+                        <li>Registrace (e-mail + heslo), potvrzení e-mailem</li>
+                        <li>Přihlášení (JWT tokeny)</li>
+                        <li>Zapomenuté heslo (reset e-mailem)</li>
+                        <li>Uživatelský profil — oblíbené články, historie čtení</li>
+                        <li>Role: Čtenář, Redaktor, Šéfredaktor, Administrátor</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h4>3.5 Administrační panel</h4>
+                    <ul>
+                        <li>Správa uživatelů a rolí</li>
+                        <li>Statistiky čtenosti (počet zobrazení, unikátní návštěvníci)</li>
+                        <li>Správa kategorií a tagů</li>
+                        <li>Přehled AI využití (počet volání, tokeny)</li>
+                        <li>Dashboard s klíčovými metrikami</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 4. API -->
+            <div class="section">
+                <h2>4. REST API</h2>
+                <p>
+                    API bude navrženo s ohledem na budoucí rozšíření o mobilní aplikaci.
+                    Veškerá komunikace mezi frontendem a backendem probíhá přes REST API.
+                </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Endpoint</th>
+                            <th>Metoda</th>
+                            <th>Popis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>/api/v1/articles/</td><td>GET, POST</td><td>Seznam a vytvoření článků</td></tr>
+                        <tr><td>/api/v1/articles/{slug}/</td><td>GET, PUT, DELETE</td><td>Detail, úprava, smazání článku</td></tr>
+                        <tr><td>/api/v1/categories/</td><td>GET</td><td>Seznam kategorií</td></tr>
+                        <tr><td>/api/v1/search/</td><td>GET</td><td>Full-text vyhledávání</td></tr>
+                        <tr><td>/api/v1/ai/suggest-titles/</td><td>POST</td><td>AI návrh titulků</td></tr>
+                        <tr><td>/api/v1/ai/summarize/</td><td>POST</td><td>AI sumarizace článku</td></tr>
+                        <tr><td>/api/v1/ai/seo-optimize/</td><td>POST</td><td>AI SEO optimalizace</td></tr>
+                        <tr><td>/api/v1/auth/register/</td><td>POST</td><td>Registrace uživatele</td></tr>
+                        <tr><td>/api/v1/auth/login/</td><td>POST</td><td>Přihlášení (JWT)</td></tr>
+                        <tr><td>/api/v1/users/me/favorites/</td><td>GET, POST, DELETE</td><td>Oblíbené články uživatele</td></tr>
+                        <tr><td>/api/v1/admin/stats/</td><td>GET</td><td>Statistiky pro admin panel</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 5. BEZPEČNOST -->
+            <div class="section">
+                <h2>5. Bezpečnost <span class="tag security">Kritické</span></h2>
+                <ul>
+                    <li><strong>HTTPS</strong> — veškerá komunikace šifrována (TLS 1.3)</li>
+                    <li><strong>CSRF ochrana</strong> — Django middleware, SameSite cookies</li>
+                    <li><strong>Rate limiting</strong> — ochrana API před zneužitím (throttling per user/IP)</li>
+                    <li><strong>Sanitizace vstupů</strong> — ochrana proti XSS, SQL injection</li>
+                    <li><strong>JWT autentizace</strong> — access + refresh tokeny, secure httpOnly cookies</li>
+                    <li><strong>CORS</strong> — whitelisting povolených domén</li>
+                    <li><strong>Content Security Policy (CSP)</strong> — ochrana proti injektování skriptů</li>
+                    <li><strong>Logování</strong> — auditní log přístupů a změn obsahu</li>
+                    <li><strong>GDPR</strong> — souhlas s cookies, právo na smazání účtu, export dat</li>
+                </ul>
+            </div>
+
+            <!-- 6. VÝKON -->
+            <div class="section">
+                <h2>6. Performance cíle</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metrika</th>
+                            <th>Cíl</th>
+                            <th>Měření</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Time to First Byte (TTFB)</td><td>&lt; 2 sekundy</td><td>Lighthouse</td></tr>
+                        <tr><td>Largest Contentful Paint (LCP)</td><td>&lt; 2.5 sekundy</td><td>Core Web Vitals</td></tr>
+                        <tr><td>First Input Delay (FID)</td><td>&lt; 100 ms</td><td>Core Web Vitals</td></tr>
+                        <tr><td>Cumulative Layout Shift (CLS)</td><td>&lt; 0.1</td><td>Core Web Vitals</td></tr>
+                        <tr><td>API response time</td><td>&lt; 200 ms (p95)</td><td>Server monitoring</td></tr>
+                    </tbody>
+                </table>
+                <h3>6.1 Optimalizační strategie</h3>
+                <ul>
+                    <li>CDN (Cloudflare) pro statické soubory — obrázky, CSS, JS</li>
+                    <li>Lazy loading obrázků s placeholder barvou</li>
+                    <li>Server-Side Rendering (Angular Universal) pro SEO</li>
+                    <li>Database indexy na frequently queried fields</li>
+                    <li>Redis cache pro API responses (článkový listing, kategorie)</li>
+                    <li>Image optimization — WebP formát, responsive sizes</li>
+                    <li>Gzip/Brotli komprese</li>
+                </ul>
+            </div>
+
+            <!-- 7. HOSTING -->
+            <div class="section">
+                <h2>7. Hosting a infrastruktura</h2>
+                <ul>
+                    <li><strong>Produkce:</strong> Cloudflare Workers pro edge computing</li>
+                    <li><strong>Databáze:</strong> Managed PostgreSQL (Neon / Supabase alternative)</li>
+                    <li><strong>Cache:</strong> Redis (Upstash nebo obdobný managed service)</li>
+                    <li><strong>Soubory:</strong> Cloudflare R2 pro úložiště médií</li>
+                    <li><strong>CI/CD:</strong> GitHub Actions — automatický deploy na push do main</li>
+                    <li><strong>Monitoring:</strong> Cloudflare Analytics + Sentry pro error tracking</li>
+                </ul>
+            </div>
+
+            <!-- 8. CO NENÍ SOUČÁSTÍ MVP -->
+            <div class="exclusion-box">
+                <h3>8. Co NENÍ součástí MVP</h3>
+                <p>Následující funkce jsou plánované pro Fázi 2, ale nejsou součástí tohoto zadání:</p>
+                <ul>
+                    <li>Mobilní aplikace (iOS/Android) — API je ale připraveno</li>
+                    <li>Real estate listing s cenami nemovitostí</li>
+                    <li>Placené členství / paywall</li>
+                    <li>Newsletter systém — pouze příprava databázové struktury</li>
+                    <li>Komentářový systém pod články</li>
+                    <li>Integrace s realitními portály (Sreality, Bezrealitky)</li>
+                    <li>Vícejazyčná verze portálu</li>
+                </ul>
+            </div>
+
+            <!-- 9. ČASOVÝ HARMONOGRAM -->
+            <div class="section">
+                <h2>9. Časový harmonogram</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Týden</th>
+                            <th>Fáze</th>
+                            <th>Výstupy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Inicializace + DB</td><td>Projekt setup, modely, migrace, základní API</td></tr>
+                        <tr><td>2</td><td>Redakční systém</td><td>WYSIWYG editor, workflow, kategorie, tagy</td></tr>
+                        <tr><td>3</td><td>AI integrace</td><td>Gemini API, titulky, sumarizace, SEO</td></tr>
+                        <tr><td>4</td><td>Frontend</td><td>Angular SPA, listing, detail, vyhledávání</td></tr>
+                        <tr><td>5</td><td>Účty + Admin</td><td>Registrace, login, admin panel, statistiky</td></tr>
+                        <tr><td>6</td><td>Testing + Deploy</td><td>E2E testy, bugfix, deploy na produkci</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            PRAUT s.r.o. | Obrněné brigády 552/33, 350 02 Cheb | IČO: 22545107 | svanda@praut.cz
+        </footer>
+    </div>
+</body>
+</html>
